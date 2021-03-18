@@ -1,0 +1,49 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/Inc"
+            ],
+            "forcedInclude": [],
+            "intelliSenseMode": "msvc-x64"
+        },
+        {
+            "name": "STM32",
+            "includePath": [
+                "Drivers/CMSIS/Device/ST/STM32L4xx/Include",
+                "Drivers/CMSIS/Include",
+                "Drivers/STM32L4xx_HAL_Driver/Inc",
+                "Drivers/STM32L4xx_HAL_Driver/Inc/Legacy",
+                "Inc",
+                "Middlewares/Third_Party/FatFs/src",
+                "User/Config",
+                "User/Examples",
+                "User/Fonts",
+                "User/GUI",
+                "User/SDcard",
+                "User/e-Paper"
+            ],
+            "defines": [
+                "STM32L412xx",
+                "USE_HAL_DRIVER"
+            ],
+            "compilerPath": null,
+            "cStandard": "c11",
+            "cppStandard": "c++11"
+        },
+        {
+            "name": "stm32",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "intelliSenseMode": "${default}"
+        }
+    ],
+    "version": 4
+}

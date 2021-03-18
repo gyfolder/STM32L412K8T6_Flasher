@@ -1,0 +1,785 @@
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"user_diskio.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.USER_initialize,"ax",%progbits
+  18              		.align	1
+  19              		.global	USER_initialize
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv4-sp-d16
+  26              	USER_initialize:
+  27              	.LVL0:
+  28              	.LFB130:
+  29              		.file 1 "Src/user_diskio.c"
+   1:Src/user_diskio.c **** /* USER CODE BEGIN Header */
+   2:Src/user_diskio.c **** /**
+   3:Src/user_diskio.c ****  ******************************************************************************
+   4:Src/user_diskio.c ****   * @file    user_diskio.c
+   5:Src/user_diskio.c ****   * @brief   This file includes a diskio driver skeleton to be completed by the user.
+   6:Src/user_diskio.c ****   ******************************************************************************
+   7:Src/user_diskio.c ****   * @attention
+   8:Src/user_diskio.c ****   *
+   9:Src/user_diskio.c ****   * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
+  10:Src/user_diskio.c ****   * All rights reserved.</center></h2>
+  11:Src/user_diskio.c ****   *
+  12:Src/user_diskio.c ****   * This software component is licensed by ST under Ultimate Liberty license
+  13:Src/user_diskio.c ****   * SLA0044, the "License"; You may not use this file except in compliance with
+  14:Src/user_diskio.c ****   * the License. You may obtain a copy of the License at:
+  15:Src/user_diskio.c ****   *                             www.st.com/SLA0044
+  16:Src/user_diskio.c ****   *
+  17:Src/user_diskio.c ****   ******************************************************************************
+  18:Src/user_diskio.c ****   */
+  19:Src/user_diskio.c ****  /* USER CODE END Header */
+  20:Src/user_diskio.c **** 
+  21:Src/user_diskio.c **** #ifdef USE_OBSOLETE_USER_CODE_SECTION_0
+  22:Src/user_diskio.c **** /* 
+  23:Src/user_diskio.c ****  * Warning: the user section 0 is no more in use (starting from CubeMx version 4.16.0)
+  24:Src/user_diskio.c ****  * To be suppressed in the future. 
+  25:Src/user_diskio.c ****  * Kept to ensure backward compatibility with previous CubeMx versions when 
+  26:Src/user_diskio.c ****  * migrating projects. 
+  27:Src/user_diskio.c ****  * User code previously added there should be copied in the new user sections before 
+  28:Src/user_diskio.c ****  * the section contents can be deleted.
+  29:Src/user_diskio.c ****  */
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s 			page 2
+
+
+  30:Src/user_diskio.c **** /* USER CODE BEGIN 0 */
+  31:Src/user_diskio.c **** /* USER CODE END 0 */
+  32:Src/user_diskio.c **** #endif
+  33:Src/user_diskio.c **** 
+  34:Src/user_diskio.c **** /* USER CODE BEGIN DECL */
+  35:Src/user_diskio.c **** 
+  36:Src/user_diskio.c **** /* Includes ------------------------------------------------------------------*/
+  37:Src/user_diskio.c **** #include <string.h>
+  38:Src/user_diskio.c **** #include "ff_gen_drv.h"
+  39:Src/user_diskio.c **** #include "SD_Card_Drive.h"
+  40:Src/user_diskio.c **** 
+  41:Src/user_diskio.c **** /* Private typedef -----------------------------------------------------------*/
+  42:Src/user_diskio.c **** /* Private define ------------------------------------------------------------*/
+  43:Src/user_diskio.c **** 
+  44:Src/user_diskio.c **** /* Private variables ---------------------------------------------------------*/
+  45:Src/user_diskio.c **** /* Disk status */
+  46:Src/user_diskio.c **** static volatile DSTATUS Stat = STA_NOINIT;
+  47:Src/user_diskio.c **** 
+  48:Src/user_diskio.c **** /* USER CODE END DECL */
+  49:Src/user_diskio.c **** 
+  50:Src/user_diskio.c **** /* Private function prototypes -----------------------------------------------*/
+  51:Src/user_diskio.c **** DSTATUS USER_initialize (BYTE pdrv);
+  52:Src/user_diskio.c **** DSTATUS USER_status (BYTE pdrv);
+  53:Src/user_diskio.c **** DRESULT USER_read (BYTE pdrv, BYTE *buff, DWORD sector, UINT count);
+  54:Src/user_diskio.c **** #if _USE_WRITE == 1
+  55:Src/user_diskio.c ****   DRESULT USER_write (BYTE pdrv, const BYTE *buff, DWORD sector, UINT count);  
+  56:Src/user_diskio.c **** #endif /* _USE_WRITE == 1 */
+  57:Src/user_diskio.c **** #if _USE_IOCTL == 1
+  58:Src/user_diskio.c ****   DRESULT USER_ioctl (BYTE pdrv, BYTE cmd, void *buff);
+  59:Src/user_diskio.c **** #endif /* _USE_IOCTL == 1 */
+  60:Src/user_diskio.c **** 
+  61:Src/user_diskio.c **** Diskio_drvTypeDef  USER_Driver =
+  62:Src/user_diskio.c **** {
+  63:Src/user_diskio.c ****   USER_initialize,
+  64:Src/user_diskio.c ****   USER_status,
+  65:Src/user_diskio.c ****   USER_read, 
+  66:Src/user_diskio.c **** #if  _USE_WRITE
+  67:Src/user_diskio.c ****   USER_write,
+  68:Src/user_diskio.c **** #endif  /* _USE_WRITE == 1 */  
+  69:Src/user_diskio.c **** #if  _USE_IOCTL == 1
+  70:Src/user_diskio.c ****   USER_ioctl,
+  71:Src/user_diskio.c **** #endif /* _USE_IOCTL == 1 */
+  72:Src/user_diskio.c **** };
+  73:Src/user_diskio.c **** 
+  74:Src/user_diskio.c **** /* Private functions ---------------------------------------------------------*/
+  75:Src/user_diskio.c **** 
+  76:Src/user_diskio.c **** /**
+  77:Src/user_diskio.c ****   * @brief  Initializes a Drive
+  78:Src/user_diskio.c ****   * @param  pdrv: Physical drive number (0..)
+  79:Src/user_diskio.c ****   * @retval DSTATUS: Operation status
+  80:Src/user_diskio.c ****   */
+  81:Src/user_diskio.c **** DSTATUS USER_initialize (
+  82:Src/user_diskio.c **** 	BYTE pdrv           /* Physical drive nmuber to identify the drive */
+  83:Src/user_diskio.c **** )
+  84:Src/user_diskio.c **** {
+  30              		.loc 1 84 1 view -0
+  31              		.cfi_startproc
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s 			page 3
+
+
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		.loc 1 84 1 is_stmt 0 view .LVU1
+  35 0000 08B5     		push	{r3, lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 8
+  38              		.cfi_offset 3, -8
+  39              		.cfi_offset 14, -4
+  85:Src/user_diskio.c ****   /* USER CODE BEGIN INIT */
+  86:Src/user_diskio.c ****   Stat = STA_NOINIT;
+  40              		.loc 1 86 3 is_stmt 1 view .LVU2
+  41              		.loc 1 86 8 is_stmt 0 view .LVU3
+  42 0002 074B     		ldr	r3, .L4
+  43 0004 0122     		movs	r2, #1
+  44 0006 1A70     		strb	r2, [r3]
+  87:Src/user_diskio.c ****   
+  88:Src/user_diskio.c ****   /* Configure the uSD device */
+  89:Src/user_diskio.c ****   if(BSP_SD_Init() == MSD_OK)
+  45              		.loc 1 89 3 is_stmt 1 view .LVU4
+  46              		.loc 1 89 6 is_stmt 0 view .LVU5
+  47 0008 FFF7FEFF 		bl	BSP_SD_Init
+  48              	.LVL1:
+  49              		.loc 1 89 5 view .LVU6
+  50 000c 20B9     		cbnz	r0, .L2
+  90:Src/user_diskio.c ****   {
+  91:Src/user_diskio.c ****     Stat &= ~STA_NOINIT;
+  51              		.loc 1 91 5 is_stmt 1 view .LVU7
+  52              		.loc 1 91 10 is_stmt 0 view .LVU8
+  53 000e 044A     		ldr	r2, .L4
+  54 0010 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+  55 0012 03F0FE03 		and	r3, r3, #254
+  56 0016 1370     		strb	r3, [r2]
+  57              	.L2:
+  92:Src/user_diskio.c ****   }
+  93:Src/user_diskio.c **** 
+  94:Src/user_diskio.c ****   return Stat;
+  58              		.loc 1 94 3 is_stmt 1 view .LVU9
+  59              		.loc 1 94 10 is_stmt 0 view .LVU10
+  60 0018 014B     		ldr	r3, .L4
+  61 001a 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+  95:Src/user_diskio.c ****   /* USER CODE END INIT */
+  96:Src/user_diskio.c **** }
+  62              		.loc 1 96 1 view .LVU11
+  63 001c 08BD     		pop	{r3, pc}
+  64              	.L5:
+  65 001e 00BF     		.align	2
+  66              	.L4:
+  67 0020 00000000 		.word	.LANCHOR0
+  68              		.cfi_endproc
+  69              	.LFE130:
+  71              		.section	.text.USER_status,"ax",%progbits
+  72              		.align	1
+  73              		.global	USER_status
+  74              		.syntax unified
+  75              		.thumb
+  76              		.thumb_func
+  77              		.fpu fpv4-sp-d16
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s 			page 4
+
+
+  79              	USER_status:
+  80              	.LVL2:
+  81              	.LFB131:
+  97:Src/user_diskio.c ****  
+  98:Src/user_diskio.c **** /**
+  99:Src/user_diskio.c ****   * @brief  Gets Disk Status 
+ 100:Src/user_diskio.c ****   * @param  pdrv: Physical drive number (0..)
+ 101:Src/user_diskio.c ****   * @retval DSTATUS: Operation status
+ 102:Src/user_diskio.c ****   */
+ 103:Src/user_diskio.c **** DSTATUS USER_status (
+ 104:Src/user_diskio.c **** 	BYTE pdrv       /* Physical drive number to identify the drive */
+ 105:Src/user_diskio.c **** )
+ 106:Src/user_diskio.c **** {
+  82              		.loc 1 106 1 is_stmt 1 view -0
+  83              		.cfi_startproc
+  84              		@ args = 0, pretend = 0, frame = 0
+  85              		@ frame_needed = 0, uses_anonymous_args = 0
+  86              		.loc 1 106 1 is_stmt 0 view .LVU13
+  87 0000 08B5     		push	{r3, lr}
+  88              	.LCFI1:
+  89              		.cfi_def_cfa_offset 8
+  90              		.cfi_offset 3, -8
+  91              		.cfi_offset 14, -4
+ 107:Src/user_diskio.c ****   /* USER CODE BEGIN STATUS */
+ 108:Src/user_diskio.c ****   Stat = STA_NOINIT;
+  92              		.loc 1 108 3 is_stmt 1 view .LVU14
+  93              		.loc 1 108 8 is_stmt 0 view .LVU15
+  94 0002 074B     		ldr	r3, .L9
+  95 0004 0122     		movs	r2, #1
+  96 0006 1A70     		strb	r2, [r3]
+ 109:Src/user_diskio.c **** 
+ 110:Src/user_diskio.c ****   if(BSP_SD_GetCardState() == MSD_OK)
+  97              		.loc 1 110 3 is_stmt 1 view .LVU16
+  98              		.loc 1 110 6 is_stmt 0 view .LVU17
+  99 0008 FFF7FEFF 		bl	BSP_SD_GetCardState
+ 100              	.LVL3:
+ 101              		.loc 1 110 5 view .LVU18
+ 102 000c 20B9     		cbnz	r0, .L7
+ 111:Src/user_diskio.c ****   {
+ 112:Src/user_diskio.c ****     Stat &= ~STA_NOINIT;
+ 103              		.loc 1 112 5 is_stmt 1 view .LVU19
+ 104              		.loc 1 112 10 is_stmt 0 view .LVU20
+ 105 000e 044A     		ldr	r2, .L9
+ 106 0010 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+ 107 0012 03F0FE03 		and	r3, r3, #254
+ 108 0016 1370     		strb	r3, [r2]
+ 109              	.L7:
+ 113:Src/user_diskio.c ****   }
+ 114:Src/user_diskio.c ****   
+ 115:Src/user_diskio.c ****   return Stat;
+ 110              		.loc 1 115 3 is_stmt 1 view .LVU21
+ 111              		.loc 1 115 10 is_stmt 0 view .LVU22
+ 112 0018 014B     		ldr	r3, .L9
+ 113 001a 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 116:Src/user_diskio.c ****   /* USER CODE END STATUS */
+ 117:Src/user_diskio.c **** }
+ 114              		.loc 1 117 1 view .LVU23
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s 			page 5
+
+
+ 115 001c 08BD     		pop	{r3, pc}
+ 116              	.L10:
+ 117 001e 00BF     		.align	2
+ 118              	.L9:
+ 119 0020 00000000 		.word	.LANCHOR0
+ 120              		.cfi_endproc
+ 121              	.LFE131:
+ 123              		.section	.text.USER_read,"ax",%progbits
+ 124              		.align	1
+ 125              		.global	USER_read
+ 126              		.syntax unified
+ 127              		.thumb
+ 128              		.thumb_func
+ 129              		.fpu fpv4-sp-d16
+ 131              	USER_read:
+ 132              	.LVL4:
+ 133              	.LFB132:
+ 118:Src/user_diskio.c **** 
+ 119:Src/user_diskio.c **** /**
+ 120:Src/user_diskio.c ****   * @brief  Reads Sector(s) 
+ 121:Src/user_diskio.c ****   * @param  pdrv: Physical drive number (0..)
+ 122:Src/user_diskio.c ****   * @param  *buff: Data buffer to store read data
+ 123:Src/user_diskio.c ****   * @param  sector: Sector address (LBA)
+ 124:Src/user_diskio.c ****   * @param  count: Number of sectors to read (1..128)
+ 125:Src/user_diskio.c ****   * @retval DRESULT: Operation result
+ 126:Src/user_diskio.c ****   */
+ 127:Src/user_diskio.c **** DRESULT USER_read (
+ 128:Src/user_diskio.c **** 	BYTE pdrv,      /* Physical drive nmuber to identify the drive */
+ 129:Src/user_diskio.c **** 	BYTE *buff,     /* Data buffer to store read data */
+ 130:Src/user_diskio.c **** 	DWORD sector,   /* Sector address in LBA */
+ 131:Src/user_diskio.c **** 	UINT count      /* Number of sectors to read */
+ 132:Src/user_diskio.c **** )
+ 133:Src/user_diskio.c **** {
+ 134              		.loc 1 133 1 is_stmt 1 view -0
+ 135              		.cfi_startproc
+ 136              		@ args = 0, pretend = 0, frame = 0
+ 137              		@ frame_needed = 0, uses_anonymous_args = 0
+ 138              		.loc 1 133 1 is_stmt 0 view .LVU25
+ 139 0000 10B5     		push	{r4, lr}
+ 140              	.LCFI2:
+ 141              		.cfi_def_cfa_offset 8
+ 142              		.cfi_offset 4, -8
+ 143              		.cfi_offset 14, -4
+ 144 0002 0846     		mov	r0, r1
+ 145              	.LVL5:
+ 146              		.loc 1 133 1 view .LVU26
+ 147 0004 1146     		mov	r1, r2
+ 148              	.LVL6:
+ 149              		.loc 1 133 1 view .LVU27
+ 150 0006 1A46     		mov	r2, r3
+ 151              	.LVL7:
+ 134:Src/user_diskio.c ****   /* USER CODE BEGIN READ */
+ 135:Src/user_diskio.c ****   DRESULT res = RES_ERROR;
+ 152              		.loc 1 135 3 is_stmt 1 view .LVU28
+ 136:Src/user_diskio.c ****   uint32_t timeout = 100000;
+ 153              		.loc 1 136 3 view .LVU29
+ 137:Src/user_diskio.c **** 
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s 			page 6
+
+
+ 138:Src/user_diskio.c ****   if(BSP_SD_ReadBlocks((uint32_t*)buff, 
+ 154              		.loc 1 138 3 view .LVU30
+ 155              		.loc 1 138 6 is_stmt 0 view .LVU31
+ 156 0008 094B     		ldr	r3, .L18
+ 157              	.LVL8:
+ 158              		.loc 1 138 6 view .LVU32
+ 159 000a FFF7FEFF 		bl	BSP_SD_ReadBlocks
+ 160              	.LVL9:
+ 161              		.loc 1 138 5 view .LVU33
+ 162 000e 10B1     		cbz	r0, .L15
+ 135:Src/user_diskio.c ****   uint32_t timeout = 100000;
+ 163              		.loc 1 135 11 view .LVU34
+ 164 0010 0123     		movs	r3, #1
+ 165              	.LVL10:
+ 166              	.L13:
+ 139:Src/user_diskio.c ****                        (uint32_t) (sector), 
+ 140:Src/user_diskio.c ****                        count, SD_DATATIMEOUT) == MSD_OK)
+ 141:Src/user_diskio.c ****   {
+ 142:Src/user_diskio.c ****     while(BSP_SD_GetCardState()!= MSD_OK)
+ 143:Src/user_diskio.c ****     {
+ 144:Src/user_diskio.c ****       if (timeout-- == 0)
+ 145:Src/user_diskio.c ****       {
+ 146:Src/user_diskio.c ****         return RES_ERROR;
+ 147:Src/user_diskio.c ****       }
+ 148:Src/user_diskio.c ****     }
+ 149:Src/user_diskio.c ****     res = RES_OK;
+ 150:Src/user_diskio.c ****   }
+ 151:Src/user_diskio.c ****   
+ 152:Src/user_diskio.c ****   return res;
+ 153:Src/user_diskio.c ****   /* USER CODE END READ */
+ 154:Src/user_diskio.c **** }
+ 167              		.loc 1 154 1 view .LVU35
+ 168 0012 1846     		mov	r0, r3
+ 169 0014 10BD     		pop	{r4, pc}
+ 170              	.LVL11:
+ 171              	.L15:
+ 136:Src/user_diskio.c **** 
+ 172              		.loc 1 136 12 view .LVU36
+ 173 0016 074C     		ldr	r4, .L18+4
+ 174              	.LVL12:
+ 175              	.L12:
+ 142:Src/user_diskio.c ****     {
+ 176              		.loc 1 142 10 is_stmt 1 view .LVU37
+ 142:Src/user_diskio.c ****     {
+ 177              		.loc 1 142 11 is_stmt 0 view .LVU38
+ 178 0018 FFF7FEFF 		bl	BSP_SD_GetCardState
+ 179              	.LVL13:
+ 142:Src/user_diskio.c ****     {
+ 180              		.loc 1 142 10 view .LVU39
+ 181 001c 0346     		mov	r3, r0
+ 182 001e 0028     		cmp	r0, #0
+ 183 0020 F7D0     		beq	.L13
+ 144:Src/user_diskio.c ****       {
+ 184              		.loc 1 144 7 is_stmt 1 view .LVU40
+ 144:Src/user_diskio.c ****       {
+ 185              		.loc 1 144 18 is_stmt 0 view .LVU41
+ 186 0022 631E     		subs	r3, r4, #1
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s 			page 7
+
+
+ 187              	.LVL14:
+ 144:Src/user_diskio.c ****       {
+ 188              		.loc 1 144 10 view .LVU42
+ 189 0024 0CB1     		cbz	r4, .L16
+ 144:Src/user_diskio.c ****       {
+ 190              		.loc 1 144 18 view .LVU43
+ 191 0026 1C46     		mov	r4, r3
+ 192 0028 F6E7     		b	.L12
+ 193              	.L16:
+ 146:Src/user_diskio.c ****       }
+ 194              		.loc 1 146 16 view .LVU44
+ 195 002a 0123     		movs	r3, #1
+ 196              	.LVL15:
+ 146:Src/user_diskio.c ****       }
+ 197              		.loc 1 146 16 view .LVU45
+ 198 002c F1E7     		b	.L13
+ 199              	.L19:
+ 200 002e 00BF     		.align	2
+ 201              	.L18:
+ 202 0030 00E1F505 		.word	100000000
+ 203 0034 A0860100 		.word	100000
+ 204              		.cfi_endproc
+ 205              	.LFE132:
+ 207              		.section	.text.USER_write,"ax",%progbits
+ 208              		.align	1
+ 209              		.global	USER_write
+ 210              		.syntax unified
+ 211              		.thumb
+ 212              		.thumb_func
+ 213              		.fpu fpv4-sp-d16
+ 215              	USER_write:
+ 216              	.LVL16:
+ 217              	.LFB133:
+ 155:Src/user_diskio.c **** 
+ 156:Src/user_diskio.c **** /**
+ 157:Src/user_diskio.c ****   * @brief  Writes Sector(s)  
+ 158:Src/user_diskio.c ****   * @param  pdrv: Physical drive number (0..)
+ 159:Src/user_diskio.c ****   * @param  *buff: Data to be written
+ 160:Src/user_diskio.c ****   * @param  sector: Sector address (LBA)
+ 161:Src/user_diskio.c ****   * @param  count: Number of sectors to write (1..128)
+ 162:Src/user_diskio.c ****   * @retval DRESULT: Operation result
+ 163:Src/user_diskio.c ****   */
+ 164:Src/user_diskio.c **** #if _USE_WRITE == 1
+ 165:Src/user_diskio.c **** DRESULT USER_write (
+ 166:Src/user_diskio.c **** 	BYTE pdrv,          /* Physical drive nmuber to identify the drive */
+ 167:Src/user_diskio.c **** 	const BYTE *buff,   /* Data to be written */
+ 168:Src/user_diskio.c **** 	DWORD sector,       /* Sector address in LBA */
+ 169:Src/user_diskio.c **** 	UINT count          /* Number of sectors to write */
+ 170:Src/user_diskio.c **** )
+ 171:Src/user_diskio.c **** { 
+ 218              		.loc 1 171 1 is_stmt 1 view -0
+ 219              		.cfi_startproc
+ 220              		@ args = 0, pretend = 0, frame = 0
+ 221              		@ frame_needed = 0, uses_anonymous_args = 0
+ 222              		.loc 1 171 1 is_stmt 0 view .LVU47
+ 223 0000 10B5     		push	{r4, lr}
+ 224              	.LCFI3:
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s 			page 8
+
+
+ 225              		.cfi_def_cfa_offset 8
+ 226              		.cfi_offset 4, -8
+ 227              		.cfi_offset 14, -4
+ 228 0002 0846     		mov	r0, r1
+ 229              	.LVL17:
+ 230              		.loc 1 171 1 view .LVU48
+ 231 0004 1146     		mov	r1, r2
+ 232              	.LVL18:
+ 233              		.loc 1 171 1 view .LVU49
+ 234 0006 1A46     		mov	r2, r3
+ 235              	.LVL19:
+ 172:Src/user_diskio.c ****   /* USER CODE BEGIN WRITE */
+ 173:Src/user_diskio.c ****   /* USER CODE HERE */
+ 174:Src/user_diskio.c **** 	DRESULT res = RES_ERROR;
+ 236              		.loc 1 174 2 is_stmt 1 view .LVU50
+ 175:Src/user_diskio.c ****   uint32_t timeout = 100000;
+ 237              		.loc 1 175 3 view .LVU51
+ 176:Src/user_diskio.c **** 
+ 177:Src/user_diskio.c ****   if(BSP_SD_WriteBlocks((uint32_t*)buff, 
+ 238              		.loc 1 177 3 view .LVU52
+ 239              		.loc 1 177 6 is_stmt 0 view .LVU53
+ 240 0008 094B     		ldr	r3, .L27
+ 241              	.LVL20:
+ 242              		.loc 1 177 6 view .LVU54
+ 243 000a FFF7FEFF 		bl	BSP_SD_WriteBlocks
+ 244              	.LVL21:
+ 245              		.loc 1 177 5 view .LVU55
+ 246 000e 10B1     		cbz	r0, .L24
+ 174:Src/user_diskio.c ****   uint32_t timeout = 100000;
+ 247              		.loc 1 174 10 view .LVU56
+ 248 0010 0123     		movs	r3, #1
+ 249              	.LVL22:
+ 250              	.L22:
+ 178:Src/user_diskio.c ****                         (uint32_t)(sector), 
+ 179:Src/user_diskio.c ****                         count, SD_DATATIMEOUT) == MSD_OK)
+ 180:Src/user_diskio.c ****   {
+ 181:Src/user_diskio.c ****     while(BSP_SD_GetCardState()!= MSD_OK)
+ 182:Src/user_diskio.c ****     {
+ 183:Src/user_diskio.c ****       if (timeout-- == 0)
+ 184:Src/user_diskio.c ****       {
+ 185:Src/user_diskio.c ****         return RES_ERROR;
+ 186:Src/user_diskio.c ****       }
+ 187:Src/user_diskio.c ****     }    
+ 188:Src/user_diskio.c ****     res = RES_OK;
+ 189:Src/user_diskio.c ****   }
+ 190:Src/user_diskio.c ****   
+ 191:Src/user_diskio.c ****   return res;
+ 192:Src/user_diskio.c ****   /* USER CODE END WRITE */
+ 193:Src/user_diskio.c **** }
+ 251              		.loc 1 193 1 view .LVU57
+ 252 0012 1846     		mov	r0, r3
+ 253 0014 10BD     		pop	{r4, pc}
+ 254              	.LVL23:
+ 255              	.L24:
+ 175:Src/user_diskio.c **** 
+ 256              		.loc 1 175 12 view .LVU58
+ 257 0016 074C     		ldr	r4, .L27+4
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s 			page 9
+
+
+ 258              	.LVL24:
+ 259              	.L21:
+ 181:Src/user_diskio.c ****     {
+ 260              		.loc 1 181 10 is_stmt 1 view .LVU59
+ 181:Src/user_diskio.c ****     {
+ 261              		.loc 1 181 11 is_stmt 0 view .LVU60
+ 262 0018 FFF7FEFF 		bl	BSP_SD_GetCardState
+ 263              	.LVL25:
+ 181:Src/user_diskio.c ****     {
+ 264              		.loc 1 181 10 view .LVU61
+ 265 001c 0346     		mov	r3, r0
+ 266 001e 0028     		cmp	r0, #0
+ 267 0020 F7D0     		beq	.L22
+ 183:Src/user_diskio.c ****       {
+ 268              		.loc 1 183 7 is_stmt 1 view .LVU62
+ 183:Src/user_diskio.c ****       {
+ 269              		.loc 1 183 18 is_stmt 0 view .LVU63
+ 270 0022 631E     		subs	r3, r4, #1
+ 271              	.LVL26:
+ 183:Src/user_diskio.c ****       {
+ 272              		.loc 1 183 10 view .LVU64
+ 273 0024 0CB1     		cbz	r4, .L25
+ 183:Src/user_diskio.c ****       {
+ 274              		.loc 1 183 18 view .LVU65
+ 275 0026 1C46     		mov	r4, r3
+ 276 0028 F6E7     		b	.L21
+ 277              	.L25:
+ 185:Src/user_diskio.c ****       }
+ 278              		.loc 1 185 16 view .LVU66
+ 279 002a 0123     		movs	r3, #1
+ 280              	.LVL27:
+ 185:Src/user_diskio.c ****       }
+ 281              		.loc 1 185 16 view .LVU67
+ 282 002c F1E7     		b	.L22
+ 283              	.L28:
+ 284 002e 00BF     		.align	2
+ 285              	.L27:
+ 286 0030 00E1F505 		.word	100000000
+ 287 0034 A0860100 		.word	100000
+ 288              		.cfi_endproc
+ 289              	.LFE133:
+ 291              		.section	.text.USER_ioctl,"ax",%progbits
+ 292              		.align	1
+ 293              		.global	USER_ioctl
+ 294              		.syntax unified
+ 295              		.thumb
+ 296              		.thumb_func
+ 297              		.fpu fpv4-sp-d16
+ 299              	USER_ioctl:
+ 300              	.LVL28:
+ 301              	.LFB134:
+ 194:Src/user_diskio.c **** #endif /* _USE_WRITE == 1 */
+ 195:Src/user_diskio.c **** 
+ 196:Src/user_diskio.c **** /**
+ 197:Src/user_diskio.c ****   * @brief  I/O control operation  
+ 198:Src/user_diskio.c ****   * @param  pdrv: Physical drive number (0..)
+ 199:Src/user_diskio.c ****   * @param  cmd: Control code
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s 			page 10
+
+
+ 200:Src/user_diskio.c ****   * @param  *buff: Buffer to send/receive control data
+ 201:Src/user_diskio.c ****   * @retval DRESULT: Operation result
+ 202:Src/user_diskio.c ****   */
+ 203:Src/user_diskio.c **** #if _USE_IOCTL == 1
+ 204:Src/user_diskio.c **** DRESULT USER_ioctl (
+ 205:Src/user_diskio.c **** 	BYTE pdrv,      /* Physical drive nmuber (0..) */
+ 206:Src/user_diskio.c **** 	BYTE cmd,       /* Control code */
+ 207:Src/user_diskio.c **** 	void *buff      /* Buffer to send/receive control data */
+ 208:Src/user_diskio.c **** )
+ 209:Src/user_diskio.c **** {
+ 302              		.loc 1 209 1 is_stmt 1 view -0
+ 303              		.cfi_startproc
+ 304              		@ args = 0, pretend = 0, frame = 64
+ 305              		@ frame_needed = 0, uses_anonymous_args = 0
+ 306              		.loc 1 209 1 is_stmt 0 view .LVU69
+ 307 0000 30B5     		push	{r4, r5, lr}
+ 308              	.LCFI4:
+ 309              		.cfi_def_cfa_offset 12
+ 310              		.cfi_offset 4, -12
+ 311              		.cfi_offset 5, -8
+ 312              		.cfi_offset 14, -4
+ 313 0002 91B0     		sub	sp, sp, #68
+ 314              	.LCFI5:
+ 315              		.cfi_def_cfa_offset 80
+ 210:Src/user_diskio.c ****   /* USER CODE BEGIN IOCTL */
+ 211:Src/user_diskio.c **** 	DRESULT res = RES_ERROR;
+ 316              		.loc 1 211 2 is_stmt 1 view .LVU70
+ 317              	.LVL29:
+ 212:Src/user_diskio.c ****   BSP_SD_CardInfo CardInfo;
+ 318              		.loc 1 212 3 view .LVU71
+ 213:Src/user_diskio.c ****   
+ 214:Src/user_diskio.c ****   if (Stat & STA_NOINIT) return RES_NOTRDY;
+ 319              		.loc 1 214 3 view .LVU72
+ 320              		.loc 1 214 12 is_stmt 0 view .LVU73
+ 321 0004 134B     		ldr	r3, .L39
+ 322 0006 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 323              		.loc 1 214 6 view .LVU74
+ 324 0008 13F00104 		ands	r4, r3, #1
+ 325 000c 1CD1     		bne	.L36
+ 326 000e 0846     		mov	r0, r1
+ 327              	.LVL30:
+ 328              		.loc 1 214 6 view .LVU75
+ 329 0010 1546     		mov	r5, r2
+ 215:Src/user_diskio.c ****   
+ 216:Src/user_diskio.c ****   switch (cmd)
+ 330              		.loc 1 216 3 is_stmt 1 view .LVU76
+ 331 0012 0329     		cmp	r1, #3
+ 332 0014 1BD8     		bhi	.L37
+ 333 0016 DFE801F0 		tbb	[pc, r1]
+ 334              	.L32:
+ 335 001a 18       		.byte	(.L30-.L32)/2
+ 336 001b 02       		.byte	(.L34-.L32)/2
+ 337 001c 09       		.byte	(.L33-.L32)/2
+ 338 001d 10       		.byte	(.L31-.L32)/2
+ 339              		.p2align 1
+ 340              	.L34:
+ 217:Src/user_diskio.c ****   {
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s 			page 11
+
+
+ 218:Src/user_diskio.c ****   /* Make sure that no pending write process */
+ 219:Src/user_diskio.c ****   case CTRL_SYNC :
+ 220:Src/user_diskio.c ****     res = RES_OK;
+ 221:Src/user_diskio.c ****     break;
+ 222:Src/user_diskio.c ****   
+ 223:Src/user_diskio.c ****   /* Get number of sectors on the disk (DWORD) */
+ 224:Src/user_diskio.c ****   case GET_SECTOR_COUNT :
+ 225:Src/user_diskio.c ****     BSP_SD_GetCardInfo(&CardInfo);
+ 341              		.loc 1 225 5 view .LVU77
+ 342 001e 6846     		mov	r0, sp
+ 343 0020 FFF7FEFF 		bl	BSP_SD_GetCardInfo
+ 344              	.LVL31:
+ 226:Src/user_diskio.c ****     *(DWORD*)buff = CardInfo.LogBlockNbr;
+ 345              		.loc 1 226 5 view .LVU78
+ 346              		.loc 1 226 29 is_stmt 0 view .LVU79
+ 347 0024 0E9B     		ldr	r3, [sp, #56]
+ 348              		.loc 1 226 19 view .LVU80
+ 349 0026 2B60     		str	r3, [r5]
+ 227:Src/user_diskio.c ****     res = RES_OK;
+ 350              		.loc 1 227 5 is_stmt 1 view .LVU81
+ 351              	.LVL32:
+ 228:Src/user_diskio.c ****     break;
+ 352              		.loc 1 228 5 view .LVU82
+ 227:Src/user_diskio.c ****     res = RES_OK;
+ 353              		.loc 1 227 9 is_stmt 0 view .LVU83
+ 354 0028 2046     		mov	r0, r4
+ 355              		.loc 1 228 5 view .LVU84
+ 356 002a 0EE0     		b	.L30
+ 357              	.LVL33:
+ 358              	.L33:
+ 229:Src/user_diskio.c ****   
+ 230:Src/user_diskio.c ****   /* Get R/W sector size (WORD) */
+ 231:Src/user_diskio.c ****   case GET_SECTOR_SIZE :
+ 232:Src/user_diskio.c ****     BSP_SD_GetCardInfo(&CardInfo);
+ 359              		.loc 1 232 5 is_stmt 1 view .LVU85
+ 360 002c 6846     		mov	r0, sp
+ 361 002e FFF7FEFF 		bl	BSP_SD_GetCardInfo
+ 362              	.LVL34:
+ 233:Src/user_diskio.c ****     *(WORD*)buff = CardInfo.LogBlockSize;
+ 363              		.loc 1 233 5 view .LVU86
+ 364              		.loc 1 233 28 is_stmt 0 view .LVU87
+ 365 0032 0F9B     		ldr	r3, [sp, #60]
+ 366              		.loc 1 233 18 view .LVU88
+ 367 0034 2B80     		strh	r3, [r5]	@ movhi
+ 234:Src/user_diskio.c ****     res = RES_OK;
+ 368              		.loc 1 234 5 is_stmt 1 view .LVU89
+ 369              	.LVL35:
+ 235:Src/user_diskio.c ****     break;
+ 370              		.loc 1 235 5 view .LVU90
+ 234:Src/user_diskio.c ****     res = RES_OK;
+ 371              		.loc 1 234 9 is_stmt 0 view .LVU91
+ 372 0036 2046     		mov	r0, r4
+ 373              		.loc 1 235 5 view .LVU92
+ 374 0038 07E0     		b	.L30
+ 375              	.LVL36:
+ 376              	.L31:
+ 236:Src/user_diskio.c ****   
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s 			page 12
+
+
+ 237:Src/user_diskio.c ****   /* Get erase block size in unit of sector (DWORD) */
+ 238:Src/user_diskio.c ****   case GET_BLOCK_SIZE :
+ 239:Src/user_diskio.c ****     BSP_SD_GetCardInfo(&CardInfo);
+ 377              		.loc 1 239 5 is_stmt 1 view .LVU93
+ 378 003a 6846     		mov	r0, sp
+ 379 003c FFF7FEFF 		bl	BSP_SD_GetCardInfo
+ 380              	.LVL37:
+ 240:Src/user_diskio.c ****     *(DWORD*)buff = CardInfo.LogBlockSize;
+ 381              		.loc 1 240 5 view .LVU94
+ 382              		.loc 1 240 29 is_stmt 0 view .LVU95
+ 383 0040 0F9B     		ldr	r3, [sp, #60]
+ 384              		.loc 1 240 19 view .LVU96
+ 385 0042 2B60     		str	r3, [r5]
+ 241:Src/user_diskio.c ****     res = RES_OK;
+ 386              		.loc 1 241 5 is_stmt 1 view .LVU97
+ 387              	.LVL38:
+ 242:Src/user_diskio.c ****     break;
+ 388              		.loc 1 242 5 view .LVU98
+ 241:Src/user_diskio.c ****     res = RES_OK;
+ 389              		.loc 1 241 9 is_stmt 0 view .LVU99
+ 390 0044 2046     		mov	r0, r4
+ 391              		.loc 1 242 5 view .LVU100
+ 392 0046 00E0     		b	.L30
+ 393              	.LVL39:
+ 394              	.L36:
+ 214:Src/user_diskio.c ****   
+ 395              		.loc 1 214 33 view .LVU101
+ 396 0048 0320     		movs	r0, #3
+ 397              	.LVL40:
+ 398              	.L30:
+ 243:Src/user_diskio.c ****   
+ 244:Src/user_diskio.c ****   default:
+ 245:Src/user_diskio.c ****     res = RES_PARERR;
+ 246:Src/user_diskio.c ****   }
+ 247:Src/user_diskio.c ****   
+ 248:Src/user_diskio.c ****   return res;
+ 249:Src/user_diskio.c ****   /* USER CODE END IOCTL */
+ 250:Src/user_diskio.c **** }
+ 399              		.loc 1 250 1 view .LVU102
+ 400 004a 11B0     		add	sp, sp, #68
+ 401              	.LCFI6:
+ 402              		.cfi_def_cfa_offset 12
+ 403              		@ sp needed
+ 404 004c 30BD     		pop	{r4, r5, pc}
+ 405              	.LVL41:
+ 406              	.L37:
+ 245:Src/user_diskio.c ****   }
+ 407              		.loc 1 245 9 view .LVU103
+ 408 004e 0420     		movs	r0, #4
+ 409 0050 FBE7     		b	.L30
+ 410              	.L40:
+ 411 0052 00BF     		.align	2
+ 412              	.L39:
+ 413 0054 00000000 		.word	.LANCHOR0
+ 414              		.cfi_endproc
+ 415              	.LFE134:
+ 417              		.global	USER_Driver
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s 			page 13
+
+
+ 418              		.section	.data.Stat,"aw"
+ 419              		.set	.LANCHOR0,. + 0
+ 422              	Stat:
+ 423 0000 01       		.byte	1
+ 424              		.section	.data.USER_Driver,"aw"
+ 425              		.align	2
+ 428              	USER_Driver:
+ 429 0000 00000000 		.word	USER_initialize
+ 430 0004 00000000 		.word	USER_status
+ 431 0008 00000000 		.word	USER_read
+ 432 000c 00000000 		.word	USER_write
+ 433 0010 00000000 		.word	USER_ioctl
+ 434              		.text
+ 435              	.Letext0:
+ 436              		.file 2 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\lib\\gcc\\arm-none
+ 437              		.file 3 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\inc
+ 438              		.file 4 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\inc
+ 439              		.file 5 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\inc
+ 440              		.file 6 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\inc
+ 441              		.file 7 "Middlewares/Third_Party/FatFs/src/integer.h"
+ 442              		.file 8 "Middlewares/Third_Party/FatFs/src/diskio.h"
+ 443              		.file 9 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\inc
+ 444              		.file 10 "Drivers/CMSIS/Include/core_cm4.h"
+ 445              		.file 11 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/system_stm32l4xx.h"
+ 446              		.file 12 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_def.h"
+ 447              		.file 13 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_flash.h"
+ 448              		.file 14 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h"
+ 449              		.file 15 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\in
+ 450              		.file 16 "Middlewares/Third_Party/FatFs/src/ff_gen_drv.h"
+ 451              		.file 17 "User/SDcard/SD_Card_Drive.h"
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s 			page 14
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 user_diskio.c
+C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s:18     .text.USER_initialize:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s:26     .text.USER_initialize:00000000 USER_initialize
+C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s:67     .text.USER_initialize:00000020 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s:72     .text.USER_status:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s:79     .text.USER_status:00000000 USER_status
+C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s:119    .text.USER_status:00000020 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s:124    .text.USER_read:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s:131    .text.USER_read:00000000 USER_read
+C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s:202    .text.USER_read:00000030 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s:208    .text.USER_write:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s:215    .text.USER_write:00000000 USER_write
+C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s:286    .text.USER_write:00000030 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s:292    .text.USER_ioctl:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s:299    .text.USER_ioctl:00000000 USER_ioctl
+C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s:335    .text.USER_ioctl:0000001a $d
+C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s:339    .text.USER_ioctl:0000001e $t
+C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s:413    .text.USER_ioctl:00000054 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s:428    .data.USER_Driver:00000000 USER_Driver
+C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s:422    .data.Stat:00000000 Stat
+C:\Users\ADMINI~1\AppData\Local\Temp\ccmsFifc.s:425    .data.USER_Driver:00000000 $d
+
+UNDEFINED SYMBOLS
+BSP_SD_Init
+BSP_SD_GetCardState
+BSP_SD_ReadBlocks
+BSP_SD_WriteBlocks
+BSP_SD_GetCardInfo

@@ -1,0 +1,1345 @@
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"SD_Card_APP.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.rodata.SDCard_Init.str1.4,"aMS",%progbits,1
+  18              		.align	2
+  19              	.LC0:
+  20 0000 44656275 		.ascii	"Debug : SD card initialization failed, check if SD "
+  20      67203A20 
+  20      53442063 
+  20      61726420 
+  20      696E6974 
+  21 0033 63617264 		.ascii	"card is inserted.\015\012\000"
+  21      20697320 
+  21      696E7365 
+  21      72746564 
+  21      2E0D0A00 
+  22 0047 00       		.align	2
+  23              	.LC1:
+  24 0048 44656275 		.ascii	"Debug : SD card initialization successful..\015\012"
+  24      67203A20 
+  24      53442063 
+  24      61726420 
+  24      696E6974 
+  25 0075 00       		.ascii	"\000"
+  26 0076 0000     		.align	2
+  27              	.LC2:
+  28 0078 303A00   		.ascii	"0:\000"
+  29 007b 00       		.align	2
+  30              	.LC3:
+  31 007c 44656275 		.ascii	"Debug : SD card mount file system failed ,error cod"
+  31      67203A20 
+  31      53442063 
+  31      61726420 
+  31      6D6F756E 
+  32 00af 65203A28 		.ascii	"e :(%d %s)\015\012\000"
+  32      25642025 
+  32      73290D0A 
+  32      00
+  33              		.align	2
+  34              	.LC4:
+  35 00bc 44656275 		.ascii	"Debug : SD card mount file system success!! \015\012"
+  35      67203A20 
+  35      53442063 
+  35      61726420 
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s 			page 2
+
+
+  35      6D6F756E 
+  36 00ea 00       		.ascii	"\000"
+  37 00eb 00       		.align	2
+  38              	.LC5:
+  39 00ec 44656275 		.ascii	"Debug : FATFS_LinkDriver error\015\012\000"
+  39      67203A20 
+  39      46415446 
+  39      535F4C69 
+  39      6E6B4472 
+  40 010d 000000   		.align	2
+  41              	.LC6:
+  42 0110 2F00     		.ascii	"/\000"
+  43 0112 0000     		.align	2
+  44              	.LC7:
+  45 0114 44656275 		.ascii	"Debug : SD card not FAT formated\015\012\000"
+  45      67203A20 
+  45      53442063 
+  45      61726420 
+  45      6E6F7420 
+  46 0137 00       		.align	2
+  47              	.LC8:
+  48 0138 44656275 		.ascii	"Debug : Fail to open directory\015\012\000"
+  48      67203A20 
+  48      4661696C 
+  48      20746F20 
+  48      6F70656E 
+  49 0159 000000   		.align	2
+  50              	.LC9:
+  51 015c 44656275 		.ascii	"Debug : file open \015\012\000"
+  51      67203A20 
+  51      66696C65 
+  51      206F7065 
+  51      6E200D0A 
+  52              		.section	.text.SDCard_Init,"ax",%progbits
+  53              		.align	1
+  54              		.global	SDCard_Init
+  55              		.arch armv7e-m
+  56              		.syntax unified
+  57              		.thumb
+  58              		.thumb_func
+  59              		.fpu fpv4-sp-d16
+  61              	SDCard_Init:
+  62              	.LFB133:
+  63              		.file 1 "User/SDcard/SD_Card_APP.c"
+   1:User/SDcard/SD_Card_APP.c **** /*****************************************************************************
+   2:User/SDcard/SD_Card_APP.c **** * | File        :   SD_Card_APP.cpp
+   3:User/SDcard/SD_Card_APP.c **** * | Author      :   Waveshare team
+   4:User/SDcard/SD_Card_APP.c **** * | Function    :   Read the BMP file in the SD card and parse it
+   5:User/SDcard/SD_Card_APP.c **** * | Info        :
+   6:User/SDcard/SD_Card_APP.c **** *----------------
+   7:User/SDcard/SD_Card_APP.c **** * | This version:   V1.0
+   8:User/SDcard/SD_Card_APP.c **** * | Date        :   2018-01-11
+   9:User/SDcard/SD_Card_APP.c **** * | Info        :   Basic version
+  10:User/SDcard/SD_Card_APP.c **** *
+  11:User/SDcard/SD_Card_APP.c **** ******************************************************************************/
+  12:User/SDcard/SD_Card_APP.c **** #include "SD_Card_APP.h"
+  13:User/SDcard/SD_Card_APP.c **** #include "SD_Card_Drive.h"
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s 			page 3
+
+
+  14:User/SDcard/SD_Card_APP.c **** #include "Debug.h"
+  15:User/SDcard/SD_Card_APP.c **** #include "ff.h"
+  16:User/SDcard/SD_Card_APP.c **** #include "ff_gen_drv.h"
+  17:User/SDcard/SD_Card_APP.c **** #include "user_diskio.h"
+  18:User/SDcard/SD_Card_APP.c **** #include <stdio.h>
+  19:User/SDcard/SD_Card_APP.c **** #include <string.h>
+  20:User/SDcard/SD_Card_APP.c **** #include "stdlib.h"
+  21:User/SDcard/SD_Card_APP.c **** #include "IS25.h"
+  22:User/SDcard/SD_Card_APP.c **** 
+  23:User/SDcard/SD_Card_APP.c **** //char* pDirectoryFiles[MAX_BMP_FILES];
+  24:User/SDcard/SD_Card_APP.c **** extern char USERPath[4];   /* USER logical drive path */
+  25:User/SDcard/SD_Card_APP.c **** extern FATFS USERFatFS;    /* File system object for USER logical drive */
+  26:User/SDcard/SD_Card_APP.c **** extern FIL USERFile;       /* File object for USER */
+  27:User/SDcard/SD_Card_APP.c **** FILINFO USERFileInfo;
+  28:User/SDcard/SD_Card_APP.c **** DIR USERDirectory;
+  29:User/SDcard/SD_Card_APP.c **** 
+  30:User/SDcard/SD_Card_APP.c **** /******************************************************************************
+  31:User/SDcard/SD_Card_APP.c **** function:	Mount SD card
+  32:User/SDcard/SD_Card_APP.c **** parameter:
+  33:User/SDcard/SD_Card_APP.c **** Info:
+  34:User/SDcard/SD_Card_APP.c ****     If the initialization fails, stop the game until the
+  35:User/SDcard/SD_Card_APP.c ****     initialization is successful
+  36:User/SDcard/SD_Card_APP.c **** ******************************************************************************/
+  37:User/SDcard/SD_Card_APP.c **** void SDCard_Init(void)
+  38:User/SDcard/SD_Card_APP.c **** {
+  64              		.loc 1 38 1 view -0
+  65              		.cfi_startproc
+  66              		@ args = 0, pretend = 0, frame = 0
+  67              		@ frame_needed = 0, uses_anonymous_args = 0
+  68 0000 10B5     		push	{r4, lr}
+  69              	.LCFI0:
+  70              		.cfi_def_cfa_offset 8
+  71              		.cfi_offset 4, -8
+  72              		.cfi_offset 14, -4
+  39:User/SDcard/SD_Card_APP.c ****     FRESULT f_res;
+  73              		.loc 1 39 5 view .LVU1
+  40:User/SDcard/SD_Card_APP.c **** //    uint32_t counter = 0;
+  41:User/SDcard/SD_Card_APP.c **** 
+  42:User/SDcard/SD_Card_APP.c ****     if(FATFS_LinkDriver(&USER_Driver, USERPath) == 0) {
+  74              		.loc 1 42 5 view .LVU2
+  75              		.loc 1 42 8 is_stmt 0 view .LVU3
+  76 0002 2049     		ldr	r1, .L14
+  77 0004 2048     		ldr	r0, .L14+4
+  78 0006 FFF7FEFF 		bl	FATFS_LinkDriver
+  79              	.LVL0:
+  80              		.loc 1 42 7 view .LVU4
+  81 000a E0B9     		cbnz	r0, .L2
+  43:User/SDcard/SD_Card_APP.c ****         /* 1.Initialize the SD mounted */
+  44:User/SDcard/SD_Card_APP.c ****         if(BSP_SD_Init() != MSD_OK) {
+  82              		.loc 1 44 9 is_stmt 1 view .LVU5
+  83              		.loc 1 44 12 is_stmt 0 view .LVU6
+  84 000c FFF7FEFF 		bl	BSP_SD_Init
+  85              	.LVL1:
+  86              		.loc 1 44 11 view .LVU7
+  87 0010 18B1     		cbz	r0, .L3
+  45:User/SDcard/SD_Card_APP.c ****             DEBUG("SD card initialization failed, check if SD card is inserted.\r\n");
+  88              		.loc 1 45 13 is_stmt 1 view .LVU8
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s 			page 4
+
+
+  89 0012 1E48     		ldr	r0, .L14+8
+  90 0014 FFF7FEFF 		bl	my_printf
+  91              	.LVL2:
+  92              	.L4:
+  46:User/SDcard/SD_Card_APP.c ****             while(1);
+  93              		.loc 1 46 13 discriminator 1 view .LVU9
+  94              		.loc 1 46 21 discriminator 1 view .LVU10
+  95              		.loc 1 46 18 discriminator 1 view .LVU11
+  96 0018 FEE7     		b	.L4
+  97              	.L3:
+  47:User/SDcard/SD_Card_APP.c ****         } else {
+  48:User/SDcard/SD_Card_APP.c ****             DEBUG("SD card initialization successful..\r\n");
+  98              		.loc 1 48 13 view .LVU12
+  99 001a 1D48     		ldr	r0, .L14+12
+ 100 001c FFF7FEFF 		bl	my_printf
+ 101              	.LVL3:
+  49:User/SDcard/SD_Card_APP.c ****         }
+  50:User/SDcard/SD_Card_APP.c **** 
+  51:User/SDcard/SD_Card_APP.c ****         /* 2.Check the mounted device */
+  52:User/SDcard/SD_Card_APP.c ****         f_res = f_mount(&USERFatFS, (TCHAR const*)"0:", 1);
+ 102              		.loc 1 52 9 view .LVU13
+ 103              		.loc 1 52 17 is_stmt 0 view .LVU14
+ 104 0020 0122     		movs	r2, #1
+ 105 0022 1C49     		ldr	r1, .L14+16
+ 106 0024 1C48     		ldr	r0, .L14+20
+ 107 0026 FFF7FEFF 		bl	f_mount
+ 108              	.LVL4:
+  53:User/SDcard/SD_Card_APP.c ****         if(f_res != FR_OK) {
+ 109              		.loc 1 53 9 is_stmt 1 view .LVU15
+ 110              		.loc 1 53 11 is_stmt 0 view .LVU16
+ 111 002a 0446     		mov	r4, r0
+ 112 002c 18B9     		cbnz	r0, .L12
+  54:User/SDcard/SD_Card_APP.c ****             DEBUG("SD card mount file system failed ,error code :(%d %s)\r\n",f_res, FRESULTPrinter
+  55:User/SDcard/SD_Card_APP.c ****             return;
+  56:User/SDcard/SD_Card_APP.c ****         } else {
+  57:User/SDcard/SD_Card_APP.c ****             DEBUG("SD card mount file system success!! \r\n");
+ 113              		.loc 1 57 13 is_stmt 1 view .LVU17
+ 114 002e 1B48     		ldr	r0, .L14+24
+ 115              	.LVL5:
+ 116              		.loc 1 57 13 is_stmt 0 view .LVU18
+ 117 0030 FFF7FEFF 		bl	my_printf
+ 118              	.LVL6:
+ 119 0034 0AE0     		b	.L7
+ 120              	.LVL7:
+ 121              	.L12:
+  54:User/SDcard/SD_Card_APP.c ****             DEBUG("SD card mount file system failed ,error code :(%d %s)\r\n",f_res, FRESULTPrinter
+ 122              		.loc 1 54 13 is_stmt 1 view .LVU19
+ 123 0036 FFF7FEFF 		bl	FRESULTPrinter
+ 124              	.LVL8:
+  54:User/SDcard/SD_Card_APP.c ****             DEBUG("SD card mount file system failed ,error code :(%d %s)\r\n",f_res, FRESULTPrinter
+ 125              		.loc 1 54 13 is_stmt 0 view .LVU20
+ 126 003a 0246     		mov	r2, r0
+ 127 003c 2146     		mov	r1, r4
+ 128 003e 1848     		ldr	r0, .L14+28
+ 129 0040 FFF7FEFF 		bl	my_printf
+ 130              	.LVL9:
+  55:User/SDcard/SD_Card_APP.c ****         } else {
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s 			page 5
+
+
+ 131              		.loc 1 55 13 is_stmt 1 view .LVU21
+ 132 0044 15E0     		b	.L1
+ 133              	.L2:
+  58:User/SDcard/SD_Card_APP.c ****             /* Initialize the Directory Files pointers (heap) */
+  59:User/SDcard/SD_Card_APP.c **** //            for (counter = 0; counter < MAX_BMP_FILES; counter++) {
+  60:User/SDcard/SD_Card_APP.c **** //                pDirectoryFiles[counter] = malloc(11);
+  61:User/SDcard/SD_Card_APP.c **** //            }
+  62:User/SDcard/SD_Card_APP.c ****         }
+  63:User/SDcard/SD_Card_APP.c ****     } else {
+  64:User/SDcard/SD_Card_APP.c ****         DEBUG("FATFS_LinkDriver error\r\n");
+ 134              		.loc 1 64 9 view .LVU22
+ 135 0046 1748     		ldr	r0, .L14+32
+ 136 0048 FFF7FEFF 		bl	my_printf
+ 137              	.LVL10:
+ 138              	.L7:
+  65:User/SDcard/SD_Card_APP.c ****     }
+  66:User/SDcard/SD_Card_APP.c **** 
+  67:User/SDcard/SD_Card_APP.c ****     /* 3.Enter the directory */
+  68:User/SDcard/SD_Card_APP.c ****     f_res = f_opendir(&USERDirectory, "/");
+ 139              		.loc 1 68 5 view .LVU23
+ 140              		.loc 1 68 13 is_stmt 0 view .LVU24
+ 141 004c 1649     		ldr	r1, .L14+36
+ 142 004e 1748     		ldr	r0, .L14+40
+ 143 0050 FFF7FEFF 		bl	f_opendir
+ 144              	.LVL11:
+  69:User/SDcard/SD_Card_APP.c ****     if((f_res != FR_OK)) {
+ 145              		.loc 1 69 5 is_stmt 1 view .LVU25
+ 146              		.loc 1 69 7 is_stmt 0 view .LVU26
+ 147 0054 0446     		mov	r4, r0
+ 148 0056 88B1     		cbz	r0, .L8
+  70:User/SDcard/SD_Card_APP.c ****         if(f_res == FR_NO_FILESYSTEM) {
+ 149              		.loc 1 70 9 is_stmt 1 view .LVU27
+ 150              		.loc 1 70 11 is_stmt 0 view .LVU28
+ 151 0058 0D28     		cmp	r0, #13
+ 152 005a 0BD0     		beq	.L13
+  71:User/SDcard/SD_Card_APP.c ****             /* Display message: SD card not FAT formated */
+  72:User/SDcard/SD_Card_APP.c ****             DEBUG("SD card not FAT formated\r\n");
+  73:User/SDcard/SD_Card_APP.c ****         } else {
+  74:User/SDcard/SD_Card_APP.c ****             /* Display message: Fail to open directory */
+  75:User/SDcard/SD_Card_APP.c ****             DEBUG("Fail to open directory\r\n");
+ 153              		.loc 1 75 13 is_stmt 1 view .LVU29
+ 154 005c 1448     		ldr	r0, .L14+44
+ 155              	.LVL12:
+ 156              		.loc 1 75 13 is_stmt 0 view .LVU30
+ 157 005e FFF7FEFF 		bl	my_printf
+ 158              	.LVL13:
+ 159              	.L10:
+  76:User/SDcard/SD_Card_APP.c ****         }
+  77:User/SDcard/SD_Card_APP.c ****         DEBUG("SD card mount file system failed ,error code :(%d %s)\r\n",f_res, FRESULTPrinter(f_r
+ 160              		.loc 1 77 9 is_stmt 1 view .LVU31
+ 161 0062 2046     		mov	r0, r4
+ 162 0064 FFF7FEFF 		bl	FRESULTPrinter
+ 163              	.LVL14:
+ 164 0068 0246     		mov	r2, r0
+ 165 006a 2146     		mov	r1, r4
+ 166 006c 0C48     		ldr	r0, .L14+28
+ 167 006e FFF7FEFF 		bl	my_printf
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s 			page 6
+
+
+ 168              	.LVL15:
+  78:User/SDcard/SD_Card_APP.c ****         return;
+ 169              		.loc 1 78 9 view .LVU32
+ 170              	.L1:
+  79:User/SDcard/SD_Card_APP.c ****     } else {
+  80:User/SDcard/SD_Card_APP.c ****         DEBUG("file open \r\n");
+  81:User/SDcard/SD_Card_APP.c ****     }
+  82:User/SDcard/SD_Card_APP.c **** 
+  83:User/SDcard/SD_Card_APP.c **** }
+ 171              		.loc 1 83 1 is_stmt 0 view .LVU33
+ 172 0072 10BD     		pop	{r4, pc}
+ 173              	.LVL16:
+ 174              	.L13:
+  72:User/SDcard/SD_Card_APP.c ****         } else {
+ 175              		.loc 1 72 13 is_stmt 1 view .LVU34
+ 176 0074 0F48     		ldr	r0, .L14+48
+ 177              	.LVL17:
+  72:User/SDcard/SD_Card_APP.c ****         } else {
+ 178              		.loc 1 72 13 is_stmt 0 view .LVU35
+ 179 0076 FFF7FEFF 		bl	my_printf
+ 180              	.LVL18:
+ 181 007a F2E7     		b	.L10
+ 182              	.LVL19:
+ 183              	.L8:
+  80:User/SDcard/SD_Card_APP.c ****     }
+ 184              		.loc 1 80 9 is_stmt 1 view .LVU36
+ 185 007c 0E48     		ldr	r0, .L14+52
+ 186              	.LVL20:
+  80:User/SDcard/SD_Card_APP.c ****     }
+ 187              		.loc 1 80 9 is_stmt 0 view .LVU37
+ 188 007e FFF7FEFF 		bl	my_printf
+ 189              	.LVL21:
+ 190 0082 F6E7     		b	.L1
+ 191              	.L15:
+ 192              		.align	2
+ 193              	.L14:
+ 194 0084 00000000 		.word	USERPath
+ 195 0088 00000000 		.word	USER_Driver
+ 196 008c 00000000 		.word	.LC0
+ 197 0090 48000000 		.word	.LC1
+ 198 0094 78000000 		.word	.LC2
+ 199 0098 00000000 		.word	USERFatFS
+ 200 009c BC000000 		.word	.LC4
+ 201 00a0 7C000000 		.word	.LC3
+ 202 00a4 EC000000 		.word	.LC5
+ 203 00a8 10010000 		.word	.LC6
+ 204 00ac 00000000 		.word	USERDirectory
+ 205 00b0 38010000 		.word	.LC8
+ 206 00b4 14010000 		.word	.LC7
+ 207 00b8 5C010000 		.word	.LC9
+ 208              		.cfi_endproc
+ 209              	.LFE133:
+ 211              		.section	.rodata.SDCard_BMP_SD2IS25.str1.4,"aMS",%progbits,1
+ 212              		.align	2
+ 213              	.LC10:
+ 214 0000 44656275 		.ascii	"Debug : open bmp file: %s\015\012\000"
+ 214      67203A20 
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s 			page 7
+
+
+ 214      6F70656E 
+ 214      20626D70 
+ 214      2066696C 
+ 215              		.align	2
+ 216              	.LC11:
+ 217 001c 44656275 		.ascii	"Debug : File size : %d\015\012\000"
+ 217      67203A20 
+ 217      46696C65 
+ 217      2073697A 
+ 217      65203A20 
+ 218 0035 000000   		.align	2
+ 219              	.LC12:
+ 220 0038 44656275 		.ascii	"Debug : No file found: %s\015\012\000"
+ 220      67203A20 
+ 220      4E6F2066 
+ 220      696C6520 
+ 220      666F756E 
+ 221              		.section	.text.SDCard_BMP_SD2IS25,"ax",%progbits
+ 222              		.align	1
+ 223              		.global	SDCard_BMP_SD2IS25
+ 224              		.syntax unified
+ 225              		.thumb
+ 226              		.thumb_func
+ 227              		.fpu fpv4-sp-d16
+ 229              	SDCard_BMP_SD2IS25:
+ 230              	.LVL22:
+ 231              	.LFB134:
+  84:User/SDcard/SD_Card_APP.c **** uint32_t SDCard_BMP_SD2IS25(const char *BmpName, uint32_t Addr)
+  85:User/SDcard/SD_Card_APP.c **** {
+ 232              		.loc 1 85 1 is_stmt 1 view -0
+ 233              		.cfi_startproc
+ 234              		@ args = 0, pretend = 0, frame = 824
+ 235              		@ frame_needed = 0, uses_anonymous_args = 0
+ 236              		.loc 1 85 1 is_stmt 0 view .LVU39
+ 237 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 238              	.LCFI1:
+ 239              		.cfi_def_cfa_offset 20
+ 240              		.cfi_offset 4, -20
+ 241              		.cfi_offset 5, -16
+ 242              		.cfi_offset 6, -12
+ 243              		.cfi_offset 7, -8
+ 244              		.cfi_offset 14, -4
+ 245 0002 ADF54F7D 		sub	sp, sp, #828
+ 246              	.LCFI2:
+ 247              		.cfi_def_cfa_offset 848
+ 248 0006 0446     		mov	r4, r0
+ 249 0008 0F46     		mov	r7, r1
+  86:User/SDcard/SD_Card_APP.c ****     uint32_t IS25index = 0;
+ 250              		.loc 1 86 5 is_stmt 1 view .LVU40
+ 251              	.LVL23:
+  87:User/SDcard/SD_Card_APP.c ****     uint32_t filesize;
+ 252              		.loc 1 87 5 view .LVU41
+  88:User/SDcard/SD_Card_APP.c ****     FIL bmpfile;
+ 253              		.loc 1 88 5 view .LVU42
+  89:User/SDcard/SD_Card_APP.c ****     UINT BytesRead;
+ 254              		.loc 1 89 5 view .LVU43
+  90:User/SDcard/SD_Card_APP.c ****     uint8_t Buf[257] = {0,};
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s 			page 8
+
+
+ 255              		.loc 1 90 5 view .LVU44
+ 256              		.loc 1 90 13 is_stmt 0 view .LVU45
+ 257 000a 0021     		movs	r1, #0
+ 258              	.LVL24:
+ 259              		.loc 1 90 13 view .LVU46
+ 260 000c 0091     		str	r1, [sp]
+ 261 000e FD22     		movs	r2, #253
+ 262 0010 01A8     		add	r0, sp, #4
+ 263              	.LVL25:
+ 264              		.loc 1 90 13 view .LVU47
+ 265 0012 FFF7FEFF 		bl	memset
+ 266              	.LVL26:
+  91:User/SDcard/SD_Card_APP.c **** 
+  92:User/SDcard/SD_Card_APP.c ****     /* 1.Open file read file header */
+  93:User/SDcard/SD_Card_APP.c ****     if(f_open(&bmpfile, BmpName, FA_READ) == FR_OK) {
+ 267              		.loc 1 93 5 is_stmt 1 view .LVU48
+ 268              		.loc 1 93 8 is_stmt 0 view .LVU49
+ 269 0016 0122     		movs	r2, #1
+ 270 0018 2146     		mov	r1, r4
+ 271 001a 42A8     		add	r0, sp, #264
+ 272 001c FFF7FEFF 		bl	f_open
+ 273              	.LVL27:
+ 274              		.loc 1 93 7 view .LVU50
+ 275 0020 00BB     		cbnz	r0, .L17
+  94:User/SDcard/SD_Card_APP.c ****         DEBUG("open bmp file: %s\r\n", BmpName);
+ 276              		.loc 1 94 9 is_stmt 1 view .LVU51
+ 277 0022 2146     		mov	r1, r4
+ 278 0024 1648     		ldr	r0, .L23
+ 279 0026 FFF7FEFF 		bl	my_printf
+ 280              	.LVL28:
+  95:User/SDcard/SD_Card_APP.c ****     } else {
+  96:User/SDcard/SD_Card_APP.c ****         DEBUG("No file found: %s\r\n", BmpName);
+  97:User/SDcard/SD_Card_APP.c ****         return -1;
+  98:User/SDcard/SD_Card_APP.c ****     }
+  99:User/SDcard/SD_Card_APP.c ****     filesize = f_size(&bmpfile);
+ 281              		.loc 1 99 5 view .LVU52
+ 282              		.loc 1 99 14 is_stmt 0 view .LVU53
+ 283 002a 459E     		ldr	r6, [sp, #276]
+ 284              	.LVL29:
+ 100:User/SDcard/SD_Card_APP.c ****     DEBUG("File size : %d\r\n",filesize);
+ 285              		.loc 1 100 5 is_stmt 1 view .LVU54
+ 286 002c 3146     		mov	r1, r6
+ 287 002e 1548     		ldr	r0, .L23+4
+ 288 0030 FFF7FEFF 		bl	my_printf
+ 289              	.LVL30:
+ 101:User/SDcard/SD_Card_APP.c ****     for(int i=0;i<filesize;i+=256){
+ 290              		.loc 1 101 5 view .LVU55
+ 291              	.LBB2:
+ 292              		.loc 1 101 9 view .LVU56
+ 293              		.loc 1 101 13 is_stmt 0 view .LVU57
+ 294 0034 0024     		movs	r4, #0
+ 295              	.LVL31:
+ 296              		.loc 1 101 13 view .LVU58
+ 297              	.LBE2:
+  86:User/SDcard/SD_Card_APP.c ****     uint32_t filesize;
+ 298              		.loc 1 86 14 view .LVU59
+ 299 0036 2546     		mov	r5, r4
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s 			page 9
+
+
+ 300              	.LVL32:
+ 301              	.L18:
+ 302              	.LBB3:
+ 303              		.loc 1 101 17 is_stmt 1 discriminator 1 view .LVU60
+ 304              		.loc 1 101 5 is_stmt 0 discriminator 1 view .LVU61
+ 305 0038 B442     		cmp	r4, r6
+ 306 003a 1AD2     		bcs	.L20
+ 102:User/SDcard/SD_Card_APP.c ****         f_read(&bmpfile, Buf, 256, &BytesRead);
+ 307              		.loc 1 102 9 is_stmt 1 view .LVU62
+ 308 003c 41AB     		add	r3, sp, #260
+ 309 003e 4FF48072 		mov	r2, #256
+ 310 0042 6946     		mov	r1, sp
+ 311 0044 42A8     		add	r0, sp, #264
+ 312 0046 FFF7FEFF 		bl	f_read
+ 313              	.LVL33:
+ 103:User/SDcard/SD_Card_APP.c ****         IS25LP128_Write(Addr + IS25index, Buf, BytesRead);
+ 314              		.loc 1 103 9 view .LVU63
+ 315 004a 419A     		ldr	r2, [sp, #260]
+ 316 004c 6946     		mov	r1, sp
+ 317 004e E819     		adds	r0, r5, r7
+ 318 0050 FFF7FEFF 		bl	IS25LP128_Write
+ 319              	.LVL34:
+ 104:User/SDcard/SD_Card_APP.c ****         IS25index += BytesRead;
+ 320              		.loc 1 104 9 view .LVU64
+ 321              		.loc 1 104 19 is_stmt 0 view .LVU65
+ 322 0054 419B     		ldr	r3, [sp, #260]
+ 323 0056 1D44     		add	r5, r5, r3
+ 324              	.LVL35:
+ 105:User/SDcard/SD_Card_APP.c ****         if(BytesRead != 256)break;
+ 325              		.loc 1 105 9 is_stmt 1 view .LVU66
+ 326              		.loc 1 105 11 is_stmt 0 view .LVU67
+ 327 0058 B3F5807F 		cmp	r3, #256
+ 328 005c 09D1     		bne	.L20
+ 101:User/SDcard/SD_Card_APP.c ****         f_read(&bmpfile, Buf, 256, &BytesRead);
+ 329              		.loc 1 101 28 is_stmt 1 discriminator 2 view .LVU68
+ 101:User/SDcard/SD_Card_APP.c ****         f_read(&bmpfile, Buf, 256, &BytesRead);
+ 330              		.loc 1 101 29 is_stmt 0 discriminator 2 view .LVU69
+ 331 005e 04F58074 		add	r4, r4, #256
+ 332              	.LVL36:
+ 101:User/SDcard/SD_Card_APP.c ****         f_read(&bmpfile, Buf, 256, &BytesRead);
+ 333              		.loc 1 101 29 discriminator 2 view .LVU70
+ 334 0062 E9E7     		b	.L18
+ 335              	.LVL37:
+ 336              	.L17:
+ 101:User/SDcard/SD_Card_APP.c ****         f_read(&bmpfile, Buf, 256, &BytesRead);
+ 337              		.loc 1 101 29 discriminator 2 view .LVU71
+ 338              	.LBE3:
+  96:User/SDcard/SD_Card_APP.c ****         return -1;
+ 339              		.loc 1 96 9 is_stmt 1 view .LVU72
+ 340 0064 2146     		mov	r1, r4
+ 341 0066 0848     		ldr	r0, .L23+8
+ 342 0068 FFF7FEFF 		bl	my_printf
+ 343              	.LVL38:
+  97:User/SDcard/SD_Card_APP.c ****     }
+ 344              		.loc 1 97 9 view .LVU73
+  97:User/SDcard/SD_Card_APP.c ****     }
+ 345              		.loc 1 97 16 is_stmt 0 view .LVU74
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s 			page 10
+
+
+ 346 006c 4FF0FF36 		mov	r6, #-1
+ 347 0070 02E0     		b	.L16
+ 348              	.LVL39:
+ 349              	.L20:
+ 106:User/SDcard/SD_Card_APP.c ****     }
+ 107:User/SDcard/SD_Card_APP.c ****     f_close(&bmpfile);
+ 350              		.loc 1 107 5 is_stmt 1 view .LVU75
+ 351 0072 42A8     		add	r0, sp, #264
+ 352 0074 FFF7FEFF 		bl	f_close
+ 353              	.LVL40:
+ 108:User/SDcard/SD_Card_APP.c ****     return filesize;
+ 354              		.loc 1 108 5 view .LVU76
+ 355              	.L16:
+ 109:User/SDcard/SD_Card_APP.c **** }
+ 356              		.loc 1 109 1 is_stmt 0 view .LVU77
+ 357 0078 3046     		mov	r0, r6
+ 358 007a 0DF54F7D 		add	sp, sp, #828
+ 359              	.LCFI3:
+ 360              		.cfi_def_cfa_offset 20
+ 361              		@ sp needed
+ 362 007e F0BD     		pop	{r4, r5, r6, r7, pc}
+ 363              	.LVL41:
+ 364              	.L24:
+ 365              		.loc 1 109 1 view .LVU78
+ 366              		.align	2
+ 367              	.L23:
+ 368 0080 00000000 		.word	.LC10
+ 369 0084 1C000000 		.word	.LC11
+ 370 0088 38000000 		.word	.LC12
+ 371              		.cfi_endproc
+ 372              	.LFE134:
+ 374              		.section	.rodata.SDCard_bin_IS252SD.str1.4,"aMS",%progbits,1
+ 375              		.align	2
+ 376              	.LC13:
+ 377 0000 44656275 		.ascii	"Debug : Create bin file: %s\015\012\000"
+ 377      67203A20 
+ 377      43726561 
+ 377      74652062 
+ 377      696E2066 
+ 378 001e 0000     		.align	2
+ 379              	.LC14:
+ 380 0020 44656275 		.ascii	"Debug : Destined File size : %d byte(s)\015\012\000"
+ 380      67203A20 
+ 380      44657374 
+ 380      696E6564 
+ 380      2046696C 
+ 381 004a 0000     		.align	2
+ 382              	.LC15:
+ 383 004c 44656275 		.ascii	"Debug : Update bin file: %s\015\012\000"
+ 383      67203A20 
+ 383      55706461 
+ 383      74652062 
+ 383      696E2066 
+ 384 006a 0000     		.align	2
+ 385              	.LC16:
+ 386 006c 44656275 		.ascii	"Debug : IS25index : %d\015\012\000"
+ 386      67203A20 
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s 			page 11
+
+
+ 386      49533235 
+ 386      696E6465 
+ 386      78203A20 
+ 387              		.section	.text.SDCard_bin_IS252SD,"ax",%progbits
+ 388              		.align	1
+ 389              		.global	SDCard_bin_IS252SD
+ 390              		.syntax unified
+ 391              		.thumb
+ 392              		.thumb_func
+ 393              		.fpu fpv4-sp-d16
+ 395              	SDCard_bin_IS252SD:
+ 396              	.LVL42:
+ 397              	.LFB135:
+ 110:User/SDcard/SD_Card_APP.c **** extern uint32_t Debug_uint1;
+ 111:User/SDcard/SD_Card_APP.c **** extern uint32_t Debug_uint2;
+ 112:User/SDcard/SD_Card_APP.c **** uint32_t SDCard_bin_IS252SD(const char *ObinName, uint32_t StAddr, uint32_t Length)
+ 113:User/SDcard/SD_Card_APP.c **** {
+ 398              		.loc 1 113 1 is_stmt 1 view -0
+ 399              		.cfi_startproc
+ 400              		@ args = 0, pretend = 0, frame = 8760
+ 401              		@ frame_needed = 0, uses_anonymous_args = 0
+ 402              		.loc 1 113 1 is_stmt 0 view .LVU80
+ 403 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 404              	.LCFI4:
+ 405              		.cfi_def_cfa_offset 24
+ 406              		.cfi_offset 4, -24
+ 407              		.cfi_offset 5, -20
+ 408              		.cfi_offset 6, -16
+ 409              		.cfi_offset 7, -12
+ 410              		.cfi_offset 8, -8
+ 411              		.cfi_offset 14, -4
+ 412 0004 ADF5085D 		sub	sp, sp, #8704
+ 413              	.LCFI5:
+ 414              		.cfi_def_cfa_offset 8728
+ 415 0008 8EB0     		sub	sp, sp, #56
+ 416              	.LCFI6:
+ 417              		.cfi_def_cfa_offset 8784
+ 418 000a 0546     		mov	r5, r0
+ 419 000c 0C46     		mov	r4, r1
+ 420 000e 9046     		mov	r8, r2
+ 114:User/SDcard/SD_Card_APP.c ****     uint32_t IS25index = StAddr;
+ 421              		.loc 1 114 5 is_stmt 1 view .LVU81
+ 422              	.LVL43:
+ 115:User/SDcard/SD_Card_APP.c ****     uint32_t filesize = Length;
+ 423              		.loc 1 115 5 view .LVU82
+ 116:User/SDcard/SD_Card_APP.c ****     FIL binfile;
+ 424              		.loc 1 116 5 view .LVU83
+ 117:User/SDcard/SD_Card_APP.c ****     UINT BytesRead;
+ 425              		.loc 1 117 5 view .LVU84
+ 118:User/SDcard/SD_Card_APP.c ****     uint8_t Buf[8193] = {0,};
+ 426              		.loc 1 118 5 view .LVU85
+ 427              		.loc 1 118 13 is_stmt 0 view .LVU86
+ 428 0010 0021     		movs	r1, #0
+ 429              	.LVL44:
+ 430              		.loc 1 118 13 view .LVU87
+ 431 0012 0091     		str	r1, [sp, #0]
+ 432 0014 41F6FD72 		movw	r2, #8189
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s 			page 12
+
+
+ 433              	.LVL45:
+ 434              		.loc 1 118 13 view .LVU88
+ 435 0018 01A8     		add	r0, sp, #4
+ 436              	.LVL46:
+ 437              		.loc 1 118 13 view .LVU89
+ 438 001a FFF7FEFF 		bl	memset
+ 439              	.LVL47:
+ 119:User/SDcard/SD_Card_APP.c **** 
+ 120:User/SDcard/SD_Card_APP.c ****     /* 1.Open file read file header */
+ 121:User/SDcard/SD_Card_APP.c ****     if(f_open(&binfile, ObinName, FA_CREATE_ALWAYS | FA_WRITE) == FR_OK) {
+ 440              		.loc 1 121 5 is_stmt 1 view .LVU90
+ 441              		.loc 1 121 8 is_stmt 0 view .LVU91
+ 442 001e 0A22     		movs	r2, #10
+ 443 0020 2946     		mov	r1, r5
+ 444 0022 0DF50050 		add	r0, sp, #8192
+ 445 0026 0830     		adds	r0, r0, #8
+ 446 0028 FFF7FEFF 		bl	f_open
+ 447              	.LVL48:
+ 448              		.loc 1 121 7 view .LVU92
+ 449 002c 58BB     		cbnz	r0, .L26
+ 122:User/SDcard/SD_Card_APP.c ****         DEBUG("Create bin file: %s\r\n", ObinName);
+ 450              		.loc 1 122 9 is_stmt 1 view .LVU93
+ 451 002e 2946     		mov	r1, r5
+ 452 0030 2048     		ldr	r0, .L32
+ 453 0032 FFF7FEFF 		bl	my_printf
+ 454              	.LVL49:
+ 123:User/SDcard/SD_Card_APP.c ****     } else {
+ 124:User/SDcard/SD_Card_APP.c ****         DEBUG("Update bin file: %s\r\n", ObinName);
+ 125:User/SDcard/SD_Card_APP.c ****         return -1;
+ 126:User/SDcard/SD_Card_APP.c ****     }
+ 127:User/SDcard/SD_Card_APP.c ****     //filesize = f_size(&binfile);
+ 128:User/SDcard/SD_Card_APP.c ****     DEBUG("Destined File size : %d byte(s)\r\n",filesize);
+ 455              		.loc 1 128 5 view .LVU94
+ 456 0036 4146     		mov	r1, r8
+ 457 0038 1F48     		ldr	r0, .L32+4
+ 458 003a FFF7FEFF 		bl	my_printf
+ 459              	.LVL50:
+ 129:User/SDcard/SD_Card_APP.c **** 
+ 130:User/SDcard/SD_Card_APP.c **** 
+ 131:User/SDcard/SD_Card_APP.c ****     for(int i=0;i<filesize;i+=8192){
+ 460              		.loc 1 131 5 view .LVU95
+ 461              	.LBB4:
+ 462              		.loc 1 131 9 view .LVU96
+ 463              		.loc 1 131 13 is_stmt 0 view .LVU97
+ 464 003e 0025     		movs	r5, #0
+ 465              	.LVL51:
+ 466              	.L27:
+ 467              		.loc 1 131 17 is_stmt 1 discriminator 1 view .LVU98
+ 468              		.loc 1 131 5 is_stmt 0 discriminator 1 view .LVU99
+ 469 0040 4545     		cmp	r5, r8
+ 470 0042 27D2     		bcs	.L29
+ 132:User/SDcard/SD_Card_APP.c ****         IS25LP128_Read(IS25index, Buf, 8192);
+ 471              		.loc 1 132 9 is_stmt 1 view .LVU100
+ 472 0044 4FF40052 		mov	r2, #8192
+ 473 0048 6946     		mov	r1, sp
+ 474 004a 2046     		mov	r0, r4
+ 475 004c FFF7FEFF 		bl	IS25LP128_Read
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s 			page 13
+
+
+ 476              	.LVL52:
+ 133:User/SDcard/SD_Card_APP.c ****         Debug_uint2 = 1;
+ 477              		.loc 1 133 9 view .LVU101
+ 478              		.loc 1 133 21 is_stmt 0 view .LVU102
+ 479 0050 1A4F     		ldr	r7, .L32+8
+ 480 0052 0123     		movs	r3, #1
+ 481 0054 3B60     		str	r3, [r7]
+ 134:User/SDcard/SD_Card_APP.c ****         f_write(&binfile, Buf, 8192, &BytesRead);
+ 482              		.loc 1 134 9 is_stmt 1 view .LVU103
+ 483 0056 0DF50056 		add	r6, sp, #8192
+ 484 005a 0436     		adds	r6, r6, #4
+ 485 005c 3346     		mov	r3, r6
+ 486 005e 4FF40052 		mov	r2, #8192
+ 487 0062 6946     		mov	r1, sp
+ 488 0064 0DF50050 		add	r0, sp, #8192
+ 489 0068 0830     		adds	r0, r0, #8
+ 490 006a FFF7FEFF 		bl	f_write
+ 491              	.LVL53:
+ 135:User/SDcard/SD_Card_APP.c ****         Debug_uint2 = 2;
+ 492              		.loc 1 135 9 view .LVU104
+ 493              		.loc 1 135 21 is_stmt 0 view .LVU105
+ 494 006e 0223     		movs	r3, #2
+ 495 0070 3B60     		str	r3, [r7]
+ 136:User/SDcard/SD_Card_APP.c **** 
+ 137:User/SDcard/SD_Card_APP.c ****         IS25index += BytesRead;
+ 496              		.loc 1 137 9 is_stmt 1 view .LVU106
+ 497              		.loc 1 137 19 is_stmt 0 view .LVU107
+ 498 0072 3368     		ldr	r3, [r6]
+ 499 0074 1C44     		add	r4, r4, r3
+ 500              	.LVL54:
+ 138:User/SDcard/SD_Card_APP.c ****         if(BytesRead != 8192)break;
+ 501              		.loc 1 138 9 is_stmt 1 view .LVU108
+ 502              		.loc 1 138 11 is_stmt 0 view .LVU109
+ 503 0076 B3F5005F 		cmp	r3, #8192
+ 504 007a 0BD1     		bne	.L29
+ 139:User/SDcard/SD_Card_APP.c ****         Debug_uint1 = IS25index;
+ 505              		.loc 1 139 9 is_stmt 1 discriminator 2 view .LVU110
+ 506              		.loc 1 139 21 is_stmt 0 discriminator 2 view .LVU111
+ 507 007c 104B     		ldr	r3, .L32+12
+ 508 007e 1C60     		str	r4, [r3]
+ 131:User/SDcard/SD_Card_APP.c ****         IS25LP128_Read(IS25index, Buf, 8192);
+ 509              		.loc 1 131 28 is_stmt 1 discriminator 2 view .LVU112
+ 131:User/SDcard/SD_Card_APP.c ****         IS25LP128_Read(IS25index, Buf, 8192);
+ 510              		.loc 1 131 29 is_stmt 0 discriminator 2 view .LVU113
+ 511 0080 05F50055 		add	r5, r5, #8192
+ 512              	.LVL55:
+ 131:User/SDcard/SD_Card_APP.c ****         IS25LP128_Read(IS25index, Buf, 8192);
+ 513              		.loc 1 131 29 discriminator 2 view .LVU114
+ 514 0084 DCE7     		b	.L27
+ 515              	.LVL56:
+ 516              	.L26:
+ 131:User/SDcard/SD_Card_APP.c ****         IS25LP128_Read(IS25index, Buf, 8192);
+ 517              		.loc 1 131 29 discriminator 2 view .LVU115
+ 518              	.LBE4:
+ 124:User/SDcard/SD_Card_APP.c ****         return -1;
+ 519              		.loc 1 124 9 is_stmt 1 view .LVU116
+ 520 0086 2946     		mov	r1, r5
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s 			page 14
+
+
+ 521 0088 0E48     		ldr	r0, .L32+16
+ 522 008a FFF7FEFF 		bl	my_printf
+ 523              	.LVL57:
+ 125:User/SDcard/SD_Card_APP.c ****     }
+ 524              		.loc 1 125 9 view .LVU117
+ 125:User/SDcard/SD_Card_APP.c ****     }
+ 525              		.loc 1 125 16 is_stmt 0 view .LVU118
+ 526 008e 4FF0FF30 		mov	r0, #-1
+ 527 0092 09E0     		b	.L25
+ 528              	.LVL58:
+ 529              	.L29:
+ 140:User/SDcard/SD_Card_APP.c ****     }
+ 141:User/SDcard/SD_Card_APP.c ****     DEBUG("IS25index : %d\r\n",IS25index);
+ 530              		.loc 1 141 5 is_stmt 1 view .LVU119
+ 531 0094 2146     		mov	r1, r4
+ 532 0096 0C48     		ldr	r0, .L32+20
+ 533 0098 FFF7FEFF 		bl	my_printf
+ 534              	.LVL59:
+ 142:User/SDcard/SD_Card_APP.c ****     f_close(&binfile);
+ 535              		.loc 1 142 5 view .LVU120
+ 536 009c 0DF50050 		add	r0, sp, #8192
+ 537 00a0 0830     		adds	r0, r0, #8
+ 538 00a2 FFF7FEFF 		bl	f_close
+ 539              	.LVL60:
+ 143:User/SDcard/SD_Card_APP.c ****     return filesize;
+ 540              		.loc 1 143 5 view .LVU121
+ 541              		.loc 1 143 12 is_stmt 0 view .LVU122
+ 542 00a6 4046     		mov	r0, r8
+ 543              	.LVL61:
+ 544              	.L25:
+ 144:User/SDcard/SD_Card_APP.c **** }
+ 545              		.loc 1 144 1 view .LVU123
+ 546 00a8 0DF5085D 		add	sp, sp, #8704
+ 547 00ac 0EB0     		add	sp, sp, #56
+ 548              	.LCFI7:
+ 549              		.cfi_def_cfa_offset 24
+ 550              		@ sp needed
+ 551 00ae BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 552              	.LVL62:
+ 553              	.L33:
+ 554              		.loc 1 144 1 view .LVU124
+ 555 00b2 00BF     		.align	2
+ 556              	.L32:
+ 557 00b4 00000000 		.word	.LC13
+ 558 00b8 20000000 		.word	.LC14
+ 559 00bc 00000000 		.word	Debug_uint2
+ 560 00c0 00000000 		.word	Debug_uint1
+ 561 00c4 4C000000 		.word	.LC15
+ 562 00c8 6C000000 		.word	.LC16
+ 563              		.cfi_endproc
+ 564              	.LFE135:
+ 566              		.section	.text.SDCard_bin_SD2IS25,"ax",%progbits
+ 567              		.align	1
+ 568              		.global	SDCard_bin_SD2IS25
+ 569              		.syntax unified
+ 570              		.thumb
+ 571              		.thumb_func
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s 			page 15
+
+
+ 572              		.fpu fpv4-sp-d16
+ 574              	SDCard_bin_SD2IS25:
+ 575              	.LVL63:
+ 576              	.LFB136:
+ 145:User/SDcard/SD_Card_APP.c **** uint32_t SDCard_bin_SD2IS25(const char *FileName, uint32_t Addr)
+ 146:User/SDcard/SD_Card_APP.c **** {
+ 577              		.loc 1 146 1 is_stmt 1 view -0
+ 578              		.cfi_startproc
+ 579              		@ args = 0, pretend = 0, frame = 0
+ 580              		@ frame_needed = 0, uses_anonymous_args = 0
+ 581              		@ link register save eliminated.
+ 147:User/SDcard/SD_Card_APP.c ****     return 0;
+ 582              		.loc 1 147 5 view .LVU126
+ 148:User/SDcard/SD_Card_APP.c ****     uint32_t IS25index = 0;
+ 149:User/SDcard/SD_Card_APP.c ****     uint32_t filesize;
+ 150:User/SDcard/SD_Card_APP.c ****     FIL binfile;
+ 151:User/SDcard/SD_Card_APP.c ****     UINT BytesRead;
+ 152:User/SDcard/SD_Card_APP.c ****     uint8_t Buf[257] = {0,};
+ 153:User/SDcard/SD_Card_APP.c **** 
+ 154:User/SDcard/SD_Card_APP.c ****     /* 1.Open file read file header */
+ 155:User/SDcard/SD_Card_APP.c ****     if(f_open(&binfile, FileName, FA_READ) == FR_OK) {
+ 156:User/SDcard/SD_Card_APP.c ****         DEBUG("open file: %s\r\n", FileName);
+ 157:User/SDcard/SD_Card_APP.c ****     } else {
+ 158:User/SDcard/SD_Card_APP.c ****         DEBUG("No file found: %s\r\n", FileName);
+ 159:User/SDcard/SD_Card_APP.c ****         return -1;
+ 160:User/SDcard/SD_Card_APP.c ****     }
+ 161:User/SDcard/SD_Card_APP.c ****     filesize = f_size(&binfile);
+ 162:User/SDcard/SD_Card_APP.c ****     DEBUG("File size : %d\r\n",filesize);
+ 163:User/SDcard/SD_Card_APP.c ****     for(int i=0;i<filesize;i+=256){
+ 164:User/SDcard/SD_Card_APP.c ****         f_read(&binfile, Buf, 256, &BytesRead);
+ 165:User/SDcard/SD_Card_APP.c ****         IS25LP128_Write(Addr + IS25index, Buf, BytesRead);
+ 166:User/SDcard/SD_Card_APP.c ****         IS25index += BytesRead;
+ 167:User/SDcard/SD_Card_APP.c ****         if(BytesRead != 256)break;
+ 168:User/SDcard/SD_Card_APP.c ****     }
+ 169:User/SDcard/SD_Card_APP.c ****     f_close(&binfile);
+ 170:User/SDcard/SD_Card_APP.c ****     return filesize;
+ 171:User/SDcard/SD_Card_APP.c **** }
+ 583              		.loc 1 171 1 is_stmt 0 view .LVU127
+ 584 0000 0020     		movs	r0, #0
+ 585              	.LVL64:
+ 586              		.loc 1 171 1 view .LVU128
+ 587 0002 7047     		bx	lr
+ 588              		.cfi_endproc
+ 589              	.LFE136:
+ 591              		.section	.rodata.SDCard_bin.str1.4,"aMS",%progbits,1
+ 592              		.align	2
+ 593              	.LC17:
+ 594 0000 44656275 		.ascii	"Debug : -------------------------------------------"
+ 594      67203A20 
+ 594      2D2D2D2D 
+ 594      2D2D2D2D 
+ 594      2D2D2D2D 
+ 595 0033 2D2D2D2D 		.ascii	"------------\015\012\000"
+ 595      2D2D2D2D 
+ 595      2D2D2D2D 
+ 595      0D0A00
+ 596 0042 0000     		.align	2
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s 			page 16
+
+
+ 597              	.LC18:
+ 598 0044 44656275 		.ascii	"Debug : SDCard_bin: %s\015\012\000"
+ 598      67203A20 
+ 598      53444361 
+ 598      72645F62 
+ 598      696E3A20 
+ 599 005d 000000   		.align	2
+ 600              	.LC19:
+ 601 0060 44656275 		.ascii	"Debug : open file: %s\015\012\000"
+ 601      67203A20 
+ 601      6F70656E 
+ 601      2066696C 
+ 601      653A2025 
+ 602              		.align	2
+ 603              	.LC20:
+ 604 0078 44656275 		.ascii	"Debug : %04d.[%07d/%07d %02d.%02d%%] 0x%08X (%d) me"
+ 604      67203A20 
+ 604      25303464 
+ 604      2E5B2530 
+ 604      37642F25 
+ 605 00ab 6D636D70 		.ascii	"mcmp = %d [%d]\015\012\000"
+ 605      203D2025 
+ 605      64205B25 
+ 605      645D0D0A 
+ 605      00
+ 606              		.section	.text.SDCard_bin,"ax",%progbits
+ 607              		.align	1
+ 608              		.global	SDCard_bin
+ 609              		.syntax unified
+ 610              		.thumb
+ 611              		.thumb_func
+ 612              		.fpu fpv4-sp-d16
+ 614              	SDCard_bin:
+ 615              	.LVL65:
+ 616              	.LFB137:
+ 172:User/SDcard/SD_Card_APP.c **** 
+ 173:User/SDcard/SD_Card_APP.c **** 
+ 174:User/SDcard/SD_Card_APP.c **** uint32_t SDCard_bin(const char *FileName)
+ 175:User/SDcard/SD_Card_APP.c **** {
+ 617              		.loc 1 175 1 is_stmt 1 view -0
+ 618              		.cfi_startproc
+ 619              		@ args = 0, pretend = 0, frame = 8760
+ 620              		@ frame_needed = 0, uses_anonymous_args = 0
+ 621              		.loc 1 175 1 is_stmt 0 view .LVU130
+ 622 0000 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+ 623              	.LCFI8:
+ 624              		.cfi_def_cfa_offset 32
+ 625              		.cfi_offset 4, -32
+ 626              		.cfi_offset 5, -28
+ 627              		.cfi_offset 6, -24
+ 628              		.cfi_offset 7, -20
+ 629              		.cfi_offset 8, -16
+ 630              		.cfi_offset 9, -12
+ 631              		.cfi_offset 10, -8
+ 632              		.cfi_offset 14, -4
+ 633 0004 ADF5095D 		sub	sp, sp, #8768
+ 634              	.LCFI9:
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s 			page 17
+
+
+ 635              		.cfi_def_cfa_offset 8800
+ 636 0008 84B0     		sub	sp, sp, #16
+ 637              	.LCFI10:
+ 638              		.cfi_def_cfa_offset 8816
+ 639 000a 0446     		mov	r4, r0
+ 176:User/SDcard/SD_Card_APP.c ****     DEBUG("-------------------------------------------------------\r\n");
+ 640              		.loc 1 176 5 is_stmt 1 view .LVU131
+ 641 000c 4D4D     		ldr	r5, .L43
+ 642 000e 2846     		mov	r0, r5
+ 643              	.LVL66:
+ 644              		.loc 1 176 5 is_stmt 0 view .LVU132
+ 645 0010 FFF7FEFF 		bl	my_printf
+ 646              	.LVL67:
+ 177:User/SDcard/SD_Card_APP.c ****     DEBUG("SDCard_bin: %s\r\n", FileName);
+ 647              		.loc 1 177 5 is_stmt 1 view .LVU133
+ 648 0014 2146     		mov	r1, r4
+ 649 0016 4C48     		ldr	r0, .L43+4
+ 650 0018 FFF7FEFF 		bl	my_printf
+ 651              	.LVL68:
+ 178:User/SDcard/SD_Card_APP.c ****     DEBUG("-------------------------------------------------------\r\n");
+ 652              		.loc 1 178 5 view .LVU134
+ 653 001c 2846     		mov	r0, r5
+ 654 001e FFF7FEFF 		bl	my_printf
+ 655              	.LVL69:
+ 179:User/SDcard/SD_Card_APP.c ****     uint32_t filesize;
+ 656              		.loc 1 179 5 view .LVU135
+ 180:User/SDcard/SD_Card_APP.c ****     FIL binfile;
+ 657              		.loc 1 180 5 view .LVU136
+ 181:User/SDcard/SD_Card_APP.c ****     UINT BytesRead;
+ 658              		.loc 1 181 5 view .LVU137
+ 182:User/SDcard/SD_Card_APP.c ****     uint8_t Buf[4096] = {0,};
+ 659              		.loc 1 182 5 view .LVU138
+ 660              		.loc 1 182 13 is_stmt 0 view .LVU139
+ 661 0022 0DF58150 		add	r0, sp, #4128
+ 662 0026 1030     		adds	r0, r0, #16
+ 663 0028 0025     		movs	r5, #0
+ 664 002a 40F8145C 		str	r5, [r0, #-20]
+ 665 002e 40F6FC76 		movw	r6, #4092
+ 666 0032 3246     		mov	r2, r6
+ 667 0034 2946     		mov	r1, r5
+ 668 0036 0DF58150 		add	r0, sp, #4128
+ 669 003a FFF7FEFF 		bl	memset
+ 670              	.LVL70:
+ 183:User/SDcard/SD_Card_APP.c ****     uint8_t Verify[4096] = {0,};
+ 671              		.loc 1 183 5 is_stmt 1 view .LVU140
+ 672              		.loc 1 183 13 is_stmt 0 view .LVU141
+ 673 003e 0795     		str	r5, [sp, #28]
+ 674 0040 3246     		mov	r2, r6
+ 675 0042 2946     		mov	r1, r5
+ 676 0044 08A8     		add	r0, sp, #32
+ 677 0046 FFF7FEFF 		bl	memset
+ 678              	.LVL71:
+ 184:User/SDcard/SD_Card_APP.c **** 
+ 185:User/SDcard/SD_Card_APP.c ****     /* 1.Open file read file header */
+ 186:User/SDcard/SD_Card_APP.c ****     if(f_open(&binfile, FileName, FA_READ) == FR_OK) {
+ 679              		.loc 1 186 5 is_stmt 1 view .LVU142
+ 680              		.loc 1 186 8 is_stmt 0 view .LVU143
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s 			page 18
+
+
+ 681 004a 0122     		movs	r2, #1
+ 682 004c 2146     		mov	r1, r4
+ 683 004e 0DF50050 		add	r0, sp, #8192
+ 684 0052 2030     		adds	r0, r0, #32
+ 685 0054 FFF7FEFF 		bl	f_open
+ 686              	.LVL72:
+ 687              		.loc 1 186 7 view .LVU144
+ 688 0058 78B9     		cbnz	r0, .L36
+ 187:User/SDcard/SD_Card_APP.c ****         DEBUG("open file: %s\r\n", FileName);
+ 689              		.loc 1 187 9 is_stmt 1 view .LVU145
+ 690 005a 2146     		mov	r1, r4
+ 691 005c 3B48     		ldr	r0, .L43+8
+ 692 005e FFF7FEFF 		bl	my_printf
+ 693              	.LVL73:
+ 188:User/SDcard/SD_Card_APP.c ****     } else {
+ 189:User/SDcard/SD_Card_APP.c ****         DEBUG("No file found: %s\r\n", FileName);
+ 190:User/SDcard/SD_Card_APP.c ****         return -1;
+ 191:User/SDcard/SD_Card_APP.c ****     }
+ 192:User/SDcard/SD_Card_APP.c **** 
+ 193:User/SDcard/SD_Card_APP.c ****     uint32_t IS25index = 0;
+ 694              		.loc 1 193 5 view .LVU146
+ 194:User/SDcard/SD_Card_APP.c ****     filesize = f_size(&binfile);
+ 695              		.loc 1 194 5 view .LVU147
+ 696              		.loc 1 194 14 is_stmt 0 view .LVU148
+ 697 0062 0DF50053 		add	r3, sp, #8192
+ 698 0066 2033     		adds	r3, r3, #32
+ 699 0068 D3F80C80 		ldr	r8, [r3, #12]
+ 700              	.LVL74:
+ 195:User/SDcard/SD_Card_APP.c ****     DEBUG("File size : %d\r\n",filesize);
+ 701              		.loc 1 195 5 is_stmt 1 view .LVU149
+ 702 006c 4146     		mov	r1, r8
+ 703 006e 3848     		ldr	r0, .L43+12
+ 704 0070 FFF7FEFF 		bl	my_printf
+ 705              	.LVL75:
+ 196:User/SDcard/SD_Card_APP.c **** 
+ 197:User/SDcard/SD_Card_APP.c **** 
+ 198:User/SDcard/SD_Card_APP.c ****     // int rtn = SDCard_bin_IS252SD("InData.bin", 0, filesize);
+ 199:User/SDcard/SD_Card_APP.c ****     // DEBUG("rtn = SDCard_bin_IS252SD() : %d\r\n",rtn);
+ 200:User/SDcard/SD_Card_APP.c **** 
+ 201:User/SDcard/SD_Card_APP.c ****     
+ 202:User/SDcard/SD_Card_APP.c ****     
+ 203:User/SDcard/SD_Card_APP.c ****     // DEBUG("IS25LP128_Read - 0x100 bytes\r\n");
+ 204:User/SDcard/SD_Card_APP.c ****     // IS25LP128_Read(0, Buf, 0x100);
+ 205:User/SDcard/SD_Card_APP.c ****     // PrintMemoryMap(0, Buf, 0x100, 16);
+ 206:User/SDcard/SD_Card_APP.c **** 
+ 207:User/SDcard/SD_Card_APP.c ****     // DEBUG("SDCard_Read - 0x100 bytes\r\n");
+ 208:User/SDcard/SD_Card_APP.c ****     // f_read(&binfile, Buf, 0x100, &BytesRead);
+ 209:User/SDcard/SD_Card_APP.c ****     // PrintMemoryMap(0, Buf, BytesRead, 16);
+ 210:User/SDcard/SD_Card_APP.c **** 
+ 211:User/SDcard/SD_Card_APP.c ****     // f_close(&binfile);
+ 212:User/SDcard/SD_Card_APP.c ****     // DEBUG("-------------------------------------------------------\r\n");
+ 213:User/SDcard/SD_Card_APP.c ****     // return 0;
+ 214:User/SDcard/SD_Card_APP.c **** 
+ 215:User/SDcard/SD_Card_APP.c ****     //filesize = 0x8000;
+ 216:User/SDcard/SD_Card_APP.c ****     int err=0, rtn = 0;
+ 706              		.loc 1 216 5 view .LVU150
+ 217:User/SDcard/SD_Card_APP.c ****     for(int i=0;i<filesize;i+=0x1000){
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s 			page 19
+
+
+ 707              		.loc 1 217 5 view .LVU151
+ 708              	.LBB5:
+ 709              		.loc 1 217 9 view .LVU152
+ 710              		.loc 1 217 13 is_stmt 0 view .LVU153
+ 711 0074 2C46     		mov	r4, r5
+ 712              	.LVL76:
+ 713              		.loc 1 217 13 view .LVU154
+ 714              	.LBE5:
+ 216:User/SDcard/SD_Card_APP.c ****     for(int i=0;i<filesize;i+=0x1000){
+ 715              		.loc 1 216 9 view .LVU155
+ 716 0076 A946     		mov	r9, r5
+ 717              	.LBB6:
+ 718              		.loc 1 217 5 view .LVU156
+ 719 0078 08E0     		b	.L37
+ 720              	.LVL77:
+ 721              	.L36:
+ 722              		.loc 1 217 5 view .LVU157
+ 723              	.LBE6:
+ 189:User/SDcard/SD_Card_APP.c ****         return -1;
+ 724              		.loc 1 189 9 is_stmt 1 view .LVU158
+ 725 007a 2146     		mov	r1, r4
+ 726 007c 3548     		ldr	r0, .L43+16
+ 727 007e FFF7FEFF 		bl	my_printf
+ 728              	.LVL78:
+ 190:User/SDcard/SD_Card_APP.c ****     }
+ 729              		.loc 1 190 9 view .LVU159
+ 190:User/SDcard/SD_Card_APP.c ****     }
+ 730              		.loc 1 190 16 is_stmt 0 view .LVU160
+ 731 0082 4FF0FF38 		mov	r8, #-1
+ 732 0086 56E0     		b	.L35
+ 733              	.LVL79:
+ 734              	.L42:
+ 735              	.LBB7:
+ 736              		.loc 1 217 28 is_stmt 1 discriminator 2 view .LVU161
+ 737              		.loc 1 217 29 is_stmt 0 discriminator 2 view .LVU162
+ 738 0088 04F58054 		add	r4, r4, #4096
+ 739              	.LVL80:
+ 740              	.L37:
+ 741              		.loc 1 217 17 is_stmt 1 discriminator 1 view .LVU163
+ 742              		.loc 1 217 5 is_stmt 0 discriminator 1 view .LVU164
+ 743 008c 4445     		cmp	r4, r8
+ 744 008e 4DD2     		bcs	.L39
+ 218:User/SDcard/SD_Card_APP.c ****         f_read(&binfile, Buf, 0x1000, &BytesRead);
+ 745              		.loc 1 218 9 is_stmt 1 view .LVU165
+ 746 0090 0DF50056 		add	r6, sp, #8192
+ 747 0094 1C36     		adds	r6, r6, #28
+ 748 0096 3346     		mov	r3, r6
+ 749 0098 4FF48052 		mov	r2, #4096
+ 750 009c 0DF58051 		add	r1, sp, #4096
+ 751 00a0 1C31     		adds	r1, r1, #28
+ 752 00a2 0DF50050 		add	r0, sp, #8192
+ 753 00a6 2030     		adds	r0, r0, #32
+ 754 00a8 FFF7FEFF 		bl	f_read
+ 755              	.LVL81:
+ 219:User/SDcard/SD_Card_APP.c **** 
+ 220:User/SDcard/SD_Card_APP.c ****         IS25LP128_SectorErase(IS25index);
+ 756              		.loc 1 220 9 view .LVU166
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s 			page 20
+
+
+ 757 00ac 2846     		mov	r0, r5
+ 758 00ae FFF7FEFF 		bl	IS25LP128_SectorErase
+ 759              	.LVL82:
+ 221:User/SDcard/SD_Card_APP.c **** 
+ 222:User/SDcard/SD_Card_APP.c ****         IS25LP128_Write(IS25index, Buf, BytesRead);
+ 760              		.loc 1 222 9 view .LVU167
+ 761 00b2 3268     		ldr	r2, [r6]
+ 762 00b4 0DF58051 		add	r1, sp, #4096
+ 763 00b8 1C31     		adds	r1, r1, #28
+ 764 00ba 2846     		mov	r0, r5
+ 765 00bc FFF7FEFF 		bl	IS25LP128_Write
+ 766              	.LVL83:
+ 223:User/SDcard/SD_Card_APP.c ****         
+ 224:User/SDcard/SD_Card_APP.c ****         IS25LP128_Read(IS25index, Verify, BytesRead);
+ 767              		.loc 1 224 9 view .LVU168
+ 768 00c0 3268     		ldr	r2, [r6]
+ 769 00c2 07A9     		add	r1, sp, #28
+ 770 00c4 2846     		mov	r0, r5
+ 771 00c6 FFF7FEFF 		bl	IS25LP128_Read
+ 772              	.LVL84:
+ 225:User/SDcard/SD_Card_APP.c ****         
+ 226:User/SDcard/SD_Card_APP.c ****         // DEBUG("-----------Buf-----------\r\n");
+ 227:User/SDcard/SD_Card_APP.c ****         // PrintMemoryMap(IS25index, Buf, BytesRead, 32);
+ 228:User/SDcard/SD_Card_APP.c **** 
+ 229:User/SDcard/SD_Card_APP.c ****         // DEBUG("-----------Verify-----------\r\n");
+ 230:User/SDcard/SD_Card_APP.c ****         // PrintMemoryMap(IS25index, Verify, BytesRead, 32);
+ 231:User/SDcard/SD_Card_APP.c ****         IS25index += BytesRead;
+ 773              		.loc 1 231 9 view .LVU169
+ 774              		.loc 1 231 19 is_stmt 0 view .LVU170
+ 775 00ca D6F800A0 		ldr	r10, [r6]
+ 776 00ce 5544     		add	r5, r5, r10
+ 777              	.LVL85:
+ 232:User/SDcard/SD_Card_APP.c ****         rtn = memcmp(Buf, Verify, BytesRead);
+ 778              		.loc 1 232 9 is_stmt 1 view .LVU171
+ 779              		.loc 1 232 15 is_stmt 0 view .LVU172
+ 780 00d0 5246     		mov	r2, r10
+ 781 00d2 07A9     		add	r1, sp, #28
+ 782 00d4 0DF58050 		add	r0, sp, #4096
+ 783 00d8 1C30     		adds	r0, r0, #28
+ 784 00da FFF7FEFF 		bl	memcmp
+ 785              	.LVL86:
+ 786 00de 0746     		mov	r7, r0
+ 787              	.LVL87:
+ 233:User/SDcard/SD_Card_APP.c ****         err += rtn;
+ 788              		.loc 1 233 9 is_stmt 1 view .LVU173
+ 789              		.loc 1 233 13 is_stmt 0 view .LVU174
+ 790 00e0 8144     		add	r9, r9, r0
+ 791              	.LVL88:
+ 234:User/SDcard/SD_Card_APP.c ****         DEBUG("%04d.[%07d/%07d %02d.%02d%%] 0x%08X (%d) memcmp = %d [%d]\r\n",i>>12 ,i ,filesize ,(
+ 792              		.loc 1 234 9 is_stmt 1 view .LVU175
+ 793 00e2 6420     		movs	r0, #100
+ 794              	.LVL89:
+ 795              		.loc 1 234 9 is_stmt 0 view .LVU176
+ 796 00e4 00FB04F1 		mul	r1, r0, r4
+ 797 00e8 42F21073 		movw	r3, #10000
+ 798 00ec 03FB04F3 		mul	r3, r3, r4
+ 799 00f0 B3FBF8F2 		udiv	r2, r3, r8
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s 			page 21
+
+
+ 800 00f4 CDF81490 		str	r9, [sp, #20]
+ 801 00f8 0497     		str	r7, [sp, #16]
+ 802 00fa CDF80CA0 		str	r10, [sp, #12]
+ 803 00fe 0295     		str	r5, [sp, #8]
+ 804 0100 154B     		ldr	r3, .L43+20
+ 805 0102 A3FB02C3 		umull	ip, r3, r3, r2
+ 806 0106 5B09     		lsrs	r3, r3, #5
+ 807 0108 00FB1323 		mls	r3, r0, r3, r2
+ 808 010c 0193     		str	r3, [sp, #4]
+ 809 010e B1FBF8F1 		udiv	r1, r1, r8
+ 810 0112 0091     		str	r1, [sp]
+ 811 0114 4346     		mov	r3, r8
+ 812 0116 2246     		mov	r2, r4
+ 813 0118 2113     		asrs	r1, r4, #12
+ 814 011a 1048     		ldr	r0, .L43+24
+ 815 011c FFF7FEFF 		bl	my_printf
+ 816              	.LVL90:
+ 235:User/SDcard/SD_Card_APP.c **** 
+ 236:User/SDcard/SD_Card_APP.c ****         if(BytesRead != 0x1000 || rtn)break;
+ 817              		.loc 1 236 9 is_stmt 1 view .LVU177
+ 818              		.loc 1 236 22 is_stmt 0 view .LVU178
+ 819 0120 3368     		ldr	r3, [r6]
+ 820              		.loc 1 236 11 view .LVU179
+ 821 0122 B3F5805F 		cmp	r3, #4096
+ 822 0126 01D1     		bne	.L39
+ 823              		.loc 1 236 32 discriminator 1 view .LVU180
+ 824 0128 002F     		cmp	r7, #0
+ 825 012a ADD0     		beq	.L42
+ 826              	.LVL91:
+ 827              	.L39:
+ 828              		.loc 1 236 32 discriminator 1 view .LVU181
+ 829              	.LBE7:
+ 237:User/SDcard/SD_Card_APP.c ****     }
+ 238:User/SDcard/SD_Card_APP.c ****     f_close(&binfile);
+ 830              		.loc 1 238 5 is_stmt 1 view .LVU182
+ 831 012c 0DF50050 		add	r0, sp, #8192
+ 832 0130 2030     		adds	r0, r0, #32
+ 833 0132 FFF7FEFF 		bl	f_close
+ 834              	.LVL92:
+ 239:User/SDcard/SD_Card_APP.c ****     return filesize;
+ 835              		.loc 1 239 5 view .LVU183
+ 836              	.L35:
+ 240:User/SDcard/SD_Card_APP.c **** }...
+ 837              		.loc 1 240 1 is_stmt 0 view .LVU184
+ 838 0136 4046     		mov	r0, r8
+ 839 0138 0DF5095D 		add	sp, sp, #8768
+ 840 013c 04B0     		add	sp, sp, #16
+ 841              	.LCFI11:
+ 842              		.cfi_def_cfa_offset 32
+ 843              		@ sp needed
+ 844 013e BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 845              	.L44:
+ 846 0142 00BF     		.align	2
+ 847              	.L43:
+ 848 0144 00000000 		.word	.LC17
+ 849 0148 44000000 		.word	.LC18
+ 850 014c 60000000 		.word	.LC19
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s 			page 22
+
+
+ 851 0150 1C000000 		.word	.LC11
+ 852 0154 38000000 		.word	.LC12
+ 853 0158 1F85EB51 		.word	1374389535
+ 854 015c 78000000 		.word	.LC20
+ 855              		.cfi_endproc
+ 856              	.LFE137:
+ 858              		.comm	USERDirectory,48,4
+ 859              		.comm	USERFileInfo,24,4
+ 860              		.text
+ 861              	.Letext0:
+ 862              		.file 2 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\inc
+ 863              		.file 3 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\inc
+ 864              		.file 4 "Drivers/CMSIS/Include/core_cm4.h"
+ 865              		.file 5 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/system_stm32l4xx.h"
+ 866              		.file 6 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l412xx.h"
+ 867              		.file 7 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_def.h"
+ 868              		.file 8 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_dma.h"
+ 869              		.file 9 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_flash.h"
+ 870              		.file 10 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h"
+ 871              		.file 11 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h"
+ 872              		.file 12 "User/SDcard/SD_Card_Drive.h"
+ 873              		.file 13 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\lib\\gcc\\arm-non
+ 874              		.file 14 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\in
+ 875              		.file 15 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\in
+ 876              		.file 16 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\in
+ 877              		.file 17 "Inc/usart.h"
+ 878              		.file 18 "Middlewares/Third_Party/FatFs/src/integer.h"
+ 879              		.file 19 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\in
+ 880              		.file 20 "Middlewares/Third_Party/FatFs/src/ff.h"
+ 881              		.file 21 "Middlewares/Third_Party/FatFs/src/diskio.h"
+ 882              		.file 22 "Middlewares/Third_Party/FatFs/src/ff_gen_drv.h"
+ 883              		.file 23 "Inc/user_diskio.h"
+ 884              		.file 24 "Inc/IS25.h"
+ 885              		.file 25 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\in
+ 886              		.file 26 "<built-in>"
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s 			page 23
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 SD_Card_APP.c
+C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s:18     .rodata.SDCard_Init.str1.4:00000000 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s:53     .text.SDCard_Init:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s:61     .text.SDCard_Init:00000000 SDCard_Init
+C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s:194    .text.SDCard_Init:00000084 $d
+                            *COM*:00000030 USERDirectory
+C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s:212    .rodata.SDCard_BMP_SD2IS25.str1.4:00000000 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s:222    .text.SDCard_BMP_SD2IS25:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s:229    .text.SDCard_BMP_SD2IS25:00000000 SDCard_BMP_SD2IS25
+C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s:368    .text.SDCard_BMP_SD2IS25:00000080 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s:375    .rodata.SDCard_bin_IS252SD.str1.4:00000000 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s:388    .text.SDCard_bin_IS252SD:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s:395    .text.SDCard_bin_IS252SD:00000000 SDCard_bin_IS252SD
+C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s:557    .text.SDCard_bin_IS252SD:000000b4 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s:567    .text.SDCard_bin_SD2IS25:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s:574    .text.SDCard_bin_SD2IS25:00000000 SDCard_bin_SD2IS25
+C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s:592    .rodata.SDCard_bin.str1.4:00000000 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s:607    .text.SDCard_bin:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s:614    .text.SDCard_bin:00000000 SDCard_bin
+C:\Users\ADMINI~1\AppData\Local\Temp\ccfwlUeu.s:848    .text.SDCard_bin:00000144 $d
+                            *COM*:00000018 USERFileInfo
+
+UNDEFINED SYMBOLS
+FATFS_LinkDriver
+BSP_SD_Init
+my_printf
+f_mount
+FRESULTPrinter
+f_opendir
+USERPath
+USER_Driver
+USERFatFS
+memset
+f_open
+f_read
+IS25LP128_Write
+f_close
+IS25LP128_Read
+f_write
+Debug_uint2
+Debug_uint1
+IS25LP128_SectorErase
+memcmp

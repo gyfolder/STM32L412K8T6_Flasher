@@ -1,0 +1,596 @@
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccDR2CXF.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"main.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.SystemClock_Config,"ax",%progbits
+  18              		.align	1
+  19              		.global	SystemClock_Config
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv4-sp-d16
+  26              	SystemClock_Config:
+  27              	.LFB134:
+  28              		.file 1 "Src/main.c"
+   1:Src/main.c    **** /* USER CODE BEGIN Header */
+   2:Src/main.c    **** /**
+   3:Src/main.c    ****   ******************************************************************************
+   4:Src/main.c    ****   * @file           : main.c
+   5:Src/main.c    ****   * @brief          : Main program body
+   6:Src/main.c    ****   ******************************************************************************
+   7:Src/main.c    ****   * @attention
+   8:Src/main.c    ****   *
+   9:Src/main.c    ****   * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
+  10:Src/main.c    ****   * All rights reserved.</center></h2>
+  11:Src/main.c    ****   *
+  12:Src/main.c    ****   * This software component is licensed by ST under Ultimate Liberty license
+  13:Src/main.c    ****   * SLA0044, the "License"; You may not use this file except in compliance with
+  14:Src/main.c    ****   * the License. You may obtain a copy of the License at:
+  15:Src/main.c    ****   *                             www.st.com/SLA0044
+  16:Src/main.c    ****   *
+  17:Src/main.c    ****   ******************************************************************************
+  18:Src/main.c    ****   */
+  19:Src/main.c    **** /* USER CODE END Header */
+  20:Src/main.c    **** 
+  21:Src/main.c    **** /* Includes ------------------------------------------------------------------*/
+  22:Src/main.c    **** #include "main.h"
+  23:Src/main.c    **** #include "fatfs.h"
+  24:Src/main.c    **** #include "quadspi.h"
+  25:Src/main.c    **** #include "spi.h"
+  26:Src/main.c    **** #include "tim.h"
+  27:Src/main.c    **** #include "usart.h"
+  28:Src/main.c    **** #include "gpio.h"
+  29:Src/main.c    **** 
+  30:Src/main.c    **** /* Private includes ----------------------------------------------------------*/
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccDR2CXF.s 			page 2
+
+
+  31:Src/main.c    **** /* USER CODE BEGIN Includes */
+  32:Src/main.c    **** #include "stm32l4xx_hal.h"
+  33:Src/main.c    **** #include "Debug.h"
+  34:Src/main.c    **** #include <stdlib.h>
+  35:Src/main.c    **** #include <stdio.h>
+  36:Src/main.c    **** #include "Flasher.h"
+  37:Src/main.c    **** /* USER CODE END Includes */
+  38:Src/main.c    **** 
+  39:Src/main.c    **** /* Private typedef -----------------------------------------------------------*/
+  40:Src/main.c    **** /* USER CODE BEGIN PTD */
+  41:Src/main.c    **** 
+  42:Src/main.c    **** /* USER CODE END PTD */
+  43:Src/main.c    **** 
+  44:Src/main.c    **** /* Private define ------------------------------------------------------------*/
+  45:Src/main.c    **** /* USER CODE BEGIN PD */
+  46:Src/main.c    **** /* USER CODE END PD */
+  47:Src/main.c    **** 
+  48:Src/main.c    **** /* Private macro -------------------------------------------------------------*/
+  49:Src/main.c    **** /* USER CODE BEGIN PM */
+  50:Src/main.c    **** extern int LED_Mode;
+  51:Src/main.c    **** uint32_t Debug_uint1 = 0;
+  52:Src/main.c    **** uint32_t Debug_uint2 = 0;
+  53:Src/main.c    **** /* USER CODE END PM */
+  54:Src/main.c    **** 
+  55:Src/main.c    **** /* Private variables ---------------------------------------------------------*/
+  56:Src/main.c    **** 
+  57:Src/main.c    **** /* USER CODE BEGIN PV */
+  58:Src/main.c    **** extern TIM_HandleTypeDef htim1;
+  59:Src/main.c    **** extern SPI_HandleTypeDef hspi1;
+  60:Src/main.c    **** extern QSPI_HandleTypeDef hqspi;
+  61:Src/main.c    **** /* USER CODE END PV */
+  62:Src/main.c    **** 
+  63:Src/main.c    **** /* Private function prototypes -----------------------------------------------*/
+  64:Src/main.c    **** void SystemClock_Config(void);
+  65:Src/main.c    **** /* USER CODE BEGIN PFP */
+  66:Src/main.c    **** extern 
+  67:Src/main.c    **** /* USER CODE END PFP */
+  68:Src/main.c    **** 
+  69:Src/main.c    **** /* Private user code ---------------------------------------------------------*/
+  70:Src/main.c    **** /* USER CODE BEGIN 0 */
+  71:Src/main.c    **** 
+  72:Src/main.c    **** /* USER CODE END 0 */
+  73:Src/main.c    **** 
+  74:Src/main.c    **** /**
+  75:Src/main.c    ****   * @brief  The application entry point.
+  76:Src/main.c    ****   * @retval int
+  77:Src/main.c    ****   */
+  78:Src/main.c    **** int main(void)
+  79:Src/main.c    **** {
+  80:Src/main.c    ****   /* USER CODE BEGIN 1 */
+  81:Src/main.c    **** 
+  82:Src/main.c    ****   /* USER CODE END 1 */
+  83:Src/main.c    ****   
+  84:Src/main.c    **** 
+  85:Src/main.c    ****   /* MCU Configuration--------------------------------------------------------*/
+  86:Src/main.c    **** 
+  87:Src/main.c    ****   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccDR2CXF.s 			page 3
+
+
+  88:Src/main.c    ****   HAL_Init();
+  89:Src/main.c    **** 
+  90:Src/main.c    ****   /* USER CODE BEGIN Init */
+  91:Src/main.c    **** 
+  92:Src/main.c    ****   /* USER CODE END Init */
+  93:Src/main.c    **** 
+  94:Src/main.c    ****   /* Configure the system clock */
+  95:Src/main.c    ****   SystemClock_Config();
+  96:Src/main.c    **** 
+  97:Src/main.c    ****   /* USER CODE BEGIN SysInit */
+  98:Src/main.c    **** 
+  99:Src/main.c    ****   /* USER CODE END SysInit */
+ 100:Src/main.c    **** 
+ 101:Src/main.c    ****   /* Initialize all configured peripherals */
+ 102:Src/main.c    ****   MX_GPIO_Init();
+ 103:Src/main.c    ****   MX_SPI1_Init();
+ 104:Src/main.c    ****   MX_USART1_UART_Init();
+ 105:Src/main.c    ****   MX_QUADSPI_Init();
+ 106:Src/main.c    ****   MX_TIM1_Init();
+ 107:Src/main.c    ****   /* USER CODE BEGIN 2 */
+ 108:Src/main.c    ****   LED_Mode = 1;
+ 109:Src/main.c    ****   /* USER CODE END 2 */
+ 110:Src/main.c    ****  
+ 111:Src/main.c    ****  
+ 112:Src/main.c    **** 
+ 113:Src/main.c    ****   /* Infinite loop */
+ 114:Src/main.c    ****   /* USER CODE BEGIN WHILE */
+ 115:Src/main.c    ****   while (1)
+ 116:Src/main.c    ****   {
+ 117:Src/main.c    ****     /* USER CODE END WHILE */
+ 118:Src/main.c    **** 
+ 119:Src/main.c    ****     /* USER CODE BEGIN 3 */
+ 120:Src/main.c    ****     LED_Mode = 1;
+ 121:Src/main.c    ****     my_printf("Booting!! Start Button Waiting!");
+ 122:Src/main.c    ****     while(Start_Btn_GPIO_Port->IDR & Start_Btn_Pin)HAL_Delay(100);
+ 123:Src/main.c    ****     LED_Mode = 2;
+ 124:Src/main.c    ****     my_printf("Start!!!");
+ 125:Src/main.c    ****     Flasher_Init();
+ 126:Src/main.c    ****     //Flasher_Loop();
+ 127:Src/main.c    ****   }
+ 128:Src/main.c    ****   /* USER CODE END 3 */
+ 129:Src/main.c    **** }
+ 130:Src/main.c    **** 
+ 131:Src/main.c    **** /**
+ 132:Src/main.c    ****   * @brief System Clock Configuration
+ 133:Src/main.c    ****   * @retval None
+ 134:Src/main.c    ****   */
+ 135:Src/main.c    **** void SystemClock_Config(void)
+ 136:Src/main.c    **** {
+  29              		.loc 1 136 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 144
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 30B5     		push	{r4, r5, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 12
+  36              		.cfi_offset 4, -12
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccDR2CXF.s 			page 4
+
+
+  37              		.cfi_offset 5, -8
+  38              		.cfi_offset 14, -4
+  39 0002 A5B0     		sub	sp, sp, #148
+  40              	.LCFI1:
+  41              		.cfi_def_cfa_offset 160
+ 137:Src/main.c    ****   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+  42              		.loc 1 137 3 view .LVU1
+  43              		.loc 1 137 22 is_stmt 0 view .LVU2
+  44 0004 4422     		movs	r2, #68
+  45 0006 0021     		movs	r1, #0
+  46 0008 13A8     		add	r0, sp, #76
+  47 000a FFF7FEFF 		bl	memset
+  48              	.LVL0:
+ 138:Src/main.c    ****   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+  49              		.loc 1 138 3 is_stmt 1 view .LVU3
+  50              		.loc 1 138 22 is_stmt 0 view .LVU4
+  51 000e 0024     		movs	r4, #0
+  52 0010 0E94     		str	r4, [sp, #56]
+  53 0012 0F94     		str	r4, [sp, #60]
+  54 0014 1094     		str	r4, [sp, #64]
+  55 0016 1194     		str	r4, [sp, #68]
+  56 0018 1294     		str	r4, [sp, #72]
+ 139:Src/main.c    ****   RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
+  57              		.loc 1 139 3 is_stmt 1 view .LVU5
+  58              		.loc 1 139 28 is_stmt 0 view .LVU6
+  59 001a 3422     		movs	r2, #52
+  60 001c 2146     		mov	r1, r4
+  61 001e 01A8     		add	r0, sp, #4
+  62 0020 FFF7FEFF 		bl	memset
+  63              	.LVL1:
+ 140:Src/main.c    **** 
+ 141:Src/main.c    ****   /** Configure the main internal regulator output voltage 
+ 142:Src/main.c    ****   */
+ 143:Src/main.c    ****   if (HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE1) != HAL_OK)
+  64              		.loc 1 143 3 is_stmt 1 view .LVU7
+  65              		.loc 1 143 7 is_stmt 0 view .LVU8
+  66 0024 4FF40070 		mov	r0, #512
+  67 0028 FFF7FEFF 		bl	HAL_PWREx_ControlVoltageScaling
+  68              	.LVL2:
+ 144:Src/main.c    ****   {
+ 145:Src/main.c    ****     Error_Handler();
+ 146:Src/main.c    ****   }
+ 147:Src/main.c    ****   /** Initializes the CPU, AHB and APB busses clocks 
+ 148:Src/main.c    ****   */
+ 149:Src/main.c    ****   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
+  69              		.loc 1 149 3 is_stmt 1 view .LVU9
+  70              		.loc 1 149 36 is_stmt 0 view .LVU10
+  71 002c 0223     		movs	r3, #2
+  72 002e 1393     		str	r3, [sp, #76]
+ 150:Src/main.c    ****   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+  73              		.loc 1 150 3 is_stmt 1 view .LVU11
+  74              		.loc 1 150 30 is_stmt 0 view .LVU12
+  75 0030 4FF48072 		mov	r2, #256
+  76 0034 1692     		str	r2, [sp, #88]
+ 151:Src/main.c    ****   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+  77              		.loc 1 151 3 is_stmt 1 view .LVU13
+  78              		.loc 1 151 41 is_stmt 0 view .LVU14
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccDR2CXF.s 			page 5
+
+
+  79 0036 4022     		movs	r2, #64
+  80 0038 1792     		str	r2, [sp, #92]
+ 152:Src/main.c    ****   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  81              		.loc 1 152 3 is_stmt 1 view .LVU15
+  82              		.loc 1 152 34 is_stmt 0 view .LVU16
+  83 003a 1E93     		str	r3, [sp, #120]
+ 153:Src/main.c    ****   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
+  84              		.loc 1 153 3 is_stmt 1 view .LVU17
+  85              		.loc 1 153 35 is_stmt 0 view .LVU18
+  86 003c 1F93     		str	r3, [sp, #124]
+ 154:Src/main.c    ****   RCC_OscInitStruct.PLL.PLLM = 1;
+  87              		.loc 1 154 3 is_stmt 1 view .LVU19
+  88              		.loc 1 154 30 is_stmt 0 view .LVU20
+  89 003e 0125     		movs	r5, #1
+  90 0040 2095     		str	r5, [sp, #128]
+ 155:Src/main.c    ****   RCC_OscInitStruct.PLL.PLLN = 10;
+  91              		.loc 1 155 3 is_stmt 1 view .LVU21
+  92              		.loc 1 155 30 is_stmt 0 view .LVU22
+  93 0042 0A22     		movs	r2, #10
+  94 0044 2192     		str	r2, [sp, #132]
+ 156:Src/main.c    ****   RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
+  95              		.loc 1 156 3 is_stmt 1 view .LVU23
+  96              		.loc 1 156 30 is_stmt 0 view .LVU24
+  97 0046 2293     		str	r3, [sp, #136]
+ 157:Src/main.c    ****   RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
+  98              		.loc 1 157 3 is_stmt 1 view .LVU25
+  99              		.loc 1 157 30 is_stmt 0 view .LVU26
+ 100 0048 2393     		str	r3, [sp, #140]
+ 158:Src/main.c    ****   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+ 101              		.loc 1 158 3 is_stmt 1 view .LVU27
+ 102              		.loc 1 158 7 is_stmt 0 view .LVU28
+ 103 004a 13A8     		add	r0, sp, #76
+ 104 004c FFF7FEFF 		bl	HAL_RCC_OscConfig
+ 105              	.LVL3:
+ 159:Src/main.c    ****   {
+ 160:Src/main.c    ****     Error_Handler();
+ 161:Src/main.c    ****   }
+ 162:Src/main.c    ****   /** Initializes the CPU, AHB and APB busses clocks 
+ 163:Src/main.c    ****   */
+ 164:Src/main.c    ****   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+ 106              		.loc 1 164 3 is_stmt 1 view .LVU29
+ 107              		.loc 1 164 31 is_stmt 0 view .LVU30
+ 108 0050 0F23     		movs	r3, #15
+ 109 0052 0E93     		str	r3, [sp, #56]
+ 165:Src/main.c    ****                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+ 166:Src/main.c    ****   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+ 110              		.loc 1 166 3 is_stmt 1 view .LVU31
+ 111              		.loc 1 166 34 is_stmt 0 view .LVU32
+ 112 0054 0323     		movs	r3, #3
+ 113 0056 0F93     		str	r3, [sp, #60]
+ 167:Src/main.c    ****   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+ 114              		.loc 1 167 3 is_stmt 1 view .LVU33
+ 115              		.loc 1 167 35 is_stmt 0 view .LVU34
+ 116 0058 1094     		str	r4, [sp, #64]
+ 168:Src/main.c    ****   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
+ 117              		.loc 1 168 3 is_stmt 1 view .LVU35
+ 118              		.loc 1 168 36 is_stmt 0 view .LVU36
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccDR2CXF.s 			page 6
+
+
+ 119 005a 1194     		str	r4, [sp, #68]
+ 169:Src/main.c    ****   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+ 120              		.loc 1 169 3 is_stmt 1 view .LVU37
+ 121              		.loc 1 169 36 is_stmt 0 view .LVU38
+ 122 005c 1294     		str	r4, [sp, #72]
+ 170:Src/main.c    **** 
+ 171:Src/main.c    ****   if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_4) != HAL_OK)
+ 123              		.loc 1 171 3 is_stmt 1 view .LVU39
+ 124              		.loc 1 171 7 is_stmt 0 view .LVU40
+ 125 005e 0421     		movs	r1, #4
+ 126 0060 0EA8     		add	r0, sp, #56
+ 127 0062 FFF7FEFF 		bl	HAL_RCC_ClockConfig
+ 128              	.LVL4:
+ 172:Src/main.c    ****   {
+ 173:Src/main.c    ****     Error_Handler();
+ 174:Src/main.c    ****   }
+ 175:Src/main.c    ****   PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART1;
+ 129              		.loc 1 175 3 is_stmt 1 view .LVU41
+ 130              		.loc 1 175 38 is_stmt 0 view .LVU42
+ 131 0066 0195     		str	r5, [sp, #4]
+ 176:Src/main.c    ****   PeriphClkInit.Usart1ClockSelection = RCC_USART1CLKSOURCE_PCLK2;
+ 132              		.loc 1 176 3 is_stmt 1 view .LVU43
+ 133              		.loc 1 176 38 is_stmt 0 view .LVU44
+ 134 0068 0294     		str	r4, [sp, #8]
+ 177:Src/main.c    ****   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
+ 135              		.loc 1 177 3 is_stmt 1 view .LVU45
+ 136              		.loc 1 177 7 is_stmt 0 view .LVU46
+ 137 006a 01A8     		add	r0, sp, #4
+ 138 006c FFF7FEFF 		bl	HAL_RCCEx_PeriphCLKConfig
+ 139              	.LVL5:
+ 178:Src/main.c    ****   {
+ 179:Src/main.c    ****     Error_Handler();
+ 180:Src/main.c    ****   }
+ 181:Src/main.c    **** }
+ 140              		.loc 1 181 1 view .LVU47
+ 141 0070 25B0     		add	sp, sp, #148
+ 142              	.LCFI2:
+ 143              		.cfi_def_cfa_offset 12
+ 144              		@ sp needed
+ 145 0072 30BD     		pop	{r4, r5, pc}
+ 146              		.cfi_endproc
+ 147              	.LFE134:
+ 149              		.section	.rodata.main.str1.4,"aMS",%progbits,1
+ 150              		.align	2
+ 151              	.LC0:
+ 152 0000 426F6F74 		.ascii	"Booting!! Start Button Waiting!\000"
+ 152      696E6721 
+ 152      21205374 
+ 152      61727420 
+ 152      42757474 
+ 153              		.align	2
+ 154              	.LC1:
+ 155 0020 53746172 		.ascii	"Start!!!\000"
+ 155      74212121 
+ 155      00
+ 156              		.section	.text.main,"ax",%progbits
+ 157              		.align	1
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccDR2CXF.s 			page 7
+
+
+ 158              		.global	main
+ 159              		.syntax unified
+ 160              		.thumb
+ 161              		.thumb_func
+ 162              		.fpu fpv4-sp-d16
+ 164              	main:
+ 165              	.LFB133:
+  79:Src/main.c    ****   /* USER CODE BEGIN 1 */
+ 166              		.loc 1 79 1 is_stmt 1 view -0
+ 167              		.cfi_startproc
+ 168              		@ Volatile: function does not return.
+ 169              		@ args = 0, pretend = 0, frame = 0
+ 170              		@ frame_needed = 0, uses_anonymous_args = 0
+ 171 0000 08B5     		push	{r3, lr}
+ 172              	.LCFI3:
+ 173              		.cfi_def_cfa_offset 8
+ 174              		.cfi_offset 3, -8
+ 175              		.cfi_offset 14, -4
+  88:Src/main.c    **** 
+ 176              		.loc 1 88 3 view .LVU49
+ 177 0002 FFF7FEFF 		bl	HAL_Init
+ 178              	.LVL6:
+  95:Src/main.c    **** 
+ 179              		.loc 1 95 3 view .LVU50
+ 180 0006 FFF7FEFF 		bl	SystemClock_Config
+ 181              	.LVL7:
+ 102:Src/main.c    ****   MX_SPI1_Init();
+ 182              		.loc 1 102 3 view .LVU51
+ 183 000a FFF7FEFF 		bl	MX_GPIO_Init
+ 184              	.LVL8:
+ 103:Src/main.c    ****   MX_USART1_UART_Init();
+ 185              		.loc 1 103 3 view .LVU52
+ 186 000e FFF7FEFF 		bl	MX_SPI1_Init
+ 187              	.LVL9:
+ 104:Src/main.c    ****   MX_QUADSPI_Init();
+ 188              		.loc 1 104 3 view .LVU53
+ 189 0012 FFF7FEFF 		bl	MX_USART1_UART_Init
+ 190              	.LVL10:
+ 105:Src/main.c    ****   MX_TIM1_Init();
+ 191              		.loc 1 105 3 view .LVU54
+ 192 0016 FFF7FEFF 		bl	MX_QUADSPI_Init
+ 193              	.LVL11:
+ 106:Src/main.c    ****   /* USER CODE BEGIN 2 */
+ 194              		.loc 1 106 3 view .LVU55
+ 195 001a FFF7FEFF 		bl	MX_TIM1_Init
+ 196              	.LVL12:
+ 108:Src/main.c    ****   /* USER CODE END 2 */
+ 197              		.loc 1 108 3 view .LVU56
+ 198 001e 07E0     		b	.L6
+ 199              	.L8:
+ 123:Src/main.c    ****     my_printf("Start!!!");
+ 200              		.loc 1 123 5 view .LVU57
+ 123:Src/main.c    ****     my_printf("Start!!!");
+ 201              		.loc 1 123 14 is_stmt 0 view .LVU58
+ 202 0020 0B4B     		ldr	r3, .L9
+ 203 0022 0222     		movs	r2, #2
+ 204 0024 1A60     		str	r2, [r3]
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccDR2CXF.s 			page 8
+
+
+ 124:Src/main.c    ****     Flasher_Init();
+ 205              		.loc 1 124 5 is_stmt 1 view .LVU59
+ 206 0026 0B48     		ldr	r0, .L9+4
+ 207 0028 FFF7FEFF 		bl	my_printf
+ 208              	.LVL13:
+ 125:Src/main.c    ****     //Flasher_Loop();
+ 209              		.loc 1 125 5 view .LVU60
+ 210 002c FFF7FEFF 		bl	Flasher_Init
+ 211              	.LVL14:
+ 115:Src/main.c    ****   {
+ 212              		.loc 1 115 9 view .LVU61
+ 213              	.L6:
+ 115:Src/main.c    ****   {
+ 214              		.loc 1 115 3 view .LVU62
+ 120:Src/main.c    ****     my_printf("Booting!! Start Button Waiting!");
+ 215              		.loc 1 120 5 view .LVU63
+ 120:Src/main.c    ****     my_printf("Booting!! Start Button Waiting!");
+ 216              		.loc 1 120 14 is_stmt 0 view .LVU64
+ 217 0030 074B     		ldr	r3, .L9
+ 218 0032 0122     		movs	r2, #1
+ 219 0034 1A60     		str	r2, [r3]
+ 121:Src/main.c    ****     while(Start_Btn_GPIO_Port->IDR & Start_Btn_Pin)HAL_Delay(100);
+ 220              		.loc 1 121 5 is_stmt 1 view .LVU65
+ 221 0036 0848     		ldr	r0, .L9+8
+ 222 0038 FFF7FEFF 		bl	my_printf
+ 223              	.LVL15:
+ 122:Src/main.c    ****     LED_Mode = 2;
+ 224              		.loc 1 122 5 view .LVU66
+ 225              	.L4:
+ 122:Src/main.c    ****     LED_Mode = 2;
+ 226              		.loc 1 122 10 discriminator 1 view .LVU67
+ 122:Src/main.c    ****     LED_Mode = 2;
+ 227              		.loc 1 122 30 is_stmt 0 discriminator 1 view .LVU68
+ 228 003c 4FF09043 		mov	r3, #1207959552
+ 229 0040 1B69     		ldr	r3, [r3, #16]
+ 122:Src/main.c    ****     LED_Mode = 2;
+ 230              		.loc 1 122 10 discriminator 1 view .LVU69
+ 231 0042 13F0010F 		tst	r3, #1
+ 232 0046 EBD0     		beq	.L8
+ 122:Src/main.c    ****     LED_Mode = 2;
+ 233              		.loc 1 122 52 is_stmt 1 discriminator 2 view .LVU70
+ 234 0048 6420     		movs	r0, #100
+ 235 004a FFF7FEFF 		bl	HAL_Delay
+ 236              	.LVL16:
+ 237 004e F5E7     		b	.L4
+ 238              	.L10:
+ 239              		.align	2
+ 240              	.L9:
+ 241 0050 00000000 		.word	LED_Mode
+ 242 0054 20000000 		.word	.LC1
+ 243 0058 00000000 		.word	.LC0
+ 244              		.cfi_endproc
+ 245              	.LFE133:
+ 247              		.section	.text.Error_Handler,"ax",%progbits
+ 248              		.align	1
+ 249              		.global	Error_Handler
+ 250              		.syntax unified
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccDR2CXF.s 			page 9
+
+
+ 251              		.thumb
+ 252              		.thumb_func
+ 253              		.fpu fpv4-sp-d16
+ 255              	Error_Handler:
+ 256              	.LFB135:
+ 182:Src/main.c    **** 
+ 183:Src/main.c    **** /* USER CODE BEGIN 4 */
+ 184:Src/main.c    **** 
+ 185:Src/main.c    **** /* USER CODE END 4 */
+ 186:Src/main.c    **** 
+ 187:Src/main.c    **** /**
+ 188:Src/main.c    ****   * @brief  This function is executed in case of error occurrence.
+ 189:Src/main.c    ****   * @retval None
+ 190:Src/main.c    ****   */
+ 191:Src/main.c    **** void Error_Handler(void)
+ 192:Src/main.c    **** {
+ 257              		.loc 1 192 1 view -0
+ 258              		.cfi_startproc
+ 259              		@ args = 0, pretend = 0, frame = 0
+ 260              		@ frame_needed = 0, uses_anonymous_args = 0
+ 261              		@ link register save eliminated.
+ 193:Src/main.c    ****   /* USER CODE BEGIN Error_Handler_Debug */
+ 194:Src/main.c    ****   /* User can add his own implementation to report the HAL error return state */
+ 195:Src/main.c    **** 
+ 196:Src/main.c    ****   /* USER CODE END Error_Handler_Debug */
+ 197:Src/main.c    **** }
+ 262              		.loc 1 197 1 view .LVU72
+ 263 0000 7047     		bx	lr
+ 264              		.cfi_endproc
+ 265              	.LFE135:
+ 267              		.global	Debug_uint2
+ 268              		.global	Debug_uint1
+ 269              		.section	.bss.Debug_uint1,"aw",%nobits
+ 270              		.align	2
+ 273              	Debug_uint1:
+ 274 0000 00000000 		.space	4
+ 275              		.section	.bss.Debug_uint2,"aw",%nobits
+ 276              		.align	2
+ 279              	Debug_uint2:
+ 280 0000 00000000 		.space	4
+ 281              		.text
+ 282              	.Letext0:
+ 283              		.file 2 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\inc
+ 284              		.file 3 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\inc
+ 285              		.file 4 "Drivers/CMSIS/Include/core_cm4.h"
+ 286              		.file 5 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/system_stm32l4xx.h"
+ 287              		.file 6 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l412xx.h"
+ 288              		.file 7 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_def.h"
+ 289              		.file 8 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rcc.h"
+ 290              		.file 9 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rcc_ex.h"
+ 291              		.file 10 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_dma.h"
+ 292              		.file 11 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_flash.h"
+ 293              		.file 12 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_qspi.h"
+ 294              		.file 13 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi.h"
+ 295              		.file 14 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim.h"
+ 296              		.file 15 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h"
+ 297              		.file 16 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h"
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccDR2CXF.s 			page 10
+
+
+ 298              		.file 17 "Middlewares/Third_Party/FatFs/src/integer.h"
+ 299              		.file 18 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\lib\\gcc\\arm-non
+ 300              		.file 19 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\in
+ 301              		.file 20 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\in
+ 302              		.file 21 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\in
+ 303              		.file 22 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\in
+ 304              		.file 23 "Middlewares/Third_Party/FatFs/src/ff.h"
+ 305              		.file 24 "Middlewares/Third_Party/FatFs/src/diskio.h"
+ 306              		.file 25 "Middlewares/Third_Party/FatFs/src/ff_gen_drv.h"
+ 307              		.file 26 "Inc/user_diskio.h"
+ 308              		.file 27 "Inc/fatfs.h"
+ 309              		.file 28 "Inc/quadspi.h"
+ 310              		.file 29 "Inc/spi.h"
+ 311              		.file 30 "Inc/tim.h"
+ 312              		.file 31 "Inc/usart.h"
+ 313              		.file 32 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr_ex.h"
+ 314              		.file 33 "Inc/gpio.h"
+ 315              		.file 34 "Inc/Flasher.h"
+ 316              		.file 35 "<built-in>"
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccDR2CXF.s 			page 11
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\Users\ADMINI~1\AppData\Local\Temp\ccDR2CXF.s:18     .text.SystemClock_Config:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\ccDR2CXF.s:26     .text.SystemClock_Config:00000000 SystemClock_Config
+C:\Users\ADMINI~1\AppData\Local\Temp\ccDR2CXF.s:150    .rodata.main.str1.4:00000000 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\ccDR2CXF.s:157    .text.main:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\ccDR2CXF.s:164    .text.main:00000000 main
+C:\Users\ADMINI~1\AppData\Local\Temp\ccDR2CXF.s:241    .text.main:00000050 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\ccDR2CXF.s:248    .text.Error_Handler:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\ccDR2CXF.s:255    .text.Error_Handler:00000000 Error_Handler
+C:\Users\ADMINI~1\AppData\Local\Temp\ccDR2CXF.s:279    .bss.Debug_uint2:00000000 Debug_uint2
+C:\Users\ADMINI~1\AppData\Local\Temp\ccDR2CXF.s:273    .bss.Debug_uint1:00000000 Debug_uint1
+C:\Users\ADMINI~1\AppData\Local\Temp\ccDR2CXF.s:270    .bss.Debug_uint1:00000000 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\ccDR2CXF.s:276    .bss.Debug_uint2:00000000 $d
+
+UNDEFINED SYMBOLS
+memset
+HAL_PWREx_ControlVoltageScaling
+HAL_RCC_OscConfig
+HAL_RCC_ClockConfig
+HAL_RCCEx_PeriphCLKConfig
+HAL_Init
+MX_GPIO_Init
+MX_SPI1_Init
+MX_USART1_UART_Init
+MX_QUADSPI_Init
+MX_TIM1_Init
+my_printf
+Flasher_Init
+HAL_Delay
+LED_Mode

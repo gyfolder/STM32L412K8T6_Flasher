@@ -1,0 +1,1430 @@
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"usart.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.MX_USART1_UART_Init,"ax",%progbits
+  18              		.align	1
+  19              		.global	MX_USART1_UART_Init
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv4-sp-d16
+  26              	MX_USART1_UART_Init:
+  27              	.LFB133:
+  28              		.file 1 "Src/usart.c"
+   1:Src/usart.c   **** /**
+   2:Src/usart.c   ****   ******************************************************************************
+   3:Src/usart.c   ****   * File Name          : USART.c
+   4:Src/usart.c   ****   * Description        : This file provides code for the configuration
+   5:Src/usart.c   ****   *                      of the USART instances.
+   6:Src/usart.c   ****   ******************************************************************************
+   7:Src/usart.c   ****   * @attention
+   8:Src/usart.c   ****   *
+   9:Src/usart.c   ****   * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
+  10:Src/usart.c   ****   * All rights reserved.</center></h2>
+  11:Src/usart.c   ****   *
+  12:Src/usart.c   ****   * This software component is licensed by ST under Ultimate Liberty license
+  13:Src/usart.c   ****   * SLA0044, the "License"; You may not use this file except in compliance with
+  14:Src/usart.c   ****   * the License. You may obtain a copy of the License at:
+  15:Src/usart.c   ****   *                             www.st.com/SLA0044
+  16:Src/usart.c   ****   *
+  17:Src/usart.c   ****   ******************************************************************************
+  18:Src/usart.c   ****   */
+  19:Src/usart.c   **** 
+  20:Src/usart.c   **** /* Includes ------------------------------------------------------------------*/
+  21:Src/usart.c   **** #include "usart.h"
+  22:Src/usart.c   **** 
+  23:Src/usart.c   **** /* USER CODE BEGIN 0 */
+  24:Src/usart.c   **** #include "gpio.h"
+  25:Src/usart.c   **** #include <stdio.h>
+  26:Src/usart.c   **** #include <string.h>
+  27:Src/usart.c   **** #include <stdarg.h>
+  28:Src/usart.c   **** #include <stdlib.h>
+  29:Src/usart.c   **** /* USER CODE END 0 */
+  30:Src/usart.c   **** 
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s 			page 2
+
+
+  31:Src/usart.c   **** UART_HandleTypeDef huart1;
+  32:Src/usart.c   **** 
+  33:Src/usart.c   **** /* USART1 init function */
+  34:Src/usart.c   **** 
+  35:Src/usart.c   **** void MX_USART1_UART_Init(void)
+  36:Src/usart.c   **** {
+  29              		.loc 1 36 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 08B5     		push	{r3, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 3, -8
+  37              		.cfi_offset 14, -4
+  37:Src/usart.c   **** 
+  38:Src/usart.c   ****   huart1.Instance = USART1;
+  38              		.loc 1 38 3 view .LVU1
+  39              		.loc 1 38 19 is_stmt 0 view .LVU2
+  40 0002 0B48     		ldr	r0, .L5
+  41 0004 0B4B     		ldr	r3, .L5+4
+  42 0006 0360     		str	r3, [r0]
+  39:Src/usart.c   ****   huart1.Init.BaudRate = 115200;
+  43              		.loc 1 39 3 is_stmt 1 view .LVU3
+  44              		.loc 1 39 24 is_stmt 0 view .LVU4
+  45 0008 4FF4E133 		mov	r3, #115200
+  46 000c 4360     		str	r3, [r0, #4]
+  40:Src/usart.c   ****   huart1.Init.WordLength = UART_WORDLENGTH_8B;
+  47              		.loc 1 40 3 is_stmt 1 view .LVU5
+  48              		.loc 1 40 26 is_stmt 0 view .LVU6
+  49 000e 0023     		movs	r3, #0
+  50 0010 8360     		str	r3, [r0, #8]
+  41:Src/usart.c   ****   huart1.Init.StopBits = UART_STOPBITS_1;
+  51              		.loc 1 41 3 is_stmt 1 view .LVU7
+  52              		.loc 1 41 24 is_stmt 0 view .LVU8
+  53 0012 C360     		str	r3, [r0, #12]
+  42:Src/usart.c   ****   huart1.Init.Parity = UART_PARITY_NONE;
+  54              		.loc 1 42 3 is_stmt 1 view .LVU9
+  55              		.loc 1 42 22 is_stmt 0 view .LVU10
+  56 0014 0361     		str	r3, [r0, #16]
+  43:Src/usart.c   ****   huart1.Init.Mode = UART_MODE_TX_RX;
+  57              		.loc 1 43 3 is_stmt 1 view .LVU11
+  58              		.loc 1 43 20 is_stmt 0 view .LVU12
+  59 0016 0C22     		movs	r2, #12
+  60 0018 4261     		str	r2, [r0, #20]
+  44:Src/usart.c   ****   huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  61              		.loc 1 44 3 is_stmt 1 view .LVU13
+  62              		.loc 1 44 25 is_stmt 0 view .LVU14
+  63 001a 8361     		str	r3, [r0, #24]
+  45:Src/usart.c   ****   huart1.Init.OverSampling = UART_OVERSAMPLING_16;
+  64              		.loc 1 45 3 is_stmt 1 view .LVU15
+  65              		.loc 1 45 28 is_stmt 0 view .LVU16
+  66 001c C361     		str	r3, [r0, #28]
+  46:Src/usart.c   ****   huart1.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+  67              		.loc 1 46 3 is_stmt 1 view .LVU17
+  68              		.loc 1 46 30 is_stmt 0 view .LVU18
+  69 001e 0362     		str	r3, [r0, #32]
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s 			page 3
+
+
+  47:Src/usart.c   ****   huart1.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  70              		.loc 1 47 3 is_stmt 1 view .LVU19
+  71              		.loc 1 47 38 is_stmt 0 view .LVU20
+  72 0020 4362     		str	r3, [r0, #36]
+  48:Src/usart.c   ****   if (HAL_UART_Init(&huart1) != HAL_OK)
+  73              		.loc 1 48 3 is_stmt 1 view .LVU21
+  74              		.loc 1 48 7 is_stmt 0 view .LVU22
+  75 0022 FFF7FEFF 		bl	HAL_UART_Init
+  76              	.LVL0:
+  77              		.loc 1 48 6 view .LVU23
+  78 0026 00B9     		cbnz	r0, .L4
+  79              	.L1:
+  49:Src/usart.c   ****   {
+  50:Src/usart.c   ****     Error_Handler();
+  51:Src/usart.c   ****   }
+  52:Src/usart.c   **** 
+  53:Src/usart.c   **** }
+  80              		.loc 1 53 1 view .LVU24
+  81 0028 08BD     		pop	{r3, pc}
+  82              	.L4:
+  50:Src/usart.c   ****   }
+  83              		.loc 1 50 5 is_stmt 1 view .LVU25
+  84 002a FFF7FEFF 		bl	Error_Handler
+  85              	.LVL1:
+  86              		.loc 1 53 1 is_stmt 0 view .LVU26
+  87 002e FBE7     		b	.L1
+  88              	.L6:
+  89              		.align	2
+  90              	.L5:
+  91 0030 00000000 		.word	huart1
+  92 0034 00380140 		.word	1073821696
+  93              		.cfi_endproc
+  94              	.LFE133:
+  96              		.section	.text.HAL_UART_MspInit,"ax",%progbits
+  97              		.align	1
+  98              		.global	HAL_UART_MspInit
+  99              		.syntax unified
+ 100              		.thumb
+ 101              		.thumb_func
+ 102              		.fpu fpv4-sp-d16
+ 104              	HAL_UART_MspInit:
+ 105              	.LVL2:
+ 106              	.LFB134:
+  54:Src/usart.c   **** 
+  55:Src/usart.c   **** void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
+  56:Src/usart.c   **** {
+ 107              		.loc 1 56 1 is_stmt 1 view -0
+ 108              		.cfi_startproc
+ 109              		@ args = 0, pretend = 0, frame = 32
+ 110              		@ frame_needed = 0, uses_anonymous_args = 0
+ 111              		.loc 1 56 1 is_stmt 0 view .LVU28
+ 112 0000 00B5     		push	{lr}
+ 113              	.LCFI1:
+ 114              		.cfi_def_cfa_offset 4
+ 115              		.cfi_offset 14, -4
+ 116 0002 89B0     		sub	sp, sp, #36
+ 117              	.LCFI2:
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s 			page 4
+
+
+ 118              		.cfi_def_cfa_offset 40
+  57:Src/usart.c   **** 
+  58:Src/usart.c   ****   GPIO_InitTypeDef GPIO_InitStruct = {0};
+ 119              		.loc 1 58 3 is_stmt 1 view .LVU29
+ 120              		.loc 1 58 20 is_stmt 0 view .LVU30
+ 121 0004 0023     		movs	r3, #0
+ 122 0006 0393     		str	r3, [sp, #12]
+ 123 0008 0493     		str	r3, [sp, #16]
+ 124 000a 0593     		str	r3, [sp, #20]
+ 125 000c 0693     		str	r3, [sp, #24]
+ 126 000e 0793     		str	r3, [sp, #28]
+  59:Src/usart.c   ****   if(uartHandle->Instance==USART1)
+ 127              		.loc 1 59 3 is_stmt 1 view .LVU31
+ 128              		.loc 1 59 16 is_stmt 0 view .LVU32
+ 129 0010 0268     		ldr	r2, [r0]
+ 130              		.loc 1 59 5 view .LVU33
+ 131 0012 154B     		ldr	r3, .L11
+ 132 0014 9A42     		cmp	r2, r3
+ 133 0016 02D0     		beq	.L10
+ 134              	.LVL3:
+ 135              	.L7:
+  60:Src/usart.c   ****   {
+  61:Src/usart.c   ****   /* USER CODE BEGIN USART1_MspInit 0 */
+  62:Src/usart.c   **** 
+  63:Src/usart.c   ****   /* USER CODE END USART1_MspInit 0 */
+  64:Src/usart.c   ****     /* USART1 clock enable */
+  65:Src/usart.c   ****     __HAL_RCC_USART1_CLK_ENABLE();
+  66:Src/usart.c   ****   
+  67:Src/usart.c   ****     __HAL_RCC_GPIOA_CLK_ENABLE();
+  68:Src/usart.c   ****     /**USART1 GPIO Configuration    
+  69:Src/usart.c   ****     PA9     ------> USART1_TX
+  70:Src/usart.c   ****     PA10     ------> USART1_RX 
+  71:Src/usart.c   ****     */
+  72:Src/usart.c   ****     GPIO_InitStruct.Pin = GPIO_PIN_9|GPIO_PIN_10;
+  73:Src/usart.c   ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+  74:Src/usart.c   ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+  75:Src/usart.c   ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  76:Src/usart.c   ****     GPIO_InitStruct.Alternate = GPIO_AF7_USART1;
+  77:Src/usart.c   ****     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  78:Src/usart.c   **** 
+  79:Src/usart.c   ****   /* USER CODE BEGIN USART1_MspInit 1 */
+  80:Src/usart.c   **** 
+  81:Src/usart.c   ****   /* USER CODE END USART1_MspInit 1 */
+  82:Src/usart.c   ****   }
+  83:Src/usart.c   **** }
+ 136              		.loc 1 83 1 view .LVU34
+ 137 0018 09B0     		add	sp, sp, #36
+ 138              	.LCFI3:
+ 139              		.cfi_remember_state
+ 140              		.cfi_def_cfa_offset 4
+ 141              		@ sp needed
+ 142 001a 5DF804FB 		ldr	pc, [sp], #4
+ 143              	.LVL4:
+ 144              	.L10:
+ 145              	.LCFI4:
+ 146              		.cfi_restore_state
+  65:Src/usart.c   ****   
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s 			page 5
+
+
+ 147              		.loc 1 65 5 is_stmt 1 view .LVU35
+ 148              	.LBB2:
+  65:Src/usart.c   ****   
+ 149              		.loc 1 65 5 view .LVU36
+  65:Src/usart.c   ****   
+ 150              		.loc 1 65 5 view .LVU37
+ 151 001e 03F55843 		add	r3, r3, #55296
+ 152 0022 1A6E     		ldr	r2, [r3, #96]
+ 153 0024 42F48042 		orr	r2, r2, #16384
+ 154 0028 1A66     		str	r2, [r3, #96]
+  65:Src/usart.c   ****   
+ 155              		.loc 1 65 5 view .LVU38
+ 156 002a 1A6E     		ldr	r2, [r3, #96]
+ 157 002c 02F48042 		and	r2, r2, #16384
+ 158 0030 0192     		str	r2, [sp, #4]
+  65:Src/usart.c   ****   
+ 159              		.loc 1 65 5 view .LVU39
+ 160 0032 019A     		ldr	r2, [sp, #4]
+ 161              	.LBE2:
+  65:Src/usart.c   ****   
+ 162              		.loc 1 65 5 view .LVU40
+  67:Src/usart.c   ****     /**USART1 GPIO Configuration    
+ 163              		.loc 1 67 5 view .LVU41
+ 164              	.LBB3:
+  67:Src/usart.c   ****     /**USART1 GPIO Configuration    
+ 165              		.loc 1 67 5 view .LVU42
+  67:Src/usart.c   ****     /**USART1 GPIO Configuration    
+ 166              		.loc 1 67 5 view .LVU43
+ 167 0034 DA6C     		ldr	r2, [r3, #76]
+ 168 0036 42F00102 		orr	r2, r2, #1
+ 169 003a DA64     		str	r2, [r3, #76]
+  67:Src/usart.c   ****     /**USART1 GPIO Configuration    
+ 170              		.loc 1 67 5 view .LVU44
+ 171 003c DB6C     		ldr	r3, [r3, #76]
+ 172 003e 03F00103 		and	r3, r3, #1
+ 173 0042 0293     		str	r3, [sp, #8]
+  67:Src/usart.c   ****     /**USART1 GPIO Configuration    
+ 174              		.loc 1 67 5 view .LVU45
+ 175 0044 029B     		ldr	r3, [sp, #8]
+ 176              	.LBE3:
+  67:Src/usart.c   ****     /**USART1 GPIO Configuration    
+ 177              		.loc 1 67 5 view .LVU46
+  72:Src/usart.c   ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ 178              		.loc 1 72 5 view .LVU47
+  72:Src/usart.c   ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ 179              		.loc 1 72 25 is_stmt 0 view .LVU48
+ 180 0046 4FF4C063 		mov	r3, #1536
+ 181 004a 0393     		str	r3, [sp, #12]
+  73:Src/usart.c   ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 182              		.loc 1 73 5 is_stmt 1 view .LVU49
+  73:Src/usart.c   ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 183              		.loc 1 73 26 is_stmt 0 view .LVU50
+ 184 004c 0223     		movs	r3, #2
+ 185 004e 0493     		str	r3, [sp, #16]
+  74:Src/usart.c   ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+ 186              		.loc 1 74 5 is_stmt 1 view .LVU51
+  74:Src/usart.c   ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s 			page 6
+
+
+ 187              		.loc 1 74 26 is_stmt 0 view .LVU52
+ 188 0050 0023     		movs	r3, #0
+ 189 0052 0593     		str	r3, [sp, #20]
+  75:Src/usart.c   ****     GPIO_InitStruct.Alternate = GPIO_AF7_USART1;
+ 190              		.loc 1 75 5 is_stmt 1 view .LVU53
+  75:Src/usart.c   ****     GPIO_InitStruct.Alternate = GPIO_AF7_USART1;
+ 191              		.loc 1 75 27 is_stmt 0 view .LVU54
+ 192 0054 0323     		movs	r3, #3
+ 193 0056 0693     		str	r3, [sp, #24]
+  76:Src/usart.c   ****     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+ 194              		.loc 1 76 5 is_stmt 1 view .LVU55
+  76:Src/usart.c   ****     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+ 195              		.loc 1 76 31 is_stmt 0 view .LVU56
+ 196 0058 0723     		movs	r3, #7
+ 197 005a 0793     		str	r3, [sp, #28]
+  77:Src/usart.c   **** 
+ 198              		.loc 1 77 5 is_stmt 1 view .LVU57
+ 199 005c 03A9     		add	r1, sp, #12
+ 200 005e 4FF09040 		mov	r0, #1207959552
+ 201              	.LVL5:
+  77:Src/usart.c   **** 
+ 202              		.loc 1 77 5 is_stmt 0 view .LVU58
+ 203 0062 FFF7FEFF 		bl	HAL_GPIO_Init
+ 204              	.LVL6:
+ 205              		.loc 1 83 1 view .LVU59
+ 206 0066 D7E7     		b	.L7
+ 207              	.L12:
+ 208              		.align	2
+ 209              	.L11:
+ 210 0068 00380140 		.word	1073821696
+ 211              		.cfi_endproc
+ 212              	.LFE134:
+ 214              		.section	.text.HAL_UART_MspDeInit,"ax",%progbits
+ 215              		.align	1
+ 216              		.global	HAL_UART_MspDeInit
+ 217              		.syntax unified
+ 218              		.thumb
+ 219              		.thumb_func
+ 220              		.fpu fpv4-sp-d16
+ 222              	HAL_UART_MspDeInit:
+ 223              	.LVL7:
+ 224              	.LFB135:
+  84:Src/usart.c   **** 
+  85:Src/usart.c   **** void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
+  86:Src/usart.c   **** {
+ 225              		.loc 1 86 1 is_stmt 1 view -0
+ 226              		.cfi_startproc
+ 227              		@ args = 0, pretend = 0, frame = 0
+ 228              		@ frame_needed = 0, uses_anonymous_args = 0
+ 229              		.loc 1 86 1 is_stmt 0 view .LVU61
+ 230 0000 08B5     		push	{r3, lr}
+ 231              	.LCFI5:
+ 232              		.cfi_def_cfa_offset 8
+ 233              		.cfi_offset 3, -8
+ 234              		.cfi_offset 14, -4
+  87:Src/usart.c   **** 
+  88:Src/usart.c   ****   if(uartHandle->Instance==USART1)
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s 			page 7
+
+
+ 235              		.loc 1 88 3 is_stmt 1 view .LVU62
+ 236              		.loc 1 88 16 is_stmt 0 view .LVU63
+ 237 0002 0268     		ldr	r2, [r0]
+ 238              		.loc 1 88 5 view .LVU64
+ 239 0004 074B     		ldr	r3, .L17
+ 240 0006 9A42     		cmp	r2, r3
+ 241 0008 00D0     		beq	.L16
+ 242              	.LVL8:
+ 243              	.L13:
+  89:Src/usart.c   ****   {
+  90:Src/usart.c   ****   /* USER CODE BEGIN USART1_MspDeInit 0 */
+  91:Src/usart.c   **** 
+  92:Src/usart.c   ****   /* USER CODE END USART1_MspDeInit 0 */
+  93:Src/usart.c   ****     /* Peripheral clock disable */
+  94:Src/usart.c   ****     __HAL_RCC_USART1_CLK_DISABLE();
+  95:Src/usart.c   ****   
+  96:Src/usart.c   ****     /**USART1 GPIO Configuration    
+  97:Src/usart.c   ****     PA9     ------> USART1_TX
+  98:Src/usart.c   ****     PA10     ------> USART1_RX 
+  99:Src/usart.c   ****     */
+ 100:Src/usart.c   ****     HAL_GPIO_DeInit(GPIOA, GPIO_PIN_9|GPIO_PIN_10);
+ 101:Src/usart.c   **** 
+ 102:Src/usart.c   ****   /* USER CODE BEGIN USART1_MspDeInit 1 */
+ 103:Src/usart.c   **** 
+ 104:Src/usart.c   ****   /* USER CODE END USART1_MspDeInit 1 */
+ 105:Src/usart.c   ****   }
+ 106:Src/usart.c   **** } 
+ 244              		.loc 1 106 1 view .LVU65
+ 245 000a 08BD     		pop	{r3, pc}
+ 246              	.LVL9:
+ 247              	.L16:
+  94:Src/usart.c   ****   
+ 248              		.loc 1 94 5 is_stmt 1 view .LVU66
+ 249 000c 064A     		ldr	r2, .L17+4
+ 250 000e 136E     		ldr	r3, [r2, #96]
+ 251 0010 23F48043 		bic	r3, r3, #16384
+ 252 0014 1366     		str	r3, [r2, #96]
+ 100:Src/usart.c   **** 
+ 253              		.loc 1 100 5 view .LVU67
+ 254 0016 4FF4C061 		mov	r1, #1536
+ 255 001a 4FF09040 		mov	r0, #1207959552
+ 256              	.LVL10:
+ 100:Src/usart.c   **** 
+ 257              		.loc 1 100 5 is_stmt 0 view .LVU68
+ 258 001e FFF7FEFF 		bl	HAL_GPIO_DeInit
+ 259              	.LVL11:
+ 260              		.loc 1 106 1 view .LVU69
+ 261 0022 F2E7     		b	.L13
+ 262              	.L18:
+ 263              		.align	2
+ 264              	.L17:
+ 265 0024 00380140 		.word	1073821696
+ 266 0028 00100240 		.word	1073876992
+ 267              		.cfi_endproc
+ 268              	.LFE135:
+ 270              		.section	.text.__io_putchar,"ax",%progbits
+ 271              		.align	1
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s 			page 8
+
+
+ 272              		.global	__io_putchar
+ 273              		.syntax unified
+ 274              		.thumb
+ 275              		.thumb_func
+ 276              		.fpu fpv4-sp-d16
+ 278              	__io_putchar:
+ 279              	.LVL12:
+ 280              	.LFB136:
+ 107:Src/usart.c   **** 
+ 108:Src/usart.c   **** /* USER CODE BEGIN 1 */
+ 109:Src/usart.c   **** 
+ 110:Src/usart.c   **** #ifdef __GNUC__
+ 111:Src/usart.c   **** /* With GCC/RAISONANCE, small printf (option LD Linker->Libraries->Small printf
+ 112:Src/usart.c   ****    set to 'Yes') calls __io_putchar() */
+ 113:Src/usart.c   **** #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+ 114:Src/usart.c   **** #else
+ 115:Src/usart.c   **** #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+ 116:Src/usart.c   **** #endif /* __GNUC__ */
+ 117:Src/usart.c   **** /**
+ 118:Src/usart.c   ****   * @brief  Retargets the C library printf function to the USART.
+ 119:Src/usart.c   ****   * @param  None
+ 120:Src/usart.c   ****   * @retval None
+ 121:Src/usart.c   ****   */
+ 122:Src/usart.c   **** PUTCHAR_PROTOTYPE {
+ 281              		.loc 1 122 19 is_stmt 1 view -0
+ 282              		.cfi_startproc
+ 283              		@ args = 0, pretend = 0, frame = 8
+ 284              		@ frame_needed = 0, uses_anonymous_args = 0
+ 285              		.loc 1 122 19 is_stmt 0 view .LVU71
+ 286 0000 00B5     		push	{lr}
+ 287              	.LCFI6:
+ 288              		.cfi_def_cfa_offset 4
+ 289              		.cfi_offset 14, -4
+ 290 0002 83B0     		sub	sp, sp, #12
+ 291              	.LCFI7:
+ 292              		.cfi_def_cfa_offset 16
+ 293 0004 0190     		str	r0, [sp, #4]
+ 123:Src/usart.c   ****     /* Place your implementation of fputc here */
+ 124:Src/usart.c   ****     /* e.g. write a character to the EVAL_COM1 and Loop until the end of transmission */
+ 125:Src/usart.c   ****     HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, 0xFFFF);
+ 294              		.loc 1 125 5 is_stmt 1 view .LVU72
+ 295 0006 4FF6FF73 		movw	r3, #65535
+ 296 000a 0122     		movs	r2, #1
+ 297 000c 01A9     		add	r1, sp, #4
+ 298 000e 0348     		ldr	r0, .L21
+ 299              	.LVL13:
+ 300              		.loc 1 125 5 is_stmt 0 view .LVU73
+ 301 0010 FFF7FEFF 		bl	HAL_UART_Transmit
+ 302              	.LVL14:
+ 126:Src/usart.c   **** 
+ 127:Src/usart.c   ****     return ch;
+ 303              		.loc 1 127 5 is_stmt 1 view .LVU74
+ 128:Src/usart.c   **** }
+ 304              		.loc 1 128 1 is_stmt 0 view .LVU75
+ 305 0014 0198     		ldr	r0, [sp, #4]
+ 306 0016 03B0     		add	sp, sp, #12
+ 307              	.LCFI8:
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s 			page 9
+
+
+ 308              		.cfi_def_cfa_offset 4
+ 309              		@ sp needed
+ 310 0018 5DF804FB 		ldr	pc, [sp], #4
+ 311              	.L22:
+ 312              		.align	2
+ 313              	.L21:
+ 314 001c 00000000 		.word	huart1
+ 315              		.cfi_endproc
+ 316              	.LFE136:
+ 318              		.section	.text.vprint,"ax",%progbits
+ 319              		.align	1
+ 320              		.global	vprint
+ 321              		.syntax unified
+ 322              		.thumb
+ 323              		.thumb_func
+ 324              		.fpu fpv4-sp-d16
+ 326              	vprint:
+ 327              	.LVL15:
+ 328              	.LFB137:
+ 129:Src/usart.c   **** 
+ 130:Src/usart.c   **** void vprint(const char *fmt, va_list argp){
+ 329              		.loc 1 130 43 is_stmt 1 view -0
+ 330              		.cfi_startproc
+ 331              		@ args = 0, pretend = 0, frame = 200
+ 332              		@ frame_needed = 0, uses_anonymous_args = 0
+ 333              		.loc 1 130 43 is_stmt 0 view .LVU77
+ 334 0000 00B5     		push	{lr}
+ 335              	.LCFI9:
+ 336              		.cfi_def_cfa_offset 4
+ 337              		.cfi_offset 14, -4
+ 338 0002 B3B0     		sub	sp, sp, #204
+ 339              	.LCFI10:
+ 340              		.cfi_def_cfa_offset 208
+ 341 0004 0A46     		mov	r2, r1
+ 131:Src/usart.c   ****     char string[200];
+ 342              		.loc 1 131 5 is_stmt 1 view .LVU78
+ 132:Src/usart.c   ****     if(0 < vsprintf(string,fmt,argp)) // build string
+ 343              		.loc 1 132 5 view .LVU79
+ 344              		.loc 1 132 12 is_stmt 0 view .LVU80
+ 345 0006 0146     		mov	r1, r0
+ 346              	.LVL16:
+ 347              		.loc 1 132 12 view .LVU81
+ 348 0008 6846     		mov	r0, sp
+ 349              	.LVL17:
+ 350              		.loc 1 132 12 view .LVU82
+ 351 000a FFF7FEFF 		bl	vsprintf
+ 352              	.LVL18:
+ 353              		.loc 1 132 7 view .LVU83
+ 354 000e 0028     		cmp	r0, #0
+ 355 0010 02DC     		bgt	.L26
+ 356              	.L23:
+ 133:Src/usart.c   ****     {
+ 134:Src/usart.c   ****         HAL_UART_Transmit(&huart1, (uint8_t*)string, strlen(string), 0xffffff); // send message via
+ 135:Src/usart.c   ****     }
+ 136:Src/usart.c   **** }
+ 357              		.loc 1 136 1 view .LVU84
+ 358 0012 33B0     		add	sp, sp, #204
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s 			page 10
+
+
+ 359              	.LCFI11:
+ 360              		.cfi_remember_state
+ 361              		.cfi_def_cfa_offset 4
+ 362              		@ sp needed
+ 363 0014 5DF804FB 		ldr	pc, [sp], #4
+ 364              	.L26:
+ 365              	.LCFI12:
+ 366              		.cfi_restore_state
+ 134:Src/usart.c   ****     }
+ 367              		.loc 1 134 9 is_stmt 1 view .LVU85
+ 134:Src/usart.c   ****     }
+ 368              		.loc 1 134 54 is_stmt 0 view .LVU86
+ 369 0018 6846     		mov	r0, sp
+ 370 001a FFF7FEFF 		bl	strlen
+ 371              	.LVL19:
+ 134:Src/usart.c   ****     }
+ 372              		.loc 1 134 9 view .LVU87
+ 373 001e 6FF07F43 		mvn	r3, #-16777216
+ 374 0022 82B2     		uxth	r2, r0
+ 375 0024 6946     		mov	r1, sp
+ 376 0026 0248     		ldr	r0, .L27
+ 377 0028 FFF7FEFF 		bl	HAL_UART_Transmit
+ 378              	.LVL20:
+ 379              		.loc 1 136 1 view .LVU88
+ 380 002c F1E7     		b	.L23
+ 381              	.L28:
+ 382 002e 00BF     		.align	2
+ 383              	.L27:
+ 384 0030 00000000 		.word	huart1
+ 385              		.cfi_endproc
+ 386              	.LFE137:
+ 388              		.section	.text.my_printf,"ax",%progbits
+ 389              		.align	1
+ 390              		.global	my_printf
+ 391              		.syntax unified
+ 392              		.thumb
+ 393              		.thumb_func
+ 394              		.fpu fpv4-sp-d16
+ 396              	my_printf:
+ 397              	.LVL21:
+ 398              	.LFB138:
+ 137:Src/usart.c   **** void my_printf(const char *fmt, ...){ // custom printf() function
+ 399              		.loc 1 137 37 is_stmt 1 view -0
+ 400              		.cfi_startproc
+ 401              		@ args = 4, pretend = 16, frame = 8
+ 402              		@ frame_needed = 0, uses_anonymous_args = 1
+ 403              		.loc 1 137 37 is_stmt 0 view .LVU90
+ 404 0000 0FB4     		push	{r0, r1, r2, r3}
+ 405              	.LCFI13:
+ 406              		.cfi_def_cfa_offset 16
+ 407              		.cfi_offset 0, -16
+ 408              		.cfi_offset 1, -12
+ 409              		.cfi_offset 2, -8
+ 410              		.cfi_offset 3, -4
+ 411 0002 00B5     		push	{lr}
+ 412              	.LCFI14:
+ 413              		.cfi_def_cfa_offset 20
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s 			page 11
+
+
+ 414              		.cfi_offset 14, -20
+ 415 0004 83B0     		sub	sp, sp, #12
+ 416              	.LCFI15:
+ 417              		.cfi_def_cfa_offset 32
+ 418 0006 04A9     		add	r1, sp, #16
+ 419 0008 51F8040B 		ldr	r0, [r1], #4
+ 138:Src/usart.c   **** 	va_list argp;
+ 420              		.loc 1 138 2 is_stmt 1 view .LVU91
+ 139:Src/usart.c   **** 	va_start(argp, fmt);
+ 421              		.loc 1 139 2 view .LVU92
+ 422 000c 0191     		str	r1, [sp, #4]
+ 140:Src/usart.c   **** 	vprint(fmt, argp);
+ 423              		.loc 1 140 2 view .LVU93
+ 424 000e FFF7FEFF 		bl	vprint
+ 425              	.LVL22:
+ 141:Src/usart.c   **** 	va_end(argp);
+ 426              		.loc 1 141 2 view .LVU94
+ 142:Src/usart.c   **** }
+ 427              		.loc 1 142 1 is_stmt 0 view .LVU95
+ 428 0012 03B0     		add	sp, sp, #12
+ 429              	.LCFI16:
+ 430              		.cfi_def_cfa_offset 20
+ 431              		@ sp needed
+ 432 0014 5DF804EB 		ldr	lr, [sp], #4
+ 433              	.LCFI17:
+ 434              		.cfi_restore 14
+ 435              		.cfi_def_cfa_offset 16
+ 436 0018 04B0     		add	sp, sp, #16
+ 437              	.LCFI18:
+ 438              		.cfi_restore 3
+ 439              		.cfi_restore 2
+ 440              		.cfi_restore 1
+ 441              		.cfi_restore 0
+ 442              		.cfi_def_cfa_offset 0
+ 443 001a 7047     		bx	lr
+ 444              		.cfi_endproc
+ 445              	.LFE138:
+ 447              		.section	.rodata.PrintMemoryMap.str1.4,"aMS",%progbits,1
+ 448              		.align	2
+ 449              	.LC0:
+ 450 0000 5072696E 		.ascii	"PrintMemoryMap() start\000"
+ 450      744D656D 
+ 450      6F72794D 
+ 450      61702829 
+ 450      20737461 
+ 451 0017 00       		.align	2
+ 452              	.LC1:
+ 453 0018 0D0A00   		.ascii	"\015\012\000"
+ 454 001b 00       		.align	2
+ 455              	.LC2:
+ 456 001c 41646472 		.ascii	"Address : 0x%08X%s\000"
+ 456      65737320 
+ 456      3A203078 
+ 456      25303858 
+ 456      257300
+ 457 002f 00       		.align	2
+ 458              	.LC3:
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s 			page 12
+
+
+ 459 0030 30782530 		.ascii	"0x%08X: \000"
+ 459      38583A20 
+ 459      00
+ 460 0039 000000   		.align	2
+ 461              	.LC4:
+ 462 003c 25303258 		.ascii	"%02X \000"
+ 462      2000
+ 463 0042 0000     		.align	2
+ 464              	.LC5:
+ 465 0044 20202000 		.ascii	"   \000"
+ 466              		.align	2
+ 467              	.LC6:
+ 468 0048 5072696E 		.ascii	"PrintMemoryMap() end\000"
+ 468      744D656D 
+ 468      6F72794D 
+ 468      61702829 
+ 468      20656E64 
+ 469              		.section	.text.PrintMemoryMap,"ax",%progbits
+ 470              		.align	1
+ 471              		.global	PrintMemoryMap
+ 472              		.syntax unified
+ 473              		.thumb
+ 474              		.thumb_func
+ 475              		.fpu fpv4-sp-d16
+ 477              	PrintMemoryMap:
+ 478              	.LVL23:
+ 479              	.LFB139:
+ 143:Src/usart.c   **** 
+ 144:Src/usart.c   **** void PrintMemoryMap(int _showaddress, void* _address, int len, int bitRow) {
+ 480              		.loc 1 144 76 is_stmt 1 view -0
+ 481              		.cfi_startproc
+ 482              		@ args = 0, pretend = 0, frame = 0
+ 483              		@ frame_needed = 0, uses_anonymous_args = 0
+ 484              		.loc 1 144 76 is_stmt 0 view .LVU97
+ 485 0000 2DE9F84F 		push	{r3, r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 486              	.LCFI19:
+ 487              		.cfi_def_cfa_offset 40
+ 488              		.cfi_offset 3, -40
+ 489              		.cfi_offset 4, -36
+ 490              		.cfi_offset 5, -32
+ 491              		.cfi_offset 6, -28
+ 492              		.cfi_offset 7, -24
+ 493              		.cfi_offset 8, -20
+ 494              		.cfi_offset 9, -16
+ 495              		.cfi_offset 10, -12
+ 496              		.cfi_offset 11, -8
+ 497              		.cfi_offset 14, -4
+ 498 0004 8346     		mov	fp, r0
+ 499 0006 0F46     		mov	r7, r1
+ 500 0008 9246     		mov	r10, r2
+ 501 000a 1D46     		mov	r5, r3
+ 145:Src/usart.c   **** 	my_printf("PrintMemoryMap() start");
+ 502              		.loc 1 145 2 is_stmt 1 view .LVU98
+ 503 000c 4848     		ldr	r0, .L53
+ 504              	.LVL24:
+ 505              		.loc 1 145 2 is_stmt 0 view .LVU99
+ 506 000e FFF7FEFF 		bl	my_printf
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s 			page 13
+
+
+ 507              	.LVL25:
+ 146:Src/usart.c   **** 	char *_Buf1 = (char*)malloc(bitRow + 1);
+ 508              		.loc 1 146 2 is_stmt 1 view .LVU100
+ 509              		.loc 1 146 37 is_stmt 0 view .LVU101
+ 510 0012 6C1C     		adds	r4, r5, #1
+ 511              		.loc 1 146 23 view .LVU102
+ 512 0014 2046     		mov	r0, r4
+ 513 0016 FFF7FEFF 		bl	malloc
+ 514              	.LVL26:
+ 515 001a 8046     		mov	r8, r0
+ 516              	.LVL27:
+ 147:Src/usart.c   **** 	memset(_Buf1, 0, bitRow + 1);
+ 517              		.loc 1 147 2 is_stmt 1 view .LVU103
+ 518 001c 2246     		mov	r2, r4
+ 519 001e 0021     		movs	r1, #0
+ 520 0020 FFF7FEFF 		bl	memset
+ 521              	.LVL28:
+ 148:Src/usart.c   **** 	char* addr = (char*)_address;
+ 522              		.loc 1 148 2 view .LVU104
+ 149:Src/usart.c   **** 
+ 150:Src/usart.c   **** 	char* newline = "\r\n";
+ 523              		.loc 1 150 2 view .LVU105
+ 151:Src/usart.c   **** 	my_printf("Address : 0x%08X%s", _showaddress, newline);
+ 524              		.loc 1 151 2 view .LVU106
+ 525 0024 434A     		ldr	r2, .L53+4
+ 526 0026 5946     		mov	r1, fp
+ 527 0028 4348     		ldr	r0, .L53+8
+ 528 002a FFF7FEFF 		bl	my_printf
+ 529              	.LVL29:
+ 152:Src/usart.c   **** 	int remainbyte = len % bitRow;
+ 530              		.loc 1 152 2 view .LVU107
+ 531              		.loc 1 152 6 is_stmt 0 view .LVU108
+ 532 002e 9AFBF5F9 		sdiv	r9, r10, r5
+ 533 0032 05FB19A9 		mls	r9, r5, r9, r10
+ 534              	.LVL30:
+ 153:Src/usart.c   **** 	int focus = 0;
+ 535              		.loc 1 153 2 is_stmt 1 view .LVU109
+ 154:Src/usart.c   **** 
+ 155:Src/usart.c   **** 	//my_printf((String)"focus      : " + focus);
+ 156:Src/usart.c   **** 	//my_printf((String)"remainbyte : " + remainbyte);
+ 157:Src/usart.c   **** 	//my_printf((String)"len        : " + len);
+ 158:Src/usart.c   **** 	//my_printf((String)"bitRow     : " + bitRow);
+ 159:Src/usart.c   **** 	//my_printf((String)"Consistence: " + len + "=" + (len-remainbyte) + "+" + remainbyte);
+ 160:Src/usart.c   **** 
+ 161:Src/usart.c   **** 	for (; focus < (len - remainbyte); focus++) {
+ 536              		.loc 1 161 2 view .LVU110
+ 153:Src/usart.c   **** 	int focus = 0;
+ 537              		.loc 1 153 6 is_stmt 0 view .LVU111
+ 538 0036 0024     		movs	r4, #0
+ 539              		.loc 1 161 2 view .LVU112
+ 540 0038 0CE0     		b	.L32
+ 541              	.LVL31:
+ 542              	.L50:
+ 162:Src/usart.c   **** 		if ((focus % bitRow) == 0) {
+ 163:Src/usart.c   **** 			my_printf("0x%08X: ", _showaddress + focus);
+ 543              		.loc 1 163 4 is_stmt 1 view .LVU113
+ 544 003a 04EB0B01 		add	r1, r4, fp
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s 			page 14
+
+
+ 545 003e 3F48     		ldr	r0, .L53+12
+ 546 0040 FFF7FEFF 		bl	my_printf
+ 547              	.LVL32:
+ 548 0044 10E0     		b	.L33
+ 549              	.L34:
+ 164:Src/usart.c   **** 		}
+ 165:Src/usart.c   **** 		my_printf("%02X ", (int)addr[focus]);
+ 166:Src/usart.c   **** 		if (32 <= (uint8_t)addr[focus] && (uint8_t)addr[focus] <= 127)
+ 167:Src/usart.c   **** 			_Buf1[focus%bitRow] = addr[focus];
+ 168:Src/usart.c   **** 		else
+ 169:Src/usart.c   **** 			_Buf1[focus%bitRow] = '.';
+ 550              		.loc 1 169 4 view .LVU114
+ 551              		.loc 1 169 24 is_stmt 0 view .LVU115
+ 552 0046 2E23     		movs	r3, #46
+ 553 0048 08F80630 		strb	r3, [r8, r6]
+ 554              	.L35:
+ 170:Src/usart.c   **** 
+ 171:Src/usart.c   **** 		if ((focus % bitRow) == (bitRow - 1)) {
+ 555              		.loc 1 171 3 is_stmt 1 view .LVU116
+ 556              		.loc 1 171 35 is_stmt 0 view .LVU117
+ 557 004c 6B1E     		subs	r3, r5, #1
+ 558              		.loc 1 171 6 view .LVU118
+ 559 004e 9E42     		cmp	r6, r3
+ 560 0050 17D0     		beq	.L48
+ 561              	.L36:
+ 161:Src/usart.c   **** 		if ((focus % bitRow) == 0) {
+ 562              		.loc 1 161 37 is_stmt 1 view .LVU119
+ 161:Src/usart.c   **** 		if ((focus % bitRow) == 0) {
+ 563              		.loc 1 161 42 is_stmt 0 view .LVU120
+ 564 0052 0134     		adds	r4, r4, #1
+ 565              	.LVL33:
+ 566              	.L32:
+ 161:Src/usart.c   **** 		if ((focus % bitRow) == 0) {
+ 567              		.loc 1 161 9 is_stmt 1 discriminator 1 view .LVU121
+ 161:Src/usart.c   **** 		if ((focus % bitRow) == 0) {
+ 568              		.loc 1 161 22 is_stmt 0 discriminator 1 view .LVU122
+ 569 0054 AAEB0903 		sub	r3, r10, r9
+ 161:Src/usart.c   **** 		if ((focus % bitRow) == 0) {
+ 570              		.loc 1 161 2 discriminator 1 view .LVU123
+ 571 0058 A342     		cmp	r3, r4
+ 572 005a 1EDD     		ble	.L49
+ 162:Src/usart.c   **** 			my_printf("0x%08X: ", _showaddress + focus);
+ 573              		.loc 1 162 3 is_stmt 1 view .LVU124
+ 162:Src/usart.c   **** 			my_printf("0x%08X: ", _showaddress + focus);
+ 574              		.loc 1 162 14 is_stmt 0 view .LVU125
+ 575 005c 94FBF5F6 		sdiv	r6, r4, r5
+ 576 0060 05FB1646 		mls	r6, r5, r6, r4
+ 162:Src/usart.c   **** 			my_printf("0x%08X: ", _showaddress + focus);
+ 577              		.loc 1 162 6 view .LVU126
+ 578 0064 002E     		cmp	r6, #0
+ 579 0066 E8D0     		beq	.L50
+ 580              	.L33:
+ 165:Src/usart.c   **** 		if (32 <= (uint8_t)addr[focus] && (uint8_t)addr[focus] <= 127)
+ 581              		.loc 1 165 3 is_stmt 1 view .LVU127
+ 582 0068 395D     		ldrb	r1, [r7, r4]	@ zero_extendqisi2
+ 583 006a 3548     		ldr	r0, .L53+16
+ 584 006c FFF7FEFF 		bl	my_printf
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s 			page 15
+
+
+ 585              	.LVL34:
+ 166:Src/usart.c   **** 			_Buf1[focus%bitRow] = addr[focus];
+ 586              		.loc 1 166 3 view .LVU128
+ 166:Src/usart.c   **** 			_Buf1[focus%bitRow] = addr[focus];
+ 587              		.loc 1 166 26 is_stmt 0 view .LVU129
+ 588 0070 3A5D     		ldrb	r2, [r7, r4]	@ zero_extendqisi2
+ 166:Src/usart.c   **** 			_Buf1[focus%bitRow] = addr[focus];
+ 589              		.loc 1 166 34 view .LVU130
+ 590 0072 A2F12003 		sub	r3, r2, #32
+ 591 0076 DBB2     		uxtb	r3, r3
+ 166:Src/usart.c   **** 			_Buf1[focus%bitRow] = addr[focus];
+ 592              		.loc 1 166 6 view .LVU131
+ 593 0078 5F2B     		cmp	r3, #95
+ 594 007a E4D8     		bhi	.L34
+ 167:Src/usart.c   **** 		else
+ 595              		.loc 1 167 4 is_stmt 1 view .LVU132
+ 167:Src/usart.c   **** 		else
+ 596              		.loc 1 167 24 is_stmt 0 view .LVU133
+ 597 007c 08F80620 		strb	r2, [r8, r6]
+ 598 0080 E4E7     		b	.L35
+ 599              	.L48:
+ 172:Src/usart.c   **** 			my_printf(_Buf1);
+ 600              		.loc 1 172 4 is_stmt 1 view .LVU134
+ 601 0082 4046     		mov	r0, r8
+ 602 0084 FFF7FEFF 		bl	my_printf
+ 603              	.LVL35:
+ 173:Src/usart.c   ****       my_printf(newline);
+ 604              		.loc 1 173 7 view .LVU135
+ 605 0088 2A48     		ldr	r0, .L53+4
+ 606 008a FFF7FEFF 		bl	my_printf
+ 607              	.LVL36:
+ 174:Src/usart.c   **** 			memset(_Buf1, 0, bitRow);
+ 608              		.loc 1 174 4 view .LVU136
+ 609 008e 2A46     		mov	r2, r5
+ 610 0090 0021     		movs	r1, #0
+ 611 0092 4046     		mov	r0, r8
+ 612 0094 FFF7FEFF 		bl	memset
+ 613              	.LVL37:
+ 614 0098 DBE7     		b	.L36
+ 615              	.L49:
+ 175:Src/usart.c   **** 		}
+ 176:Src/usart.c   **** 	}
+ 177:Src/usart.c   **** 
+ 178:Src/usart.c   **** 	if(remainbyte)
+ 616              		.loc 1 178 2 view .LVU137
+ 617              		.loc 1 178 4 is_stmt 0 view .LVU138
+ 618 009a B9F1000F 		cmp	r9, #0
+ 619 009e 44D1     		bne	.L46
+ 620              	.LVL38:
+ 621              	.L39:
+ 179:Src/usart.c   **** 		for (int i = 0; i < bitRow; i++) {
+ 180:Src/usart.c   **** 			if ((focus % bitRow) == 0) {
+ 181:Src/usart.c   **** 				my_printf("0x%08X: ", _showaddress + focus);
+ 182:Src/usart.c   **** 			}
+ 183:Src/usart.c   **** 			if (i > (remainbyte - 1)) {
+ 184:Src/usart.c   **** 				my_printf("   ");
+ 185:Src/usart.c   **** 			}
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s 			page 16
+
+
+ 186:Src/usart.c   **** 			else {
+ 187:Src/usart.c   **** 				my_printf("%02X ", addr[focus]);
+ 188:Src/usart.c   **** 				if ('0' <= (uint8_t)addr[focus] && (uint8_t)addr[focus] <= 127)
+ 189:Src/usart.c   **** 					_Buf1[focus%bitRow] = addr[focus];
+ 190:Src/usart.c   **** 				else
+ 191:Src/usart.c   **** 					_Buf1[focus%bitRow] = '.';
+ 192:Src/usart.c   **** 			}
+ 193:Src/usart.c   **** 			if (i == bitRow - 1) {
+ 194:Src/usart.c   **** 				my_printf(_Buf1);
+ 195:Src/usart.c   ****         my_printf(newline);
+ 196:Src/usart.c   **** 				memset(_Buf1, 0, bitRow);
+ 197:Src/usart.c   **** 			}
+ 198:Src/usart.c   **** 			focus++;
+ 199:Src/usart.c   **** 		}
+ 200:Src/usart.c   **** 	free(_Buf1);
+ 622              		.loc 1 200 2 is_stmt 1 view .LVU139
+ 623 00a0 4046     		mov	r0, r8
+ 624 00a2 FFF7FEFF 		bl	free
+ 625              	.LVL39:
+ 201:Src/usart.c   **** 	my_printf(newline);
+ 626              		.loc 1 201 2 view .LVU140
+ 627 00a6 234C     		ldr	r4, .L53+4
+ 628              	.LVL40:
+ 629              		.loc 1 201 2 is_stmt 0 view .LVU141
+ 630 00a8 2046     		mov	r0, r4
+ 631 00aa FFF7FEFF 		bl	my_printf
+ 632              	.LVL41:
+ 202:Src/usart.c   **** 	my_printf("PrintMemoryMap() end");
+ 633              		.loc 1 202 2 is_stmt 1 view .LVU142
+ 634 00ae 2548     		ldr	r0, .L53+20
+ 635 00b0 FFF7FEFF 		bl	my_printf
+ 636              	.LVL42:
+ 203:Src/usart.c   **** 	my_printf("\r\n");
+ 637              		.loc 1 203 2 view .LVU143
+ 638 00b4 2046     		mov	r0, r4
+ 639 00b6 FFF7FEFF 		bl	my_printf
+ 640              	.LVL43:
+ 204:Src/usart.c   **** }
+ 641              		.loc 1 204 1 is_stmt 0 view .LVU144
+ 642 00ba BDE8F88F 		pop	{r3, r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 643              	.LVL44:
+ 644              	.L52:
+ 645              	.LBB4:
+ 181:Src/usart.c   **** 			}
+ 646              		.loc 1 181 5 is_stmt 1 view .LVU145
+ 647 00be 04EB0B01 		add	r1, r4, fp
+ 648 00c2 1E48     		ldr	r0, .L53+12
+ 649 00c4 FFF7FEFF 		bl	my_printf
+ 650              	.LVL45:
+ 651 00c8 19E0     		b	.L40
+ 652              	.L41:
+ 187:Src/usart.c   **** 				if ('0' <= (uint8_t)addr[focus] && (uint8_t)addr[focus] <= 127)
+ 653              		.loc 1 187 5 view .LVU146
+ 654 00ca 395D     		ldrb	r1, [r7, r4]	@ zero_extendqisi2
+ 655 00cc 1C48     		ldr	r0, .L53+16
+ 656 00ce FFF7FEFF 		bl	my_printf
+ 657              	.LVL46:
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s 			page 17
+
+
+ 188:Src/usart.c   **** 					_Buf1[focus%bitRow] = addr[focus];
+ 658              		.loc 1 188 5 view .LVU147
+ 188:Src/usart.c   **** 					_Buf1[focus%bitRow] = addr[focus];
+ 659              		.loc 1 188 29 is_stmt 0 view .LVU148
+ 660 00d2 3A5D     		ldrb	r2, [r7, r4]	@ zero_extendqisi2
+ 188:Src/usart.c   **** 					_Buf1[focus%bitRow] = addr[focus];
+ 661              		.loc 1 188 37 view .LVU149
+ 662 00d4 A2F13003 		sub	r3, r2, #48
+ 663 00d8 DBB2     		uxtb	r3, r3
+ 188:Src/usart.c   **** 					_Buf1[focus%bitRow] = addr[focus];
+ 664              		.loc 1 188 8 view .LVU150
+ 665 00da 4F2B     		cmp	r3, #79
+ 666 00dc 15D8     		bhi	.L43
+ 189:Src/usart.c   **** 				else
+ 667              		.loc 1 189 6 is_stmt 1 view .LVU151
+ 189:Src/usart.c   **** 				else
+ 668              		.loc 1 189 26 is_stmt 0 view .LVU152
+ 669 00de 08F80A20 		strb	r2, [r8, r10]
+ 670              	.L42:
+ 193:Src/usart.c   **** 				my_printf(_Buf1);
+ 671              		.loc 1 193 4 is_stmt 1 view .LVU153
+ 193:Src/usart.c   **** 				my_printf(_Buf1);
+ 672              		.loc 1 193 20 is_stmt 0 view .LVU154
+ 673 00e2 6B1E     		subs	r3, r5, #1
+ 193:Src/usart.c   **** 				my_printf(_Buf1);
+ 674              		.loc 1 193 7 view .LVU155
+ 675 00e4 B342     		cmp	r3, r6
+ 676 00e6 14D0     		beq	.L51
+ 677              	.L44:
+ 198:Src/usart.c   **** 		}
+ 678              		.loc 1 198 4 is_stmt 1 discriminator 2 view .LVU156
+ 198:Src/usart.c   **** 		}
+ 679              		.loc 1 198 9 is_stmt 0 discriminator 2 view .LVU157
+ 680 00e8 0134     		adds	r4, r4, #1
+ 681              	.LVL47:
+ 179:Src/usart.c   **** 			if ((focus % bitRow) == 0) {
+ 682              		.loc 1 179 31 is_stmt 1 discriminator 2 view .LVU158
+ 179:Src/usart.c   **** 			if ((focus % bitRow) == 0) {
+ 683              		.loc 1 179 32 is_stmt 0 discriminator 2 view .LVU159
+ 684 00ea 0136     		adds	r6, r6, #1
+ 685              	.LVL48:
+ 686              	.L38:
+ 179:Src/usart.c   **** 			if ((focus % bitRow) == 0) {
+ 687              		.loc 1 179 19 is_stmt 1 discriminator 1 view .LVU160
+ 179:Src/usart.c   **** 			if ((focus % bitRow) == 0) {
+ 688              		.loc 1 179 3 is_stmt 0 discriminator 1 view .LVU161
+ 689 00ec AE42     		cmp	r6, r5
+ 690 00ee D7DA     		bge	.L39
+ 180:Src/usart.c   **** 				my_printf("0x%08X: ", _showaddress + focus);
+ 691              		.loc 1 180 4 is_stmt 1 view .LVU162
+ 180:Src/usart.c   **** 				my_printf("0x%08X: ", _showaddress + focus);
+ 692              		.loc 1 180 15 is_stmt 0 view .LVU163
+ 693 00f0 94FBF5FA 		sdiv	r10, r4, r5
+ 694 00f4 05FB1A4A 		mls	r10, r5, r10, r4
+ 180:Src/usart.c   **** 				my_printf("0x%08X: ", _showaddress + focus);
+ 695              		.loc 1 180 7 view .LVU164
+ 696 00f8 BAF1000F 		cmp	r10, #0
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s 			page 18
+
+
+ 697 00fc DFD0     		beq	.L52
+ 698              	.L40:
+ 183:Src/usart.c   **** 				my_printf("   ");
+ 699              		.loc 1 183 4 is_stmt 1 view .LVU165
+ 183:Src/usart.c   **** 				my_printf("   ");
+ 700              		.loc 1 183 7 is_stmt 0 view .LVU166
+ 701 00fe 4E45     		cmp	r6, r9
+ 702 0100 E3DB     		blt	.L41
+ 184:Src/usart.c   **** 			}
+ 703              		.loc 1 184 5 is_stmt 1 view .LVU167
+ 704 0102 1148     		ldr	r0, .L53+24
+ 705 0104 FFF7FEFF 		bl	my_printf
+ 706              	.LVL49:
+ 707 0108 EBE7     		b	.L42
+ 708              	.L43:
+ 191:Src/usart.c   **** 			}
+ 709              		.loc 1 191 6 view .LVU168
+ 191:Src/usart.c   **** 			}
+ 710              		.loc 1 191 26 is_stmt 0 view .LVU169
+ 711 010a 2E23     		movs	r3, #46
+ 712 010c 08F80A30 		strb	r3, [r8, r10]
+ 713 0110 E7E7     		b	.L42
+ 714              	.L51:
+ 194:Src/usart.c   ****         my_printf(newline);
+ 715              		.loc 1 194 5 is_stmt 1 view .LVU170
+ 716 0112 4046     		mov	r0, r8
+ 717 0114 FFF7FEFF 		bl	my_printf
+ 718              	.LVL50:
+ 195:Src/usart.c   **** 				memset(_Buf1, 0, bitRow);
+ 719              		.loc 1 195 9 view .LVU171
+ 720 0118 0648     		ldr	r0, .L53+4
+ 721 011a FFF7FEFF 		bl	my_printf
+ 722              	.LVL51:
+ 196:Src/usart.c   **** 			}
+ 723              		.loc 1 196 5 view .LVU172
+ 724 011e 2A46     		mov	r2, r5
+ 725 0120 0021     		movs	r1, #0
+ 726 0122 4046     		mov	r0, r8
+ 727 0124 FFF7FEFF 		bl	memset
+ 728              	.LVL52:
+ 729 0128 DEE7     		b	.L44
+ 730              	.LVL53:
+ 731              	.L46:
+ 179:Src/usart.c   **** 			if ((focus % bitRow) == 0) {
+ 732              		.loc 1 179 12 is_stmt 0 view .LVU173
+ 733 012a 0026     		movs	r6, #0
+ 734 012c DEE7     		b	.L38
+ 735              	.L54:
+ 736 012e 00BF     		.align	2
+ 737              	.L53:
+ 738 0130 00000000 		.word	.LC0
+ 739 0134 18000000 		.word	.LC1
+ 740 0138 1C000000 		.word	.LC2
+ 741 013c 30000000 		.word	.LC3
+ 742 0140 3C000000 		.word	.LC4
+ 743 0144 48000000 		.word	.LC6
+ 744 0148 44000000 		.word	.LC5
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s 			page 19
+
+
+ 745              	.LBE4:
+ 746              		.cfi_endproc
+ 747              	.LFE139:
+ 749              		.section	.text.FRESULTPrinter,"ax",%progbits
+ 750              		.align	1
+ 751              		.global	FRESULTPrinter
+ 752              		.syntax unified
+ 753              		.thumb
+ 754              		.thumb_func
+ 755              		.fpu fpv4-sp-d16
+ 757              	FRESULTPrinter:
+ 758              	.LVL54:
+ 759              	.LFB140:
+ 205:Src/usart.c   **** char *FRESULTStr[20] = {
+ 206:Src/usart.c   **** 	"FR_OK,(0) Succeeded"
+ 207:Src/usart.c   **** 	,"FR_DISK_ERR,(1) A hard error occurred in the low level disk I/O layer"
+ 208:Src/usart.c   **** 	,"FR_INT_ERR,(2) Assertion failed"
+ 209:Src/usart.c   **** 	,"FR_NOT_READY,(3) The physical drive cannot work"
+ 210:Src/usart.c   **** 	,"FR_NO_FILE,(4) Could not find the file"
+ 211:Src/usart.c   **** 	,"FR_NO_PATH,(5) Could not find the path"
+ 212:Src/usart.c   **** 	,"FR_INVALID_NAME,(6) The path name format is invalid"
+ 213:Src/usart.c   **** 	,"FR_DENIED,(7) Access denied due to prohibited access or directory full"
+ 214:Src/usart.c   **** 	,"FR_EXIST,(8) Access denied due to prohibited access"
+ 215:Src/usart.c   **** 	,"FR_INVALID_OBJECT,(9) The file/directory object is invalid"
+ 216:Src/usart.c   **** 	,"FR_WRITE_PROTECTED,(10) The physical drive is write protected"
+ 217:Src/usart.c   **** 	,"FR_INVALID_DRIVE,(11) The logical drive number is invalid"
+ 218:Src/usart.c   **** 	,"FR_NOT_ENABLED,(12) The volume has no work area"
+ 219:Src/usart.c   **** 	,"FR_NO_FILESYSTEM,(13) There is no valid FAT volume"
+ 220:Src/usart.c   **** 	,"FR_MKFS_ABORTED,(14) The f_mkfs() aborted due to any problem"
+ 221:Src/usart.c   **** 	,"FR_TIMEOUT,(15) Could not get a grant to access the volume within defined period"
+ 222:Src/usart.c   **** 	,"FR_LOCKED,(16) The operation is rejected according to the file sharing policy"
+ 223:Src/usart.c   **** 	,"FR_NOT_ENOUGH_CORE,(17) LFN working buffer could not be allocated"
+ 224:Src/usart.c   **** 	,"FR_TOO_MANY_OPEN_FILES,(18) Number of open files > _FS_LOCK"
+ 225:Src/usart.c   **** 	,"FR_INVALID_PARAMETER,(19) Given parameter is invalid"
+ 226:Src/usart.c   **** };
+ 227:Src/usart.c   **** char* FRESULTPrinter(int res){
+ 760              		.loc 1 227 30 is_stmt 1 view -0
+ 761              		.cfi_startproc
+ 762              		@ args = 0, pretend = 0, frame = 0
+ 763              		@ frame_needed = 0, uses_anonymous_args = 0
+ 764              		@ link register save eliminated.
+ 228:Src/usart.c   **** 	return FRESULTStr[res];
+ 765              		.loc 1 228 2 view .LVU175
+ 229:Src/usart.c   **** }
+ 766              		.loc 1 229 1 is_stmt 0 view .LVU176
+ 767 0000 014B     		ldr	r3, .L56
+ 768 0002 53F82000 		ldr	r0, [r3, r0, lsl #2]
+ 769              	.LVL55:
+ 770              		.loc 1 229 1 view .LVU177
+ 771 0006 7047     		bx	lr
+ 772              	.L57:
+ 773              		.align	2
+ 774              	.L56:
+ 775 0008 00000000 		.word	.LANCHOR0
+ 776              		.cfi_endproc
+ 777              	.LFE140:
+ 779              		.global	FRESULTStr
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s 			page 20
+
+
+ 780              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 781              		.align	2
+ 782              	.LC7:
+ 783 0000 46525F4F 		.ascii	"FR_OK,(0) Succeeded\000"
+ 783      4B2C2830 
+ 783      29205375 
+ 783      63636565 
+ 783      64656400 
+ 784              		.align	2
+ 785              	.LC8:
+ 786 0014 46525F44 		.ascii	"FR_DISK_ERR,(1) A hard error occurred in the low le"
+ 786      49534B5F 
+ 786      4552522C 
+ 786      28312920 
+ 786      41206861 
+ 787 0047 76656C20 		.ascii	"vel disk I/O layer\000"
+ 787      6469736B 
+ 787      20492F4F 
+ 787      206C6179 
+ 787      657200
+ 788 005a 0000     		.align	2
+ 789              	.LC9:
+ 790 005c 46525F49 		.ascii	"FR_INT_ERR,(2) Assertion failed\000"
+ 790      4E545F45 
+ 790      52522C28 
+ 790      32292041 
+ 790      73736572 
+ 791              		.align	2
+ 792              	.LC10:
+ 793 007c 46525F4E 		.ascii	"FR_NOT_READY,(3) The physical drive cannot work\000"
+ 793      4F545F52 
+ 793      45414459 
+ 793      2C283329 
+ 793      20546865 
+ 794              		.align	2
+ 795              	.LC11:
+ 796 00ac 46525F4E 		.ascii	"FR_NO_FILE,(4) Could not find the file\000"
+ 796      4F5F4649 
+ 796      4C452C28 
+ 796      34292043 
+ 796      6F756C64 
+ 797 00d3 00       		.align	2
+ 798              	.LC12:
+ 799 00d4 46525F4E 		.ascii	"FR_NO_PATH,(5) Could not find the path\000"
+ 799      4F5F5041 
+ 799      54482C28 
+ 799      35292043 
+ 799      6F756C64 
+ 800 00fb 00       		.align	2
+ 801              	.LC13:
+ 802 00fc 46525F49 		.ascii	"FR_INVALID_NAME,(6) The path name format is invalid"
+ 802      4E56414C 
+ 802      49445F4E 
+ 802      414D452C 
+ 802      28362920 
+ 803 012f 00       		.ascii	"\000"
+ 804              		.align	2
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s 			page 21
+
+
+ 805              	.LC14:
+ 806 0130 46525F44 		.ascii	"FR_DENIED,(7) Access denied due to prohibited acces"
+ 806      454E4945 
+ 806      442C2837 
+ 806      29204163 
+ 806      63657373 
+ 807 0163 73206F72 		.ascii	"s or directory full\000"
+ 807      20646972 
+ 807      6563746F 
+ 807      72792066 
+ 807      756C6C00 
+ 808 0177 00       		.align	2
+ 809              	.LC15:
+ 810 0178 46525F45 		.ascii	"FR_EXIST,(8) Access denied due to prohibited access"
+ 810      58495354 
+ 810      2C283829 
+ 810      20416363 
+ 810      65737320 
+ 811 01ab 00       		.ascii	"\000"
+ 812              		.align	2
+ 813              	.LC16:
+ 814 01ac 46525F49 		.ascii	"FR_INVALID_OBJECT,(9) The file/directory object is "
+ 814      4E56414C 
+ 814      49445F4F 
+ 814      424A4543 
+ 814      542C2839 
+ 815 01df 696E7661 		.ascii	"invalid\000"
+ 815      6C696400 
+ 816 01e7 00       		.align	2
+ 817              	.LC17:
+ 818 01e8 46525F57 		.ascii	"FR_WRITE_PROTECTED,(10) The physical drive is write"
+ 818      52495445 
+ 818      5F50524F 
+ 818      54454354 
+ 818      45442C28 
+ 819 021b 2070726F 		.ascii	" protected\000"
+ 819      74656374 
+ 819      656400
+ 820 0226 0000     		.align	2
+ 821              	.LC18:
+ 822 0228 46525F49 		.ascii	"FR_INVALID_DRIVE,(11) The logical drive number is i"
+ 822      4E56414C 
+ 822      49445F44 
+ 822      52495645 
+ 822      2C283131 
+ 823 025b 6E76616C 		.ascii	"nvalid\000"
+ 823      696400
+ 824 0262 0000     		.align	2
+ 825              	.LC19:
+ 826 0264 46525F4E 		.ascii	"FR_NOT_ENABLED,(12) The volume has no work area\000"
+ 826      4F545F45 
+ 826      4E41424C 
+ 826      45442C28 
+ 826      31322920 
+ 827              		.align	2
+ 828              	.LC20:
+ 829 0294 46525F4E 		.ascii	"FR_NO_FILESYSTEM,(13) There is no valid FAT volume\000"
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s 			page 22
+
+
+ 829      4F5F4649 
+ 829      4C455359 
+ 829      5354454D 
+ 829      2C283133 
+ 830 02c7 00       		.align	2
+ 831              	.LC21:
+ 832 02c8 46525F4D 		.ascii	"FR_MKFS_ABORTED,(14) The f_mkfs() aborted due to an"
+ 832      4B46535F 
+ 832      41424F52 
+ 832      5445442C 
+ 832      28313429 
+ 833 02fb 79207072 		.ascii	"y problem\000"
+ 833      6F626C65 
+ 833      6D00
+ 834 0305 000000   		.align	2
+ 835              	.LC22:
+ 836 0308 46525F54 		.ascii	"FR_TIMEOUT,(15) Could not get a grant to access the"
+ 836      494D454F 
+ 836      55542C28 
+ 836      31352920 
+ 836      436F756C 
+ 837 033b 20766F6C 		.ascii	" volume within defined period\000"
+ 837      756D6520 
+ 837      77697468 
+ 837      696E2064 
+ 837      6566696E 
+ 838 0359 000000   		.align	2
+ 839              	.LC23:
+ 840 035c 46525F4C 		.ascii	"FR_LOCKED,(16) The operation is rejected according "
+ 840      4F434B45 
+ 840      442C2831 
+ 840      36292054 
+ 840      6865206F 
+ 841 038f 746F2074 		.ascii	"to the file sharing policy\000"
+ 841      68652066 
+ 841      696C6520 
+ 841      73686172 
+ 841      696E6720 
+ 842 03aa 0000     		.align	2
+ 843              	.LC24:
+ 844 03ac 46525F4E 		.ascii	"FR_NOT_ENOUGH_CORE,(17) LFN working buffer could no"
+ 844      4F545F45 
+ 844      4E4F5547 
+ 844      485F434F 
+ 844      52452C28 
+ 845 03df 74206265 		.ascii	"t be allocated\000"
+ 845      20616C6C 
+ 845      6F636174 
+ 845      656400
+ 846 03ee 0000     		.align	2
+ 847              	.LC25:
+ 848 03f0 46525F54 		.ascii	"FR_TOO_MANY_OPEN_FILES,(18) Number of open files > "
+ 848      4F4F5F4D 
+ 848      414E595F 
+ 848      4F50454E 
+ 848      5F46494C 
+ 849 0423 5F46535F 		.ascii	"_FS_LOCK\000"
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s 			page 23
+
+
+ 849      4C4F434B 
+ 849      00
+ 850              		.align	2
+ 851              	.LC26:
+ 852 042c 46525F49 		.ascii	"FR_INVALID_PARAMETER,(19) Given parameter is invali"
+ 852      4E56414C 
+ 852      49445F50 
+ 852      4152414D 
+ 852      45544552 
+ 853 045f 6400     		.ascii	"d\000"
+ 854              		.comm	huart1,128,4
+ 855              		.section	.data.FRESULTStr,"aw"
+ 856              		.align	2
+ 857              		.set	.LANCHOR0,. + 0
+ 860              	FRESULTStr:
+ 861 0000 00000000 		.word	.LC7
+ 862 0004 14000000 		.word	.LC8
+ 863 0008 5C000000 		.word	.LC9
+ 864 000c 7C000000 		.word	.LC10
+ 865 0010 AC000000 		.word	.LC11
+ 866 0014 D4000000 		.word	.LC12
+ 867 0018 FC000000 		.word	.LC13
+ 868 001c 30010000 		.word	.LC14
+ 869 0020 78010000 		.word	.LC15
+ 870 0024 AC010000 		.word	.LC16
+ 871 0028 E8010000 		.word	.LC17
+ 872 002c 28020000 		.word	.LC18
+ 873 0030 64020000 		.word	.LC19
+ 874 0034 94020000 		.word	.LC20
+ 875 0038 C8020000 		.word	.LC21
+ 876 003c 08030000 		.word	.LC22
+ 877 0040 5C030000 		.word	.LC23
+ 878 0044 AC030000 		.word	.LC24
+ 879 0048 F0030000 		.word	.LC25
+ 880 004c 2C040000 		.word	.LC26
+ 881              		.text
+ 882              	.Letext0:
+ 883              		.file 2 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\inc
+ 884              		.file 3 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\inc
+ 885              		.file 4 "Drivers/CMSIS/Include/core_cm4.h"
+ 886              		.file 5 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/system_stm32l4xx.h"
+ 887              		.file 6 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l412xx.h"
+ 888              		.file 7 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_def.h"
+ 889              		.file 8 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_gpio.h"
+ 890              		.file 9 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_dma.h"
+ 891              		.file 10 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_flash.h"
+ 892              		.file 11 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h"
+ 893              		.file 12 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h"
+ 894              		.file 13 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\lib\\gcc\\arm-non
+ 895              		.file 14 "Inc/usart.h"
+ 896              		.file 15 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\lib\\gcc\\arm-non
+ 897              		.file 16 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\in
+ 898              		.file 17 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\in
+ 899              		.file 18 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\in
+ 900              		.file 19 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\in
+ 901              		.file 20 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\in
+ 902              		.file 21 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\in
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s 			page 24
+
+
+ 903              		.file 22 "Inc/main.h"
+ 904              		.file 23 "<built-in>"
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s 			page 25
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 usart.c
+C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s:18     .text.MX_USART1_UART_Init:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s:26     .text.MX_USART1_UART_Init:00000000 MX_USART1_UART_Init
+C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s:91     .text.MX_USART1_UART_Init:00000030 $d
+                            *COM*:00000080 huart1
+C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s:97     .text.HAL_UART_MspInit:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s:104    .text.HAL_UART_MspInit:00000000 HAL_UART_MspInit
+C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s:210    .text.HAL_UART_MspInit:00000068 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s:215    .text.HAL_UART_MspDeInit:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s:222    .text.HAL_UART_MspDeInit:00000000 HAL_UART_MspDeInit
+C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s:265    .text.HAL_UART_MspDeInit:00000024 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s:271    .text.__io_putchar:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s:278    .text.__io_putchar:00000000 __io_putchar
+C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s:314    .text.__io_putchar:0000001c $d
+C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s:319    .text.vprint:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s:326    .text.vprint:00000000 vprint
+C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s:384    .text.vprint:00000030 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s:389    .text.my_printf:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s:396    .text.my_printf:00000000 my_printf
+C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s:448    .rodata.PrintMemoryMap.str1.4:00000000 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s:470    .text.PrintMemoryMap:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s:477    .text.PrintMemoryMap:00000000 PrintMemoryMap
+C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s:738    .text.PrintMemoryMap:00000130 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s:750    .text.FRESULTPrinter:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s:757    .text.FRESULTPrinter:00000000 FRESULTPrinter
+C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s:775    .text.FRESULTPrinter:00000008 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s:860    .data.FRESULTStr:00000000 FRESULTStr
+C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s:781    .rodata.str1.4:00000000 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\cciAjkah.s:856    .data.FRESULTStr:00000000 $d
+
+UNDEFINED SYMBOLS
+HAL_UART_Init
+Error_Handler
+HAL_GPIO_Init
+HAL_GPIO_DeInit
+HAL_UART_Transmit
+vsprintf
+strlen
+malloc
+memset
+free

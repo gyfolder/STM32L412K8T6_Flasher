@@ -1,0 +1,448 @@
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cc790e4h.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"SD_Card_Interface.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.SD_IO_CSState,"ax",%progbits
+  18              		.align	1
+  19              		.global	SD_IO_CSState
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv4-sp-d16
+  26              	SD_IO_CSState:
+  27              	.LVL0:
+  28              	.LFB130:
+  29              		.file 1 "User/SDcard/SD_Card_Interface.c"
+   1:User/SDcard/SD_Card_Interface.c **** 
+   2:User/SDcard/SD_Card_Interface.c **** /* Includes ------------------------------------------------------------------*/
+   3:User/SDcard/SD_Card_Interface.c **** #include "SD_Card_Interface.h"
+   4:User/SDcard/SD_Card_Interface.c **** #include "spi.h"
+   5:User/SDcard/SD_Card_Interface.c **** 
+   6:User/SDcard/SD_Card_Interface.c **** /**
+   7:User/SDcard/SD_Card_Interface.c ****   * @brief LINK SD Card
+   8:User/SDcard/SD_Card_Interface.c ****   */
+   9:User/SDcard/SD_Card_Interface.c **** #define SD_DUMMY_BYTE            0xFF
+  10:User/SDcard/SD_Card_Interface.c **** #define SD_NO_RESPONSE_EXPECTED  0x80
+  11:User/SDcard/SD_Card_Interface.c **** 
+  12:User/SDcard/SD_Card_Interface.c **** /**
+  13:User/SDcard/SD_Card_Interface.c ****   * @brief  Set the SD_CS pin.
+  14:User/SDcard/SD_Card_Interface.c ****   * @param  pin value.
+  15:User/SDcard/SD_Card_Interface.c ****   */
+  16:User/SDcard/SD_Card_Interface.c **** void SD_IO_CSState(uint8_t val)
+  17:User/SDcard/SD_Card_Interface.c **** {
+  30              		.loc 1 17 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		.loc 1 17 1 is_stmt 0 view .LVU1
+  35 0000 08B5     		push	{r3, lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 8
+  38              		.cfi_offset 3, -8
+  39              		.cfi_offset 14, -4
+  18:User/SDcard/SD_Card_Interface.c ****     if(val == 1) {
+  40              		.loc 1 18 5 is_stmt 1 view .LVU2
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cc790e4h.s 			page 2
+
+
+  41              		.loc 1 18 7 is_stmt 0 view .LVU3
+  42 0002 0128     		cmp	r0, #1
+  43 0004 06D0     		beq	.L5
+  19:User/SDcard/SD_Card_Interface.c ****         HAL_GPIO_WritePin(SD_CS_GPIO_Port, SD_CS_Pin, GPIO_PIN_SET);
+  20:User/SDcard/SD_Card_Interface.c ****     } else {
+  21:User/SDcard/SD_Card_Interface.c ****         HAL_GPIO_WritePin(SD_CS_GPIO_Port, SD_CS_Pin, GPIO_PIN_RESET);
+  44              		.loc 1 21 9 is_stmt 1 view .LVU4
+  45 0006 0022     		movs	r2, #0
+  46 0008 2021     		movs	r1, #32
+  47 000a 4FF09040 		mov	r0, #1207959552
+  48              	.LVL1:
+  49              		.loc 1 21 9 is_stmt 0 view .LVU5
+  50 000e FFF7FEFF 		bl	HAL_GPIO_WritePin
+  51              	.LVL2:
+  52              	.L1:
+  22:User/SDcard/SD_Card_Interface.c ****     }
+  23:User/SDcard/SD_Card_Interface.c **** }
+  53              		.loc 1 23 1 view .LVU6
+  54 0012 08BD     		pop	{r3, pc}
+  55              	.LVL3:
+  56              	.L5:
+  19:User/SDcard/SD_Card_Interface.c ****         HAL_GPIO_WritePin(SD_CS_GPIO_Port, SD_CS_Pin, GPIO_PIN_SET);
+  57              		.loc 1 19 9 is_stmt 1 view .LVU7
+  58 0014 0122     		movs	r2, #1
+  59 0016 2021     		movs	r1, #32
+  60 0018 4FF09040 		mov	r0, #1207959552
+  61              	.LVL4:
+  19:User/SDcard/SD_Card_Interface.c ****         HAL_GPIO_WritePin(SD_CS_GPIO_Port, SD_CS_Pin, GPIO_PIN_SET);
+  62              		.loc 1 19 9 is_stmt 0 view .LVU8
+  63 001c FFF7FEFF 		bl	HAL_GPIO_WritePin
+  64              	.LVL5:
+  65 0020 F7E7     		b	.L1
+  66              		.cfi_endproc
+  67              	.LFE130:
+  69              		.section	.text.SD_IO_WriteReadData,"ax",%progbits
+  70              		.align	1
+  71              		.global	SD_IO_WriteReadData
+  72              		.syntax unified
+  73              		.thumb
+  74              		.thumb_func
+  75              		.fpu fpv4-sp-d16
+  77              	SD_IO_WriteReadData:
+  78              	.LVL6:
+  79              	.LFB131:
+  24:User/SDcard/SD_Card_Interface.c **** 
+  25:User/SDcard/SD_Card_Interface.c **** /**
+  26:User/SDcard/SD_Card_Interface.c ****   * @brief  Write byte(s) on the SD
+  27:User/SDcard/SD_Card_Interface.c ****   * @param  DataIn: Pointer to data buffer to write
+  28:User/SDcard/SD_Card_Interface.c ****   * @param  DataOut: Pointer to data buffer for read data
+  29:User/SDcard/SD_Card_Interface.c ****   * @param  DataLength: number of bytes to write
+  30:User/SDcard/SD_Card_Interface.c ****   */
+  31:User/SDcard/SD_Card_Interface.c **** void SD_IO_WriteReadData(const uint8_t *DataIn, uint8_t *DataOut, uint16_t DataLength)
+  32:User/SDcard/SD_Card_Interface.c **** {
+  80              		.loc 1 32 1 is_stmt 1 view -0
+  81              		.cfi_startproc
+  82              		@ args = 0, pretend = 0, frame = 0
+  83              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cc790e4h.s 			page 3
+
+
+  84              		.loc 1 32 1 is_stmt 0 view .LVU10
+  85 0000 00B5     		push	{lr}
+  86              	.LCFI1:
+  87              		.cfi_def_cfa_offset 4
+  88              		.cfi_offset 14, -4
+  89 0002 83B0     		sub	sp, sp, #12
+  90              	.LCFI2:
+  91              		.cfi_def_cfa_offset 16
+  92 0004 1346     		mov	r3, r2
+  33:User/SDcard/SD_Card_Interface.c ****     HAL_StatusTypeDef status = HAL_OK;
+  93              		.loc 1 33 5 is_stmt 1 view .LVU11
+  94              	.LVL7:
+  34:User/SDcard/SD_Card_Interface.c **** 
+  35:User/SDcard/SD_Card_Interface.c ****     status = HAL_SPI_TransmitReceive(&hspi1, (uint8_t*) DataIn, DataOut, DataLength, 1000);
+  95              		.loc 1 35 5 view .LVU12
+  96              		.loc 1 35 14 is_stmt 0 view .LVU13
+  97 0006 4FF47A72 		mov	r2, #1000
+  98              	.LVL8:
+  99              		.loc 1 35 14 view .LVU14
+ 100 000a 0092     		str	r2, [sp]
+ 101 000c 0A46     		mov	r2, r1
+ 102 000e 0146     		mov	r1, r0
+ 103              	.LVL9:
+ 104              		.loc 1 35 14 view .LVU15
+ 105 0010 0448     		ldr	r0, .L10
+ 106              	.LVL10:
+ 107              		.loc 1 35 14 view .LVU16
+ 108 0012 FFF7FEFF 		bl	HAL_SPI_TransmitReceive
+ 109              	.LVL11:
+  36:User/SDcard/SD_Card_Interface.c **** 
+  37:User/SDcard/SD_Card_Interface.c ****     /* Check the communication status */
+  38:User/SDcard/SD_Card_Interface.c ****     if(status != HAL_OK) {
+ 110              		.loc 1 38 5 is_stmt 1 view .LVU17
+ 111              		.loc 1 38 7 is_stmt 0 view .LVU18
+ 112 0016 10B9     		cbnz	r0, .L9
+ 113              	.LVL12:
+ 114              	.L6:
+  39:User/SDcard/SD_Card_Interface.c ****         /* Execute user timeout callback */
+  40:User/SDcard/SD_Card_Interface.c ****         MX_SPI1_Init();
+  41:User/SDcard/SD_Card_Interface.c ****     }
+  42:User/SDcard/SD_Card_Interface.c **** }
+ 115              		.loc 1 42 1 view .LVU19
+ 116 0018 03B0     		add	sp, sp, #12
+ 117              	.LCFI3:
+ 118              		.cfi_remember_state
+ 119              		.cfi_def_cfa_offset 4
+ 120              		@ sp needed
+ 121 001a 5DF804FB 		ldr	pc, [sp], #4
+ 122              	.LVL13:
+ 123              	.L9:
+ 124              	.LCFI4:
+ 125              		.cfi_restore_state
+  40:User/SDcard/SD_Card_Interface.c ****     }
+ 126              		.loc 1 40 9 is_stmt 1 view .LVU20
+ 127 001e FFF7FEFF 		bl	MX_SPI1_Init
+ 128              	.LVL14:
+ 129              		.loc 1 42 1 is_stmt 0 view .LVU21
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cc790e4h.s 			page 4
+
+
+ 130 0022 F9E7     		b	.L6
+ 131              	.L11:
+ 132              		.align	2
+ 133              	.L10:
+ 134 0024 00000000 		.word	hspi1
+ 135              		.cfi_endproc
+ 136              	.LFE131:
+ 138              		.section	.text.SD_IO_WriteByte,"ax",%progbits
+ 139              		.align	1
+ 140              		.global	SD_IO_WriteByte
+ 141              		.syntax unified
+ 142              		.thumb
+ 143              		.thumb_func
+ 144              		.fpu fpv4-sp-d16
+ 146              	SD_IO_WriteByte:
+ 147              	.LVL15:
+ 148              	.LFB132:
+  43:User/SDcard/SD_Card_Interface.c **** 
+  44:User/SDcard/SD_Card_Interface.c **** /**
+  45:User/SDcard/SD_Card_Interface.c ****   * @brief  Write a byte on the SD.
+  46:User/SDcard/SD_Card_Interface.c ****   * @param  Data: byte to send.
+  47:User/SDcard/SD_Card_Interface.c ****   * @retval Data written
+  48:User/SDcard/SD_Card_Interface.c ****   */
+  49:User/SDcard/SD_Card_Interface.c **** uint8_t SD_IO_WriteByte(uint8_t Data)
+  50:User/SDcard/SD_Card_Interface.c **** {
+ 149              		.loc 1 50 1 is_stmt 1 view -0
+ 150              		.cfi_startproc
+ 151              		@ args = 0, pretend = 0, frame = 16
+ 152              		@ frame_needed = 0, uses_anonymous_args = 0
+ 153              		.loc 1 50 1 is_stmt 0 view .LVU23
+ 154 0000 00B5     		push	{lr}
+ 155              	.LCFI5:
+ 156              		.cfi_def_cfa_offset 4
+ 157              		.cfi_offset 14, -4
+ 158 0002 87B0     		sub	sp, sp, #28
+ 159              	.LCFI6:
+ 160              		.cfi_def_cfa_offset 32
+ 161 0004 8DF80F00 		strb	r0, [sp, #15]
+  51:User/SDcard/SD_Card_Interface.c ****     uint8_t tmp;
+ 162              		.loc 1 51 5 is_stmt 1 view .LVU24
+  52:User/SDcard/SD_Card_Interface.c ****     HAL_StatusTypeDef status = HAL_OK;
+ 163              		.loc 1 52 5 view .LVU25
+ 164              	.LVL16:
+  53:User/SDcard/SD_Card_Interface.c **** 
+  54:User/SDcard/SD_Card_Interface.c ****     /* Send the byte */
+  55:User/SDcard/SD_Card_Interface.c ****     status = HAL_SPI_TransmitReceive(&hspi1, &Data, &tmp, 1, 1000);
+ 165              		.loc 1 55 5 view .LVU26
+ 166              		.loc 1 55 14 is_stmt 0 view .LVU27
+ 167 0008 4FF47A73 		mov	r3, #1000
+ 168 000c 0093     		str	r3, [sp]
+ 169 000e 0123     		movs	r3, #1
+ 170 0010 0DF11702 		add	r2, sp, #23
+ 171 0014 0DF10F01 		add	r1, sp, #15
+ 172 0018 0548     		ldr	r0, .L16
+ 173              	.LVL17:
+ 174              		.loc 1 55 14 view .LVU28
+ 175 001a FFF7FEFF 		bl	HAL_SPI_TransmitReceive
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cc790e4h.s 			page 5
+
+
+ 176              	.LVL18:
+  56:User/SDcard/SD_Card_Interface.c **** 
+  57:User/SDcard/SD_Card_Interface.c ****     /* Check the communication status */
+  58:User/SDcard/SD_Card_Interface.c ****     if(status != HAL_OK) {
+ 177              		.loc 1 58 5 is_stmt 1 view .LVU29
+ 178              		.loc 1 58 7 is_stmt 0 view .LVU30
+ 179 001e 20B9     		cbnz	r0, .L15
+ 180              	.LVL19:
+ 181              	.L13:
+  59:User/SDcard/SD_Card_Interface.c ****         /* Execute user timeout callback */
+  60:User/SDcard/SD_Card_Interface.c ****         MX_SPI1_Init();
+  61:User/SDcard/SD_Card_Interface.c ****     }
+  62:User/SDcard/SD_Card_Interface.c **** 
+  63:User/SDcard/SD_Card_Interface.c ****     return tmp;
+ 182              		.loc 1 63 5 is_stmt 1 view .LVU31
+  64:User/SDcard/SD_Card_Interface.c **** }
+ 183              		.loc 1 64 1 is_stmt 0 view .LVU32
+ 184 0020 9DF81700 		ldrb	r0, [sp, #23]	@ zero_extendqisi2
+ 185 0024 07B0     		add	sp, sp, #28
+ 186              	.LCFI7:
+ 187              		.cfi_remember_state
+ 188              		.cfi_def_cfa_offset 4
+ 189              		@ sp needed
+ 190 0026 5DF804FB 		ldr	pc, [sp], #4
+ 191              	.LVL20:
+ 192              	.L15:
+ 193              	.LCFI8:
+ 194              		.cfi_restore_state
+  60:User/SDcard/SD_Card_Interface.c ****     }
+ 195              		.loc 1 60 9 is_stmt 1 view .LVU33
+ 196 002a FFF7FEFF 		bl	MX_SPI1_Init
+ 197              	.LVL21:
+  60:User/SDcard/SD_Card_Interface.c ****     }
+ 198              		.loc 1 60 9 is_stmt 0 view .LVU34
+ 199 002e F7E7     		b	.L13
+ 200              	.L17:
+ 201              		.align	2
+ 202              	.L16:
+ 203 0030 00000000 		.word	hspi1
+ 204              		.cfi_endproc
+ 205              	.LFE132:
+ 207              		.section	.text.SD_IO_ReadData,"ax",%progbits
+ 208              		.align	1
+ 209              		.global	SD_IO_ReadData
+ 210              		.syntax unified
+ 211              		.thumb
+ 212              		.thumb_func
+ 213              		.fpu fpv4-sp-d16
+ 215              	SD_IO_ReadData:
+ 216              	.LVL22:
+ 217              	.LFB133:
+  65:User/SDcard/SD_Card_Interface.c **** 
+  66:User/SDcard/SD_Card_Interface.c **** /**
+  67:User/SDcard/SD_Card_Interface.c ****   * @brief  Write an amount of data on the SD.
+  68:User/SDcard/SD_Card_Interface.c ****   * @param  Data: byte to send.
+  69:User/SDcard/SD_Card_Interface.c ****   * @param  DataLength: number of bytes to write
+  70:User/SDcard/SD_Card_Interface.c ****   */
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cc790e4h.s 			page 6
+
+
+  71:User/SDcard/SD_Card_Interface.c **** void SD_IO_ReadData(uint8_t *DataOut, uint16_t DataLength)
+  72:User/SDcard/SD_Card_Interface.c **** {
+ 218              		.loc 1 72 1 is_stmt 1 view -0
+ 219              		.cfi_startproc
+ 220              		@ args = 0, pretend = 0, frame = 0
+ 221              		@ frame_needed = 0, uses_anonymous_args = 0
+ 222              		.loc 1 72 1 is_stmt 0 view .LVU36
+ 223 0000 08B5     		push	{r3, lr}
+ 224              	.LCFI9:
+ 225              		.cfi_def_cfa_offset 8
+ 226              		.cfi_offset 3, -8
+ 227              		.cfi_offset 14, -4
+ 228 0002 0A46     		mov	r2, r1
+  73:User/SDcard/SD_Card_Interface.c ****     /* Send the byte */
+  74:User/SDcard/SD_Card_Interface.c ****     SD_IO_WriteReadData(DataOut, DataOut, DataLength);
+ 229              		.loc 1 74 5 is_stmt 1 view .LVU37
+ 230 0004 0146     		mov	r1, r0
+ 231              	.LVL23:
+ 232              		.loc 1 74 5 is_stmt 0 view .LVU38
+ 233 0006 FFF7FEFF 		bl	SD_IO_WriteReadData
+ 234              	.LVL24:
+  75:User/SDcard/SD_Card_Interface.c **** }
+ 235              		.loc 1 75 1 view .LVU39
+ 236 000a 08BD     		pop	{r3, pc}
+ 237              		.cfi_endproc
+ 238              	.LFE133:
+ 240              		.section	.text.SD_IO_WriteData,"ax",%progbits
+ 241              		.align	1
+ 242              		.global	SD_IO_WriteData
+ 243              		.syntax unified
+ 244              		.thumb
+ 245              		.thumb_func
+ 246              		.fpu fpv4-sp-d16
+ 248              	SD_IO_WriteData:
+ 249              	.LVL25:
+ 250              	.LFB134:
+  76:User/SDcard/SD_Card_Interface.c **** 
+  77:User/SDcard/SD_Card_Interface.c **** /**
+  78:User/SDcard/SD_Card_Interface.c ****   * @brief  Write an amount of data on the SD.
+  79:User/SDcard/SD_Card_Interface.c ****   * @param  Data: byte to send.
+  80:User/SDcard/SD_Card_Interface.c ****   * @param  DataLength: number of bytes to write
+  81:User/SDcard/SD_Card_Interface.c ****   */
+  82:User/SDcard/SD_Card_Interface.c **** void SD_IO_WriteData(const uint8_t *Data, uint16_t DataLength)
+  83:User/SDcard/SD_Card_Interface.c **** {
+ 251              		.loc 1 83 1 is_stmt 1 view -0
+ 252              		.cfi_startproc
+ 253              		@ args = 0, pretend = 0, frame = 0
+ 254              		@ frame_needed = 0, uses_anonymous_args = 0
+ 255              		.loc 1 83 1 is_stmt 0 view .LVU41
+ 256 0000 08B5     		push	{r3, lr}
+ 257              	.LCFI10:
+ 258              		.cfi_def_cfa_offset 8
+ 259              		.cfi_offset 3, -8
+ 260              		.cfi_offset 14, -4
+ 261 0002 0A46     		mov	r2, r1
+  84:User/SDcard/SD_Card_Interface.c ****     HAL_StatusTypeDef status = HAL_OK;
+ 262              		.loc 1 84 5 is_stmt 1 view .LVU42
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cc790e4h.s 			page 7
+
+
+ 263              	.LVL26:
+  85:User/SDcard/SD_Card_Interface.c **** 
+  86:User/SDcard/SD_Card_Interface.c ****     /* Send the byte */
+  87:User/SDcard/SD_Card_Interface.c ****     status = HAL_SPI_Transmit(&hspi1, (uint8_t *)Data, DataLength, 1000);
+ 264              		.loc 1 87 5 view .LVU43
+ 265              		.loc 1 87 14 is_stmt 0 view .LVU44
+ 266 0004 4FF47A73 		mov	r3, #1000
+ 267 0008 0146     		mov	r1, r0
+ 268              	.LVL27:
+ 269              		.loc 1 87 14 view .LVU45
+ 270 000a 0448     		ldr	r0, .L24
+ 271              	.LVL28:
+ 272              		.loc 1 87 14 view .LVU46
+ 273 000c FFF7FEFF 		bl	HAL_SPI_Transmit
+ 274              	.LVL29:
+  88:User/SDcard/SD_Card_Interface.c **** 
+  89:User/SDcard/SD_Card_Interface.c ****     /* Check the communication status */
+  90:User/SDcard/SD_Card_Interface.c ****     if(status != HAL_OK) {
+ 275              		.loc 1 90 5 is_stmt 1 view .LVU47
+ 276              		.loc 1 90 7 is_stmt 0 view .LVU48
+ 277 0010 00B9     		cbnz	r0, .L23
+ 278              	.LVL30:
+ 279              	.L20:
+  91:User/SDcard/SD_Card_Interface.c ****         /* Execute user timeout callback */
+  92:User/SDcard/SD_Card_Interface.c ****         MX_SPI1_Init();
+  93:User/SDcard/SD_Card_Interface.c ****     }
+  94:User/SDcard/SD_Card_Interface.c **** }
+ 280              		.loc 1 94 1 view .LVU49
+ 281 0012 08BD     		pop	{r3, pc}
+ 282              	.LVL31:
+ 283              	.L23:
+  92:User/SDcard/SD_Card_Interface.c ****     }
+ 284              		.loc 1 92 9 is_stmt 1 view .LVU50
+ 285 0014 FFF7FEFF 		bl	MX_SPI1_Init
+ 286              	.LVL32:
+ 287              		.loc 1 94 1 is_stmt 0 view .LVU51
+ 288 0018 FBE7     		b	.L20
+ 289              	.L25:
+ 290 001a 00BF     		.align	2
+ 291              	.L24:
+ 292 001c 00000000 		.word	hspi1
+ 293              		.cfi_endproc
+ 294              	.LFE134:
+ 296              		.text
+ 297              	.Letext0:
+ 298              		.file 2 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\inc
+ 299              		.file 3 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\inc
+ 300              		.file 4 "Drivers/CMSIS/Include/core_cm4.h"
+ 301              		.file 5 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/system_stm32l4xx.h"
+ 302              		.file 6 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l412xx.h"
+ 303              		.file 7 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_def.h"
+ 304              		.file 8 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_gpio.h"
+ 305              		.file 9 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_dma.h"
+ 306              		.file 10 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_flash.h"
+ 307              		.file 11 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi.h"
+ 308              		.file 12 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h"
+ 309              		.file 13 "Inc/spi.h"
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cc790e4h.s 			page 8
+
+
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cc790e4h.s 			page 9
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 SD_Card_Interface.c
+C:\Users\ADMINI~1\AppData\Local\Temp\cc790e4h.s:18     .text.SD_IO_CSState:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\cc790e4h.s:26     .text.SD_IO_CSState:00000000 SD_IO_CSState
+C:\Users\ADMINI~1\AppData\Local\Temp\cc790e4h.s:70     .text.SD_IO_WriteReadData:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\cc790e4h.s:77     .text.SD_IO_WriteReadData:00000000 SD_IO_WriteReadData
+C:\Users\ADMINI~1\AppData\Local\Temp\cc790e4h.s:134    .text.SD_IO_WriteReadData:00000024 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\cc790e4h.s:139    .text.SD_IO_WriteByte:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\cc790e4h.s:146    .text.SD_IO_WriteByte:00000000 SD_IO_WriteByte
+C:\Users\ADMINI~1\AppData\Local\Temp\cc790e4h.s:203    .text.SD_IO_WriteByte:00000030 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\cc790e4h.s:208    .text.SD_IO_ReadData:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\cc790e4h.s:215    .text.SD_IO_ReadData:00000000 SD_IO_ReadData
+C:\Users\ADMINI~1\AppData\Local\Temp\cc790e4h.s:241    .text.SD_IO_WriteData:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\cc790e4h.s:248    .text.SD_IO_WriteData:00000000 SD_IO_WriteData
+C:\Users\ADMINI~1\AppData\Local\Temp\cc790e4h.s:292    .text.SD_IO_WriteData:0000001c $d
+
+UNDEFINED SYMBOLS
+HAL_GPIO_WritePin
+HAL_SPI_TransmitReceive
+MX_SPI1_Init
+hspi1
+HAL_SPI_Transmit

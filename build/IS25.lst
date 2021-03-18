@@ -1,0 +1,993 @@
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"IS25.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.IS25LP128_ReadStatus,"ax",%progbits
+  18              		.align	1
+  19              		.global	IS25LP128_ReadStatus
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv4-sp-d16
+  26              	IS25LP128_ReadStatus:
+  27              	.LFB133:
+  28              		.file 1 "Src/IS25.c"
+   1:Src/IS25.c    **** #include "main.h"
+   2:Src/IS25.c    **** #include "Myquadspi.h"
+   3:Src/IS25.c    **** 
+   4:Src/IS25.c    **** #include "stm32l4xx_hal.h"
+   5:Src/IS25.c    **** #include "Debug.h"
+   6:Src/IS25.c    **** #include <stdlib.h>
+   7:Src/IS25.c    **** #include <string.h>
+   8:Src/IS25.c    **** #include <stdio.h>
+   9:Src/IS25.c    **** 
+  10:Src/IS25.c    **** uint8_t ID_REG[3];
+  11:Src/IS25.c    **** uint8_t PP_Buf[257] = {0,};
+  12:Src/IS25.c    **** 
+  13:Src/IS25.c    **** // ReaD Status Register
+  14:Src/IS25.c    **** //------------------------------------------------------
+  15:Src/IS25.c    **** //|   7   |  6   |  5  |  4  |  3  |  2  |   1  |   0  |
+  16:Src/IS25.c    **** //------------------------------------------------------
+  17:Src/IS25.c    **** //|  SRWD |  QE  | BP3 | BP2 | BP1 | BP0 | WEL  |  WIP |
+  18:Src/IS25.c    **** //|-------|------|-----------------------|------|------|
+  19:Src/IS25.c    **** //| Write | Quad |   Block Protect Bit   |Write | Busy |
+  20:Src/IS25.c    **** //|Protect|Enable|                       |Enable|      |
+  21:Src/IS25.c    **** //------------------------------------------------------
+  22:Src/IS25.c    **** uint8_t IS25LP128_ReadStatus(){
+  29              		.loc 1 22 31 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 8
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 10B5     		push	{r4, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 4, -8
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s 			page 2
+
+
+  37              		.cfi_offset 14, -4
+  38 0002 82B0     		sub	sp, sp, #8
+  39              	.LCFI1:
+  40              		.cfi_def_cfa_offset 16
+  23:Src/IS25.c    ****   uint8_t read=0;
+  41              		.loc 1 23 3 view .LVU1
+  42              		.loc 1 23 11 is_stmt 0 view .LVU2
+  43 0004 0024     		movs	r4, #0
+  44 0006 8DF80740 		strb	r4, [sp, #7]
+  24:Src/IS25.c    ****   QSPI_SetInstruct(0x05,1);
+  45              		.loc 1 24 3 is_stmt 1 view .LVU3
+  46 000a 0121     		movs	r1, #1
+  47 000c 0520     		movs	r0, #5
+  48 000e FFF7FEFF 		bl	QSPI_SetInstruct
+  49              	.LVL0:
+  25:Src/IS25.c    ****   QSPI_SetDataInfo(&read,1,0,1);
+  50              		.loc 1 25 3 view .LVU4
+  51 0012 0123     		movs	r3, #1
+  52 0014 2246     		mov	r2, r4
+  53 0016 1946     		mov	r1, r3
+  54 0018 0DF10700 		add	r0, sp, #7
+  55 001c FFF7FEFF 		bl	QSPI_SetDataInfo
+  56              	.LVL1:
+  26:Src/IS25.c    ****   QSPI_Read();
+  57              		.loc 1 26 3 view .LVU5
+  58 0020 FFF7FEFF 		bl	QSPI_Read
+  59              	.LVL2:
+  27:Src/IS25.c    ****   return read;
+  60              		.loc 1 27 3 view .LVU6
+  28:Src/IS25.c    **** }
+  61              		.loc 1 28 1 is_stmt 0 view .LVU7
+  62 0024 9DF80700 		ldrb	r0, [sp, #7]	@ zero_extendqisi2
+  63 0028 02B0     		add	sp, sp, #8
+  64              	.LCFI2:
+  65              		.cfi_def_cfa_offset 8
+  66              		@ sp needed
+  67 002a 10BD     		pop	{r4, pc}
+  68              		.cfi_endproc
+  69              	.LFE133:
+  71              		.section	.text.IS25LP128_WriteEnable,"ax",%progbits
+  72              		.align	1
+  73              		.global	IS25LP128_WriteEnable
+  74              		.syntax unified
+  75              		.thumb
+  76              		.thumb_func
+  77              		.fpu fpv4-sp-d16
+  79              	IS25LP128_WriteEnable:
+  80              	.LFB134:
+  29:Src/IS25.c    **** void IS25LP128_WriteEnable(){
+  81              		.loc 1 29 29 is_stmt 1 view -0
+  82              		.cfi_startproc
+  83              		@ args = 0, pretend = 0, frame = 0
+  84              		@ frame_needed = 0, uses_anonymous_args = 0
+  85 0000 08B5     		push	{r3, lr}
+  86              	.LCFI3:
+  87              		.cfi_def_cfa_offset 8
+  88              		.cfi_offset 3, -8
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s 			page 3
+
+
+  89              		.cfi_offset 14, -4
+  30:Src/IS25.c    ****   //Write Enable
+  31:Src/IS25.c    ****   QSPI_SetInstruct(0x06,1);
+  90              		.loc 1 31 3 view .LVU9
+  91 0002 0121     		movs	r1, #1
+  92 0004 0620     		movs	r0, #6
+  93 0006 FFF7FEFF 		bl	QSPI_SetInstruct
+  94              	.LVL3:
+  32:Src/IS25.c    ****   QSPI_Cmd();
+  95              		.loc 1 32 3 view .LVU10
+  96 000a FFF7FEFF 		bl	QSPI_Cmd
+  97              	.LVL4:
+  33:Src/IS25.c    **** }
+  98              		.loc 1 33 1 is_stmt 0 view .LVU11
+  99 000e 08BD     		pop	{r3, pc}
+ 100              		.cfi_endproc
+ 101              	.LFE134:
+ 103              		.section	.text.IS25LP128_Sleep,"ax",%progbits
+ 104              		.align	1
+ 105              		.global	IS25LP128_Sleep
+ 106              		.syntax unified
+ 107              		.thumb
+ 108              		.thumb_func
+ 109              		.fpu fpv4-sp-d16
+ 111              	IS25LP128_Sleep:
+ 112              	.LFB135:
+  34:Src/IS25.c    **** 
+  35:Src/IS25.c    **** void IS25LP128_Sleep(){
+ 113              		.loc 1 35 23 is_stmt 1 view -0
+ 114              		.cfi_startproc
+ 115              		@ args = 0, pretend = 0, frame = 0
+ 116              		@ frame_needed = 0, uses_anonymous_args = 0
+ 117 0000 08B5     		push	{r3, lr}
+ 118              	.LCFI4:
+ 119              		.cfi_def_cfa_offset 8
+ 120              		.cfi_offset 3, -8
+ 121              		.cfi_offset 14, -4
+  36:Src/IS25.c    ****   //Write Enable
+  37:Src/IS25.c    ****   QSPI_SetInstruct(0xB9,1);
+ 122              		.loc 1 37 3 view .LVU13
+ 123 0002 0121     		movs	r1, #1
+ 124 0004 B920     		movs	r0, #185
+ 125 0006 FFF7FEFF 		bl	QSPI_SetInstruct
+ 126              	.LVL5:
+  38:Src/IS25.c    ****   QSPI_Cmd();
+ 127              		.loc 1 38 3 view .LVU14
+ 128 000a FFF7FEFF 		bl	QSPI_Cmd
+ 129              	.LVL6:
+  39:Src/IS25.c    **** }
+ 130              		.loc 1 39 1 is_stmt 0 view .LVU15
+ 131 000e 08BD     		pop	{r3, pc}
+ 132              		.cfi_endproc
+ 133              	.LFE135:
+ 135              		.section	.text.IS25LP128_Wakeup,"ax",%progbits
+ 136              		.align	1
+ 137              		.global	IS25LP128_Wakeup
+ 138              		.syntax unified
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s 			page 4
+
+
+ 139              		.thumb
+ 140              		.thumb_func
+ 141              		.fpu fpv4-sp-d16
+ 143              	IS25LP128_Wakeup:
+ 144              	.LFB136:
+  40:Src/IS25.c    **** void IS25LP128_Wakeup(){
+ 145              		.loc 1 40 24 is_stmt 1 view -0
+ 146              		.cfi_startproc
+ 147              		@ args = 0, pretend = 0, frame = 0
+ 148              		@ frame_needed = 0, uses_anonymous_args = 0
+ 149 0000 08B5     		push	{r3, lr}
+ 150              	.LCFI5:
+ 151              		.cfi_def_cfa_offset 8
+ 152              		.cfi_offset 3, -8
+ 153              		.cfi_offset 14, -4
+  41:Src/IS25.c    ****   //Write Enable
+  42:Src/IS25.c    ****   QSPI_SetInstruct(0xAB,1);
+ 154              		.loc 1 42 3 view .LVU17
+ 155 0002 0121     		movs	r1, #1
+ 156 0004 AB20     		movs	r0, #171
+ 157 0006 FFF7FEFF 		bl	QSPI_SetInstruct
+ 158              	.LVL7:
+  43:Src/IS25.c    ****   QSPI_Cmd();
+ 159              		.loc 1 43 3 view .LVU18
+ 160 000a FFF7FEFF 		bl	QSPI_Cmd
+ 161              	.LVL8:
+  44:Src/IS25.c    **** }
+ 162              		.loc 1 44 1 is_stmt 0 view .LVU19
+ 163 000e 08BD     		pop	{r3, pc}
+ 164              		.cfi_endproc
+ 165              	.LFE136:
+ 167              		.section	.rodata.IS25LP128_Init.str1.4,"aMS",%progbits,1
+ 168              		.align	2
+ 169              	.LC0:
+ 170 0000 44656275 		.ascii	"Debug : Flash Device is IS25LP128\015\012\000"
+ 170      67203A20 
+ 170      466C6173 
+ 170      68204465 
+ 170      76696365 
+ 171              		.align	2
+ 172              	.LC1:
+ 173 0024 44656275 		.ascii	"Debug : Flash Device is IS25LQ010\015\012\000"
+ 173      67203A20 
+ 173      466C6173 
+ 173      68204465 
+ 173      76696365 
+ 174              		.align	2
+ 175              	.LC2:
+ 176 0048 44656275 		.ascii	"Debug : Flash Device is GD25LQ64\015\012\000"
+ 176      67203A20 
+ 176      466C6173 
+ 176      68204465 
+ 176      76696365 
+ 177 006b 00       		.align	2
+ 178              	.LC3:
+ 179 006c 44656275 		.ascii	"Debug : Flash Device is unknown(0x%02X 0x%02X 0x%02"
+ 179      67203A20 
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s 			page 5
+
+
+ 179      466C6173 
+ 179      68204465 
+ 179      76696365 
+ 180 009f 58290D0A 		.ascii	"X)\015\012\000"
+ 180      00
+ 181              		.section	.text.IS25LP128_Init,"ax",%progbits
+ 182              		.align	1
+ 183              		.global	IS25LP128_Init
+ 184              		.syntax unified
+ 185              		.thumb
+ 186              		.thumb_func
+ 187              		.fpu fpv4-sp-d16
+ 189              	IS25LP128_Init:
+ 190              	.LFB137:
+  45:Src/IS25.c    **** void IS25LP128_Init(){
+ 191              		.loc 1 45 22 is_stmt 1 view -0
+ 192              		.cfi_startproc
+ 193              		@ args = 0, pretend = 0, frame = 0
+ 194              		@ frame_needed = 0, uses_anonymous_args = 0
+ 195 0000 10B5     		push	{r4, lr}
+ 196              	.LCFI6:
+ 197              		.cfi_def_cfa_offset 8
+ 198              		.cfi_offset 4, -8
+ 199              		.cfi_offset 14, -4
+  46:Src/IS25.c    ****   QSPI_SetInit(3);
+ 200              		.loc 1 46 3 view .LVU21
+ 201 0002 0320     		movs	r0, #3
+ 202 0004 FFF7FEFF 		bl	QSPI_SetInit
+ 203              	.LVL9:
+  47:Src/IS25.c    ****   // Read ID(IS25LP128`s ID should be "0x9D 0x60 0x18")
+  48:Src/IS25.c    ****   QSPI_SetInstruct(0x9F,1);
+ 204              		.loc 1 48 3 view .LVU22
+ 205 0008 0121     		movs	r1, #1
+ 206 000a 9F20     		movs	r0, #159
+ 207 000c FFF7FEFF 		bl	QSPI_SetInstruct
+ 208              	.LVL10:
+  49:Src/IS25.c    ****   QSPI_SetDataInfo(ID_REG,3,0,1);
+ 209              		.loc 1 49 3 view .LVU23
+ 210 0010 1C4C     		ldr	r4, .L18
+ 211 0012 0123     		movs	r3, #1
+ 212 0014 0022     		movs	r2, #0
+ 213 0016 0321     		movs	r1, #3
+ 214 0018 2046     		mov	r0, r4
+ 215 001a FFF7FEFF 		bl	QSPI_SetDataInfo
+ 216              	.LVL11:
+  50:Src/IS25.c    ****   QSPI_Read();
+ 217              		.loc 1 50 3 view .LVU24
+ 218 001e FFF7FEFF 		bl	QSPI_Read
+ 219              	.LVL12:
+  51:Src/IS25.c    ****   if(ID_REG[0] == 0x9D && ID_REG[1] == 0x60 && ID_REG[2] == 0x18)
+ 220              		.loc 1 51 3 view .LVU25
+ 221              		.loc 1 51 12 is_stmt 0 view .LVU26
+ 222 0022 2178     		ldrb	r1, [r4]	@ zero_extendqisi2
+ 223              		.loc 1 51 5 view .LVU27
+ 224 0024 9D29     		cmp	r1, #157
+ 225 0026 0ED0     		beq	.L15
+ 226              	.L10:
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s 			page 6
+
+
+  52:Src/IS25.c    ****     DEBUG("Flash Device is IS25LP128\r\n");
+  53:Src/IS25.c    ****   else if(ID_REG[0] == 0x9D && ID_REG[1] == 0x40 && ID_REG[2] == 0x11)
+ 227              		.loc 1 53 8 is_stmt 1 view .LVU28
+ 228              		.loc 1 53 10 is_stmt 0 view .LVU29
+ 229 0028 9D29     		cmp	r1, #157
+ 230 002a 16D0     		beq	.L16
+ 231              	.L12:
+  54:Src/IS25.c    ****     DEBUG("Flash Device is IS25LQ010\r\n");
+  55:Src/IS25.c    ****   else if(ID_REG[0] == 0xC8 && ID_REG[1] == 0x60 && ID_REG[2] == 0x17)
+ 232              		.loc 1 55 8 is_stmt 1 view .LVU30
+ 233              		.loc 1 55 10 is_stmt 0 view .LVU31
+ 234 002c C829     		cmp	r1, #200
+ 235 002e 03D1     		bne	.L13
+ 236              		.loc 1 55 38 discriminator 1 view .LVU32
+ 237 0030 144B     		ldr	r3, .L18
+ 238 0032 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 239              		.loc 1 55 29 discriminator 1 view .LVU33
+ 240 0034 602B     		cmp	r3, #96
+ 241 0036 1CD0     		beq	.L17
+ 242              	.L13:
+  56:Src/IS25.c    ****     DEBUG("Flash Device is GD25LQ64\r\n");
+  57:Src/IS25.c    ****   else 
+  58:Src/IS25.c    ****     DEBUG("Flash Device is unknown(0x%02X 0x%02X 0x%02X)\r\n",ID_REG[0],ID_REG[1],ID_REG[2]);
+ 243              		.loc 1 58 5 is_stmt 1 view .LVU34
+ 244 0038 124A     		ldr	r2, .L18
+ 245 003a 9378     		ldrb	r3, [r2, #2]	@ zero_extendqisi2
+ 246 003c 5278     		ldrb	r2, [r2, #1]	@ zero_extendqisi2
+ 247 003e 1248     		ldr	r0, .L18+4
+ 248 0040 FFF7FEFF 		bl	my_printf
+ 249              	.LVL13:
+ 250              	.L9:
+  59:Src/IS25.c    **** }
+ 251              		.loc 1 59 1 is_stmt 0 view .LVU35
+ 252 0044 10BD     		pop	{r4, pc}
+ 253              	.L15:
+  51:Src/IS25.c    ****     DEBUG("Flash Device is IS25LP128\r\n");
+ 254              		.loc 1 51 33 discriminator 1 view .LVU36
+ 255 0046 6378     		ldrb	r3, [r4, #1]	@ zero_extendqisi2
+  51:Src/IS25.c    ****     DEBUG("Flash Device is IS25LP128\r\n");
+ 256              		.loc 1 51 24 discriminator 1 view .LVU37
+ 257 0048 602B     		cmp	r3, #96
+ 258 004a EDD1     		bne	.L10
+  51:Src/IS25.c    ****     DEBUG("Flash Device is IS25LP128\r\n");
+ 259              		.loc 1 51 54 discriminator 2 view .LVU38
+ 260 004c A378     		ldrb	r3, [r4, #2]	@ zero_extendqisi2
+  51:Src/IS25.c    ****     DEBUG("Flash Device is IS25LP128\r\n");
+ 261              		.loc 1 51 45 discriminator 2 view .LVU39
+ 262 004e 182B     		cmp	r3, #24
+ 263 0050 EAD1     		bne	.L10
+  52:Src/IS25.c    ****   else if(ID_REG[0] == 0x9D && ID_REG[1] == 0x40 && ID_REG[2] == 0x11)
+ 264              		.loc 1 52 5 is_stmt 1 view .LVU40
+ 265 0052 0E48     		ldr	r0, .L18+8
+ 266 0054 FFF7FEFF 		bl	my_printf
+ 267              	.LVL14:
+ 268 0058 F4E7     		b	.L9
+ 269              	.L16:
+  53:Src/IS25.c    ****     DEBUG("Flash Device is IS25LQ010\r\n");
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s 			page 7
+
+
+ 270              		.loc 1 53 38 is_stmt 0 discriminator 1 view .LVU41
+ 271 005a 0A4B     		ldr	r3, .L18
+ 272 005c 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+  53:Src/IS25.c    ****     DEBUG("Flash Device is IS25LQ010\r\n");
+ 273              		.loc 1 53 29 discriminator 1 view .LVU42
+ 274 005e 402B     		cmp	r3, #64
+ 275 0060 E4D1     		bne	.L12
+  53:Src/IS25.c    ****     DEBUG("Flash Device is IS25LQ010\r\n");
+ 276              		.loc 1 53 59 discriminator 2 view .LVU43
+ 277 0062 084B     		ldr	r3, .L18
+ 278 0064 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+  53:Src/IS25.c    ****     DEBUG("Flash Device is IS25LQ010\r\n");
+ 279              		.loc 1 53 50 discriminator 2 view .LVU44
+ 280 0066 112B     		cmp	r3, #17
+ 281 0068 E0D1     		bne	.L12
+  54:Src/IS25.c    ****   else if(ID_REG[0] == 0xC8 && ID_REG[1] == 0x60 && ID_REG[2] == 0x17)
+ 282              		.loc 1 54 5 is_stmt 1 view .LVU45
+ 283 006a 0948     		ldr	r0, .L18+12
+ 284 006c FFF7FEFF 		bl	my_printf
+ 285              	.LVL15:
+ 286 0070 E8E7     		b	.L9
+ 287              	.L17:
+  55:Src/IS25.c    ****     DEBUG("Flash Device is GD25LQ64\r\n");
+ 288              		.loc 1 55 59 is_stmt 0 discriminator 2 view .LVU46
+ 289 0072 044B     		ldr	r3, .L18
+ 290 0074 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+  55:Src/IS25.c    ****     DEBUG("Flash Device is GD25LQ64\r\n");
+ 291              		.loc 1 55 50 discriminator 2 view .LVU47
+ 292 0076 172B     		cmp	r3, #23
+ 293 0078 DED1     		bne	.L13
+  56:Src/IS25.c    ****   else 
+ 294              		.loc 1 56 5 is_stmt 1 view .LVU48
+ 295 007a 0648     		ldr	r0, .L18+16
+ 296 007c FFF7FEFF 		bl	my_printf
+ 297              	.LVL16:
+ 298 0080 E0E7     		b	.L9
+ 299              	.L19:
+ 300 0082 00BF     		.align	2
+ 301              	.L18:
+ 302 0084 00000000 		.word	ID_REG
+ 303 0088 6C000000 		.word	.LC3
+ 304 008c 00000000 		.word	.LC0
+ 305 0090 24000000 		.word	.LC1
+ 306 0094 48000000 		.word	.LC2
+ 307              		.cfi_endproc
+ 308              	.LFE137:
+ 310              		.section	.text.IS25LP128_PageProgram,"ax",%progbits
+ 311              		.align	1
+ 312              		.global	IS25LP128_PageProgram
+ 313              		.syntax unified
+ 314              		.thumb
+ 315              		.thumb_func
+ 316              		.fpu fpv4-sp-d16
+ 318              	IS25LP128_PageProgram:
+ 319              	.LVL17:
+ 320              	.LFB138:
+  60:Src/IS25.c    **** void IS25LP128_PageProgram(uint32_t Addr, uint8_t *Data){
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s 			page 8
+
+
+ 321              		.loc 1 60 57 view -0
+ 322              		.cfi_startproc
+ 323              		@ args = 0, pretend = 0, frame = 0
+ 324              		@ frame_needed = 0, uses_anonymous_args = 0
+ 325              		.loc 1 60 57 is_stmt 0 view .LVU50
+ 326 0000 38B5     		push	{r3, r4, r5, lr}
+ 327              	.LCFI7:
+ 328              		.cfi_def_cfa_offset 16
+ 329              		.cfi_offset 3, -16
+ 330              		.cfi_offset 4, -12
+ 331              		.cfi_offset 5, -8
+ 332              		.cfi_offset 14, -4
+ 333 0002 0546     		mov	r5, r0
+ 334 0004 0C46     		mov	r4, r1
+  61:Src/IS25.c    ****   // Page Program
+  62:Src/IS25.c    ****   IS25LP128_WriteEnable();
+ 335              		.loc 1 62 3 is_stmt 1 view .LVU51
+ 336 0006 FFF7FEFF 		bl	IS25LP128_WriteEnable
+ 337              	.LVL18:
+  63:Src/IS25.c    ****   QSPI_SetInstruct(0x02,1);
+ 338              		.loc 1 63 3 view .LVU52
+ 339 000a 0121     		movs	r1, #1
+ 340 000c 0220     		movs	r0, #2
+ 341 000e FFF7FEFF 		bl	QSPI_SetInstruct
+ 342              	.LVL19:
+  64:Src/IS25.c    ****   QSPI_SetAddress(Addr,1);
+ 343              		.loc 1 64 3 view .LVU53
+ 344 0012 0121     		movs	r1, #1
+ 345 0014 2846     		mov	r0, r5
+ 346 0016 FFF7FEFF 		bl	QSPI_SetAddress
+ 347              	.LVL20:
+  65:Src/IS25.c    ****   QSPI_SetDataInfo(Data,256,0,1);
+ 348              		.loc 1 65 3 view .LVU54
+ 349 001a 0123     		movs	r3, #1
+ 350 001c 0022     		movs	r2, #0
+ 351 001e 4FF48071 		mov	r1, #256
+ 352 0022 2046     		mov	r0, r4
+ 353 0024 FFF7FEFF 		bl	QSPI_SetDataInfo
+ 354              	.LVL21:
+  66:Src/IS25.c    ****   QSPI_Write();
+ 355              		.loc 1 66 3 view .LVU55
+ 356 0028 FFF7FEFF 		bl	QSPI_Write
+ 357              	.LVL22:
+  67:Src/IS25.c    ****   int try2 = 0;
+ 358              		.loc 1 67 3 view .LVU56
+  68:Src/IS25.c    ****   while(IS25LP128_ReadStatus() & 0x02)try2++;
+ 359              		.loc 1 68 3 view .LVU57
+ 360              	.L21:
+ 361              		.loc 1 68 8 discriminator 1 view .LVU58
+ 362              		.loc 1 68 9 is_stmt 0 discriminator 1 view .LVU59
+ 363 002c FFF7FEFF 		bl	IS25LP128_ReadStatus
+ 364              	.LVL23:
+ 365              		.loc 1 68 8 discriminator 1 view .LVU60
+ 366 0030 10F0020F 		tst	r0, #2
+ 367 0034 FAD1     		bne	.L21
+  69:Src/IS25.c    ****   // DEBUG("Page Program 0x%06X (Busy try:%d)\r\n",Addr,try2);
+  70:Src/IS25.c    **** }
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s 			page 9
+
+
+ 368              		.loc 1 70 1 view .LVU61
+ 369 0036 38BD     		pop	{r3, r4, r5, pc}
+ 370              		.loc 1 70 1 view .LVU62
+ 371              		.cfi_endproc
+ 372              	.LFE138:
+ 374              		.section	.text.IS25LP128_Read,"ax",%progbits
+ 375              		.align	1
+ 376              		.global	IS25LP128_Read
+ 377              		.syntax unified
+ 378              		.thumb
+ 379              		.thumb_func
+ 380              		.fpu fpv4-sp-d16
+ 382              	IS25LP128_Read:
+ 383              	.LVL24:
+ 384              	.LFB139:
+  71:Src/IS25.c    **** void IS25LP128_Read(uint32_t Addr, uint8_t *Data, uint32_t len){
+ 385              		.loc 1 71 64 is_stmt 1 view -0
+ 386              		.cfi_startproc
+ 387              		@ args = 0, pretend = 0, frame = 0
+ 388              		@ frame_needed = 0, uses_anonymous_args = 0
+  72:Src/IS25.c    ****   if(len == 0)return;
+ 389              		.loc 1 72 3 view .LVU64
+ 390              		.loc 1 72 5 is_stmt 0 view .LVU65
+ 391 0000 02B9     		cbnz	r2, .L29
+ 392 0002 7047     		bx	lr
+ 393              	.L29:
+  71:Src/IS25.c    **** void IS25LP128_Read(uint32_t Addr, uint8_t *Data, uint32_t len){
+ 394              		.loc 1 71 64 view .LVU66
+ 395 0004 70B5     		push	{r4, r5, r6, lr}
+ 396              	.LCFI8:
+ 397              		.cfi_def_cfa_offset 16
+ 398              		.cfi_offset 4, -16
+ 399              		.cfi_offset 5, -12
+ 400              		.cfi_offset 6, -8
+ 401              		.cfi_offset 14, -4
+ 402 0006 0546     		mov	r5, r0
+ 403 0008 0C46     		mov	r4, r1
+ 404 000a 1646     		mov	r6, r2
+  73:Src/IS25.c    ****   // DEBUG("IS25LP128_Read called : (0x%06X,Data,0x%02X)\r\n",Addr,len);
+  74:Src/IS25.c    ****   // Normal Read
+  75:Src/IS25.c    ****   QSPI_SetInstruct(0x03,1);
+ 405              		.loc 1 75 3 is_stmt 1 view .LVU67
+ 406 000c 0121     		movs	r1, #1
+ 407              	.LVL25:
+ 408              		.loc 1 75 3 is_stmt 0 view .LVU68
+ 409 000e 0320     		movs	r0, #3
+ 410              	.LVL26:
+ 411              		.loc 1 75 3 view .LVU69
+ 412 0010 FFF7FEFF 		bl	QSPI_SetInstruct
+ 413              	.LVL27:
+  76:Src/IS25.c    ****   QSPI_SetAddress(Addr,1);
+ 414              		.loc 1 76 3 is_stmt 1 view .LVU70
+ 415 0014 0121     		movs	r1, #1
+ 416 0016 2846     		mov	r0, r5
+ 417 0018 FFF7FEFF 		bl	QSPI_SetAddress
+ 418              	.LVL28:
+  77:Src/IS25.c    ****   QSPI_SetDataInfo(Data,len,0,1);
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s 			page 10
+
+
+ 419              		.loc 1 77 3 view .LVU71
+ 420 001c 0123     		movs	r3, #1
+ 421 001e 0022     		movs	r2, #0
+ 422 0020 3146     		mov	r1, r6
+ 423 0022 2046     		mov	r0, r4
+ 424 0024 FFF7FEFF 		bl	QSPI_SetDataInfo
+ 425              	.LVL29:
+  78:Src/IS25.c    ****   QSPI_Read();
+ 426              		.loc 1 78 3 view .LVU72
+ 427 0028 FFF7FEFF 		bl	QSPI_Read
+ 428              	.LVL30:
+  79:Src/IS25.c    ****   // DEBUG("{%x:%02X}",Addr,*Data);
+  80:Src/IS25.c    **** }
+ 429              		.loc 1 80 1 is_stmt 0 view .LVU73
+ 430 002c 70BD     		pop	{r4, r5, r6, pc}
+ 431              		.loc 1 80 1 view .LVU74
+ 432              		.cfi_endproc
+ 433              	.LFE139:
+ 435              		.section	.text.IS25LP128_SectorErase,"ax",%progbits
+ 436              		.align	1
+ 437              		.global	IS25LP128_SectorErase
+ 438              		.syntax unified
+ 439              		.thumb
+ 440              		.thumb_func
+ 441              		.fpu fpv4-sp-d16
+ 443              	IS25LP128_SectorErase:
+ 444              	.LVL31:
+ 445              	.LFB140:
+  81:Src/IS25.c    **** void IS25LP128_SectorErase(uint32_t Addr){
+ 446              		.loc 1 81 42 is_stmt 1 view -0
+ 447              		.cfi_startproc
+ 448              		@ args = 0, pretend = 0, frame = 0
+ 449              		@ frame_needed = 0, uses_anonymous_args = 0
+ 450              		.loc 1 81 42 is_stmt 0 view .LVU76
+ 451 0000 10B5     		push	{r4, lr}
+ 452              	.LCFI9:
+ 453              		.cfi_def_cfa_offset 8
+ 454              		.cfi_offset 4, -8
+ 455              		.cfi_offset 14, -4
+  82:Src/IS25.c    ****   Addr = Addr & 0xfff000;
+ 456              		.loc 1 82 3 is_stmt 1 view .LVU77
+ 457              		.loc 1 82 8 is_stmt 0 view .LVU78
+ 458 0002 0A4C     		ldr	r4, .L33
+ 459 0004 0440     		ands	r4, r4, r0
+ 460              	.LVL32:
+  83:Src/IS25.c    ****   // Sector Erase
+  84:Src/IS25.c    ****   IS25LP128_WriteEnable();
+ 461              		.loc 1 84 3 is_stmt 1 view .LVU79
+ 462 0006 FFF7FEFF 		bl	IS25LP128_WriteEnable
+ 463              	.LVL33:
+  85:Src/IS25.c    ****   QSPI_SetInstruct(0x20,1);
+ 464              		.loc 1 85 3 view .LVU80
+ 465 000a 0121     		movs	r1, #1
+ 466 000c 2020     		movs	r0, #32
+ 467 000e FFF7FEFF 		bl	QSPI_SetInstruct
+ 468              	.LVL34:
+  86:Src/IS25.c    ****   QSPI_SetAddress(Addr,1);
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s 			page 11
+
+
+ 469              		.loc 1 86 3 view .LVU81
+ 470 0012 0121     		movs	r1, #1
+ 471 0014 2046     		mov	r0, r4
+ 472 0016 FFF7FEFF 		bl	QSPI_SetAddress
+ 473              	.LVL35:
+  87:Src/IS25.c    ****   QSPI_Write();
+ 474              		.loc 1 87 3 view .LVU82
+ 475 001a FFF7FEFF 		bl	QSPI_Write
+ 476              	.LVL36:
+  88:Src/IS25.c    **** 
+  89:Src/IS25.c    ****   int try1 = 0;
+ 477              		.loc 1 89 3 view .LVU83
+  90:Src/IS25.c    ****   while(IS25LP128_ReadStatus() & 0x02)try1++;
+ 478              		.loc 1 90 3 view .LVU84
+ 479              	.L31:
+ 480              		.loc 1 90 8 discriminator 1 view .LVU85
+ 481              		.loc 1 90 9 is_stmt 0 discriminator 1 view .LVU86
+ 482 001e FFF7FEFF 		bl	IS25LP128_ReadStatus
+ 483              	.LVL37:
+ 484              		.loc 1 90 8 discriminator 1 view .LVU87
+ 485 0022 10F0020F 		tst	r0, #2
+ 486 0026 FAD1     		bne	.L31
+  91:Src/IS25.c    ****   // DEBUG("Sector Erase 0x%06X (Busy try:%d)\r\n",Addr,try1);
+  92:Src/IS25.c    **** }
+ 487              		.loc 1 92 1 view .LVU88
+ 488 0028 10BD     		pop	{r4, pc}
+ 489              	.LVL38:
+ 490              	.L34:
+ 491              		.loc 1 92 1 view .LVU89
+ 492 002a 00BF     		.align	2
+ 493              	.L33:
+ 494 002c 00F0FF00 		.word	16773120
+ 495              		.cfi_endproc
+ 496              	.LFE140:
+ 498              		.section	.text.IS25LP128_Write,"ax",%progbits
+ 499              		.align	1
+ 500              		.global	IS25LP128_Write
+ 501              		.syntax unified
+ 502              		.thumb
+ 503              		.thumb_func
+ 504              		.fpu fpv4-sp-d16
+ 506              	IS25LP128_Write:
+ 507              	.LVL39:
+ 508              	.LFB141:
+  93:Src/IS25.c    **** void IS25LP128_Write(uint32_t Addr, uint8_t *Data, uint32_t len){
+ 509              		.loc 1 93 65 is_stmt 1 view -0
+ 510              		.cfi_startproc
+ 511              		@ args = 0, pretend = 0, frame = 256
+ 512              		@ frame_needed = 0, uses_anonymous_args = 0
+ 513              		.loc 1 93 65 is_stmt 0 view .LVU91
+ 514 0000 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+ 515              	.LCFI10:
+ 516              		.cfi_def_cfa_offset 32
+ 517              		.cfi_offset 4, -32
+ 518              		.cfi_offset 5, -28
+ 519              		.cfi_offset 6, -24
+ 520              		.cfi_offset 7, -20
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s 			page 12
+
+
+ 521              		.cfi_offset 8, -16
+ 522              		.cfi_offset 9, -12
+ 523              		.cfi_offset 10, -8
+ 524              		.cfi_offset 14, -4
+ 525 0004 C0B0     		sub	sp, sp, #256
+ 526              	.LCFI11:
+ 527              		.cfi_def_cfa_offset 288
+ 528 0006 0646     		mov	r6, r0
+ 529 0008 0F46     		mov	r7, r1
+ 530 000a 1546     		mov	r5, r2
+  94:Src/IS25.c    ****   // DEBUG("Data.\r\n");
+  95:Src/IS25.c    ****   // PrintMemoryMap(0, Data, len, 16);
+  96:Src/IS25.c    ****   // DEBUG("Write 0x%06X\r\n",Addr);
+  97:Src/IS25.c    ****   uint8_t Buf[256] = {0,};
+ 531              		.loc 1 97 3 is_stmt 1 view .LVU92
+ 532              		.loc 1 97 11 is_stmt 0 view .LVU93
+ 533 000c 0021     		movs	r1, #0
+ 534              	.LVL40:
+ 535              		.loc 1 97 11 view .LVU94
+ 536 000e 0091     		str	r1, [sp]
+ 537 0010 FC22     		movs	r2, #252
+ 538              	.LVL41:
+ 539              		.loc 1 97 11 view .LVU95
+ 540 0012 01A8     		add	r0, sp, #4
+ 541              	.LVL42:
+ 542              		.loc 1 97 11 view .LVU96
+ 543 0014 FFF7FEFF 		bl	memset
+ 544              	.LVL43:
+  98:Src/IS25.c    ****   int index = 256 - (Addr&0xff);
+ 545              		.loc 1 98 3 is_stmt 1 view .LVU97
+ 546              		.loc 1 98 26 is_stmt 0 view .LVU98
+ 547 0018 F4B2     		uxtb	r4, r6
+ 548              		.loc 1 98 19 view .LVU99
+ 549 001a C4F58079 		rsb	r9, r4, #256
+ 550              		.loc 1 98 7 view .LVU100
+ 551 001e C846     		mov	r8, r9
+ 552              	.LVL44:
+  99:Src/IS25.c    ****   //0x302 0xFC 0xFE
+ 100:Src/IS25.c    **** 
+ 101:Src/IS25.c    ****   //0x00 0x100 0x100
+ 102:Src/IS25.c    ****   // DEBUG("0x%02X, 0x%02X, 0x%02X\r\n",Addr,len,index);
+ 103:Src/IS25.c    ****   if(Addr&0xff || (len < 0x100)){
+ 553              		.loc 1 103 3 is_stmt 1 view .LVU101
+ 554              		.loc 1 103 5 is_stmt 0 view .LVU102
+ 555 0020 0CB9     		cbnz	r4, .L36
+ 556              		.loc 1 103 16 discriminator 1 view .LVU103
+ 557 0022 FF2D     		cmp	r5, #255
+ 558 0024 28D8     		bhi	.L45
+ 559              	.L36:
+ 104:Src/IS25.c    ****     IS25LP128_Read(Addr&0xffffff00, Buf, Addr&0xff);
+ 560              		.loc 1 104 5 is_stmt 1 view .LVU104
+ 561 0026 26F0FF0A 		bic	r10, r6, #255
+ 562 002a 2246     		mov	r2, r4
+ 563 002c 6946     		mov	r1, sp
+ 564 002e 5046     		mov	r0, r10
+ 565 0030 FFF7FEFF 		bl	IS25LP128_Read
+ 566              	.LVL45:
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s 			page 13
+
+
+ 105:Src/IS25.c    ****     // DEBUG("1.\r\n");PrintMemoryMap(0, Buf, 256, 16);
+ 106:Src/IS25.c    ****     // 0x3FE 0x02
+ 107:Src/IS25.c    ****     if(index > len){//len < 0x100
+ 567              		.loc 1 107 5 view .LVU105
+ 568              		.loc 1 107 7 is_stmt 0 view .LVU106
+ 569 0034 A945     		cmp	r9, r5
+ 570 0036 18D9     		bls	.L38
+ 108:Src/IS25.c    ****       //0x376 0x100
+ 109:Src/IS25.c    ****       //0x104 0xFC
+ 110:Src/IS25.c    ****       // DEBUG("0x%02X, 0x%02X\r\n",Addr + len,index - len);
+ 111:Src/IS25.c    ****       memcpy(Buf + (Addr&0xff), Data, len);
+ 571              		.loc 1 111 7 is_stmt 1 view .LVU107
+ 572 0038 2A46     		mov	r2, r5
+ 573 003a 3946     		mov	r1, r7
+ 574 003c 0DEB0400 		add	r0, sp, r4
+ 575 0040 FFF7FEFF 		bl	memcpy
+ 576              	.LVL46:
+ 112:Src/IS25.c    ****       // DEBUG("2.\r\n");PrintMemoryMap(0, Buf, 256, 16);
+ 113:Src/IS25.c    ****       IS25LP128_Read(Addr + len, Buf + (Addr&0xff) + len, index - len);
+ 577              		.loc 1 113 7 view .LVU108
+ 578              		.loc 1 113 52 is_stmt 0 view .LVU109
+ 579 0044 6119     		adds	r1, r4, r5
+ 580              		.loc 1 113 7 view .LVU110
+ 581 0046 A9EB0502 		sub	r2, r9, r5
+ 582 004a 6944     		add	r1, r1, sp
+ 583 004c 7019     		adds	r0, r6, r5
+ 584 004e FFF7FEFF 		bl	IS25LP128_Read
+ 585              	.LVL47:
+ 586              	.L39:
+ 114:Src/IS25.c    ****       // DEBUG("3.\r\n");PrintMemoryMap(0, Buf, 256, 16);
+ 115:Src/IS25.c    ****     }else {
+ 116:Src/IS25.c    ****       memcpy(Buf + (Addr&0xff), Data, index);
+ 117:Src/IS25.c    ****       // DEBUG("3.\r\n");PrintMemoryMap(0, Buf, 256, 16);
+ 118:Src/IS25.c    ****     }
+ 119:Src/IS25.c    ****     
+ 120:Src/IS25.c    ****     IS25LP128_PageProgram(Addr&0xffffff00, Buf);
+ 587              		.loc 1 120 5 is_stmt 1 view .LVU111
+ 588 0052 6946     		mov	r1, sp
+ 589 0054 5046     		mov	r0, r10
+ 590 0056 FFF7FEFF 		bl	IS25LP128_PageProgram
+ 591              	.LVL48:
+ 121:Src/IS25.c    ****     if(index >= len)
+ 592              		.loc 1 121 5 view .LVU112
+ 593              		.loc 1 121 7 is_stmt 0 view .LVU113
+ 594 005a A945     		cmp	r9, r5
+ 595 005c 24D2     		bcs	.L35
+ 122:Src/IS25.c    ****       return;
+ 123:Src/IS25.c    ****     len -= index;
+ 596              		.loc 1 123 5 is_stmt 1 view .LVU114
+ 597              		.loc 1 123 9 is_stmt 0 view .LVU115
+ 598 005e A4F58074 		sub	r4, r4, #256
+ 599 0062 2544     		add	r5, r5, r4
+ 600              	.LVL49:
+ 124:Src/IS25.c    ****     Addr += index;
+ 601              		.loc 1 124 5 is_stmt 1 view .LVU116
+ 602              		.loc 1 124 10 is_stmt 0 view .LVU117
+ 603 0064 4E44     		add	r6, r6, r9
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s 			page 14
+
+
+ 604              	.LVL50:
+ 605              	.L37:
+ 125:Src/IS25.c    ****   }else index = 0;
+ 126:Src/IS25.c    ****   //0x00 0x100 0x00
+ 127:Src/IS25.c    ****   // DEBUG("0x%02X, 0x%02X, 0x%02X\r\n",Addr,len,index);
+ 128:Src/IS25.c    ****   for(int i=0;i<(len&0xffffff00);i+=0x100){
+ 606              		.loc 1 128 3 is_stmt 1 view .LVU118
+ 607              	.LBB2:
+ 608              		.loc 1 128 7 view .LVU119
+ 609              		.loc 1 128 11 is_stmt 0 view .LVU120
+ 610 0066 0024     		movs	r4, #0
+ 611              		.loc 1 128 3 view .LVU121
+ 612 0068 11E0     		b	.L42
+ 613              	.LVL51:
+ 614              	.L38:
+ 615              		.loc 1 128 3 view .LVU122
+ 616              	.LBE2:
+ 116:Src/IS25.c    ****       // DEBUG("3.\r\n");PrintMemoryMap(0, Buf, 256, 16);
+ 617              		.loc 1 116 7 is_stmt 1 view .LVU123
+ 618 006a 4A46     		mov	r2, r9
+ 619 006c 3946     		mov	r1, r7
+ 620 006e 0DEB0400 		add	r0, sp, r4
+ 621 0072 FFF7FEFF 		bl	memcpy
+ 622              	.LVL52:
+ 623 0076 ECE7     		b	.L39
+ 624              	.L45:
+ 125:Src/IS25.c    ****   }else index = 0;
+ 625              		.loc 1 125 15 is_stmt 0 view .LVU124
+ 626 0078 4FF00008 		mov	r8, #0
+ 627              	.LVL53:
+ 125:Src/IS25.c    ****   }else index = 0;
+ 628              		.loc 1 125 15 view .LVU125
+ 629 007c F3E7     		b	.L37
+ 630              	.LVL54:
+ 631              	.L43:
+ 632              	.LBB3:
+ 129:Src/IS25.c    ****     //0x00 0x00 0x00
+ 130:Src/IS25.c    ****     // DEBUG("0x%02X, 0x%02X, 0x%02X\r\n",i,Addr + i,index + i);
+ 131:Src/IS25.c    ****     IS25LP128_PageProgram(Addr + i, Data + index + i);
+ 633              		.loc 1 131 5 is_stmt 1 discriminator 3 view .LVU126
+ 634              		.loc 1 131 50 is_stmt 0 discriminator 3 view .LVU127
+ 635 007e 08EB0401 		add	r1, r8, r4
+ 636              		.loc 1 131 5 discriminator 3 view .LVU128
+ 637 0082 3944     		add	r1, r1, r7
+ 638 0084 A019     		adds	r0, r4, r6
+ 639 0086 FFF7FEFF 		bl	IS25LP128_PageProgram
+ 640              	.LVL55:
+ 128:Src/IS25.c    ****     //0x00 0x00 0x00
+ 641              		.loc 1 128 34 is_stmt 1 discriminator 3 view .LVU129
+ 128:Src/IS25.c    ****     //0x00 0x00 0x00
+ 642              		.loc 1 128 35 is_stmt 0 discriminator 3 view .LVU130
+ 643 008a 04F58074 		add	r4, r4, #256
+ 644              	.LVL56:
+ 645              	.L42:
+ 128:Src/IS25.c    ****     //0x00 0x00 0x00
+ 646              		.loc 1 128 15 is_stmt 1 discriminator 1 view .LVU131
+ 128:Src/IS25.c    ****     //0x00 0x00 0x00
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s 			page 15
+
+
+ 647              		.loc 1 128 21 is_stmt 0 discriminator 1 view .LVU132
+ 648 008e 25F0FF03 		bic	r3, r5, #255
+ 128:Src/IS25.c    ****     //0x00 0x00 0x00
+ 649              		.loc 1 128 3 discriminator 1 view .LVU133
+ 650 0092 A342     		cmp	r3, r4
+ 651 0094 F3D8     		bhi	.L43
+ 652              	.LBE3:
+ 132:Src/IS25.c    ****     // DEBUG("4.\r\n");PrintMemoryMap(Addr + i,Data + index + i,256,16);
+ 133:Src/IS25.c    ****   }
+ 134:Src/IS25.c    ****   index +=((len-1)&0xffffff00);
+ 653              		.loc 1 134 3 is_stmt 1 view .LVU134
+ 654              		.loc 1 134 16 is_stmt 0 view .LVU135
+ 655 0096 6B1E     		subs	r3, r5, #1
+ 656              		.loc 1 134 19 view .LVU136
+ 657 0098 23F0FF03 		bic	r3, r3, #255
+ 658              		.loc 1 134 9 view .LVU137
+ 659 009c 9844     		add	r8, r8, r3
+ 660              	.LVL57:
+ 135:Src/IS25.c    ****   Addr += ((len-1)&0xffffff00);
+ 661              		.loc 1 135 3 is_stmt 1 view .LVU138
+ 662              		.loc 1 135 8 is_stmt 0 view .LVU139
+ 663 009e 1E44     		add	r6, r6, r3
+ 664              	.LVL58:
+ 136:Src/IS25.c    ****   len  -= ((len-1)&0xffffff00);
+ 665              		.loc 1 136 3 is_stmt 1 view .LVU140
+ 666              		.loc 1 136 8 is_stmt 0 view .LVU141
+ 667 00a0 EC1A     		subs	r4, r5, r3
+ 668              	.LVL59:
+ 137:Src/IS25.c    ****   // DEBUG("0x%02X, 0x%02X, 0x%02X\r\n",Addr,len,index);
+ 138:Src/IS25.c    ****   if(len&0xff){
+ 669              		.loc 1 138 3 is_stmt 1 view .LVU142
+ 670              		.loc 1 138 5 is_stmt 0 view .LVU143
+ 671 00a2 15F0FF05 		ands	r5, r5, #255
+ 672 00a6 02D1     		bne	.L47
+ 673              	.LVL60:
+ 674              	.L35:
+ 139:Src/IS25.c    ****     memcpy(Buf, Data + index, (len&0xff));
+ 140:Src/IS25.c    ****     IS25LP128_Read(Addr + len, Buf + len, 256 - (len&0xff));
+ 141:Src/IS25.c    ****     IS25LP128_PageProgram(Addr, Buf);
+ 142:Src/IS25.c    ****     // DEBUG("5.\r\n");PrintMemoryMap(Addr, Buf, 256, 16);
+ 143:Src/IS25.c    ****   }
+ 144:Src/IS25.c    **** }...
+ 675              		.loc 1 144 1 view .LVU144
+ 676 00a8 40B0     		add	sp, sp, #256
+ 677              	.LCFI12:
+ 678              		.cfi_remember_state
+ 679              		.cfi_def_cfa_offset 32
+ 680              		@ sp needed
+ 681 00aa BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 682              	.LVL61:
+ 683              	.L47:
+ 684              	.LCFI13:
+ 685              		.cfi_restore_state
+ 139:Src/IS25.c    ****     memcpy(Buf, Data + index, (len&0xff));
+ 686              		.loc 1 139 5 is_stmt 1 view .LVU145
+ 687 00ae 2A46     		mov	r2, r5
+ 688 00b0 07EB0801 		add	r1, r7, r8
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s 			page 16
+
+
+ 689 00b4 6846     		mov	r0, sp
+ 690 00b6 FFF7FEFF 		bl	memcpy
+ 691              	.LVL62:
+ 140:Src/IS25.c    ****     IS25LP128_Read(Addr + len, Buf + len, 256 - (len&0xff));
+ 692              		.loc 1 140 5 view .LVU146
+ 693 00ba C5F58072 		rsb	r2, r5, #256
+ 694 00be 0DEB0401 		add	r1, sp, r4
+ 695 00c2 3019     		adds	r0, r6, r4
+ 696 00c4 FFF7FEFF 		bl	IS25LP128_Read
+ 697              	.LVL63:
+ 141:Src/IS25.c    ****     IS25LP128_PageProgram(Addr, Buf);
+ 698              		.loc 1 141 5 view .LVU147
+ 699 00c8 6946     		mov	r1, sp
+ 700 00ca 3046     		mov	r0, r6
+ 701 00cc FFF7FEFF 		bl	IS25LP128_PageProgram
+ 702              	.LVL64:
+ 703 00d0 EAE7     		b	.L35
+ 704              		.cfi_endproc
+ 705              	.LFE141:
+ 707              		.global	PP_Buf
+ 708              		.comm	ID_REG,3,4
+ 709              		.section	.bss.PP_Buf,"aw",%nobits
+ 710              		.align	2
+ 713              	PP_Buf:
+ 714 0000 00000000 		.space	257
+ 714      00000000 
+ 714      00000000 
+ 714      00000000 
+ 714      00000000 
+ 715              		.text
+ 716              	.Letext0:
+ 717              		.file 2 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\inc
+ 718              		.file 3 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\inc
+ 719              		.file 4 "Drivers/CMSIS/Include/core_cm4.h"
+ 720              		.file 5 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/system_stm32l4xx.h"
+ 721              		.file 6 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l412xx.h"
+ 722              		.file 7 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_def.h"
+ 723              		.file 8 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_dma.h"
+ 724              		.file 9 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_flash.h"
+ 725              		.file 10 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h"
+ 726              		.file 11 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h"
+ 727              		.file 12 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\lib\\gcc\\arm-non
+ 728              		.file 13 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\in
+ 729              		.file 14 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\in
+ 730              		.file 15 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\in
+ 731              		.file 16 "Inc/usart.h"
+ 732              		.file 17 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\in
+ 733              		.file 18 "<built-in>"
+ 734              		.file 19 "Inc/Myquadspi.h"
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s 			page 17
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 IS25.c
+C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s:18     .text.IS25LP128_ReadStatus:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s:26     .text.IS25LP128_ReadStatus:00000000 IS25LP128_ReadStatus
+C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s:72     .text.IS25LP128_WriteEnable:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s:79     .text.IS25LP128_WriteEnable:00000000 IS25LP128_WriteEnable
+C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s:104    .text.IS25LP128_Sleep:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s:111    .text.IS25LP128_Sleep:00000000 IS25LP128_Sleep
+C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s:136    .text.IS25LP128_Wakeup:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s:143    .text.IS25LP128_Wakeup:00000000 IS25LP128_Wakeup
+C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s:168    .rodata.IS25LP128_Init.str1.4:00000000 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s:182    .text.IS25LP128_Init:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s:189    .text.IS25LP128_Init:00000000 IS25LP128_Init
+C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s:302    .text.IS25LP128_Init:00000084 $d
+                            *COM*:00000003 ID_REG
+C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s:311    .text.IS25LP128_PageProgram:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s:318    .text.IS25LP128_PageProgram:00000000 IS25LP128_PageProgram
+C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s:375    .text.IS25LP128_Read:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s:382    .text.IS25LP128_Read:00000000 IS25LP128_Read
+C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s:436    .text.IS25LP128_SectorErase:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s:443    .text.IS25LP128_SectorErase:00000000 IS25LP128_SectorErase
+C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s:494    .text.IS25LP128_SectorErase:0000002c $d
+C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s:499    .text.IS25LP128_Write:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s:506    .text.IS25LP128_Write:00000000 IS25LP128_Write
+C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s:713    .bss.PP_Buf:00000000 PP_Buf
+C:\Users\ADMINI~1\AppData\Local\Temp\ccu0ntLO.s:710    .bss.PP_Buf:00000000 $d
+
+UNDEFINED SYMBOLS
+QSPI_SetInstruct
+QSPI_SetDataInfo
+QSPI_Read
+QSPI_Cmd
+QSPI_SetInit
+my_printf
+QSPI_SetAddress
+QSPI_Write
+memset
+memcpy

@@ -1,0 +1,582 @@
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"Myquadspi.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.QSPI_SetInit,"ax",%progbits
+  18              		.align	1
+  19              		.global	QSPI_SetInit
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv4-sp-d16
+  26              	QSPI_SetInit:
+  27              	.LVL0:
+  28              	.LFB133:
+  29              		.file 1 "Src/Myquadspi.c"
+   1:Src/Myquadspi.c **** #include "main.h"
+   2:Src/Myquadspi.c **** #include "quadspi.h"
+   3:Src/Myquadspi.c **** 
+   4:Src/Myquadspi.c **** #include "stm32l4xx_hal.h"
+   5:Src/Myquadspi.c **** #include "Debug.h"
+   6:Src/Myquadspi.c **** #include <stdlib.h>
+   7:Src/Myquadspi.c **** #include <string.h>
+   8:Src/Myquadspi.c **** #include <stdio.h>
+   9:Src/Myquadspi.c **** 
+  10:Src/Myquadspi.c **** QSPI_CommandTypeDef sCommand;
+  11:Src/Myquadspi.c **** uint8_t *pData = 0;
+  12:Src/Myquadspi.c **** uint32_t lineNum2InstructionMode[5] = { 
+  13:Src/Myquadspi.c ****   QSPI_INSTRUCTION_NONE      , QSPI_INSTRUCTION_1_LINE,
+  14:Src/Myquadspi.c ****   QSPI_INSTRUCTION_2_LINES,-1, QSPI_INSTRUCTION_4_LINES };
+  15:Src/Myquadspi.c **** uint32_t lineNum2AddressMode[5] = { 
+  16:Src/Myquadspi.c ****   QSPI_ADDRESS_NONE      , QSPI_ADDRESS_1_LINE,
+  17:Src/Myquadspi.c ****   QSPI_ADDRESS_2_LINES,-1, QSPI_ADDRESS_4_LINES };
+  18:Src/Myquadspi.c **** uint32_t lineNum2DataMode[5] = { 
+  19:Src/Myquadspi.c ****   QSPI_DATA_NONE      , QSPI_DATA_1_LINE,
+  20:Src/Myquadspi.c ****   QSPI_DATA_2_LINES,-1, QSPI_DATA_4_LINES };
+  21:Src/Myquadspi.c **** uint32_t lineNum2AddressLen[4] = { 
+  22:Src/Myquadspi.c ****   QSPI_ADDRESS_8_BITS,  QSPI_ADDRESS_16_BITS,
+  23:Src/Myquadspi.c ****   QSPI_ADDRESS_24_BITS, QSPI_ADDRESS_32_BITS };
+  24:Src/Myquadspi.c **** uint32_t lineNum2AlternateMode[5] = { 
+  25:Src/Myquadspi.c ****   QSPI_ALTERNATE_BYTES_NONE      , QSPI_ALTERNATE_BYTES_1_LINE,
+  26:Src/Myquadspi.c ****   QSPI_ALTERNATE_BYTES_2_LINES,-1, QSPI_ALTERNATE_BYTES_4_LINES };
+  27:Src/Myquadspi.c **** uint32_t lineNum2AlternateLen[4] = { 
+  28:Src/Myquadspi.c ****   QSPI_ALTERNATE_BYTES_8_BITS,  QSPI_ALTERNATE_BYTES_16_BITS,
+  29:Src/Myquadspi.c ****   QSPI_ALTERNATE_BYTES_24_BITS, QSPI_ALTERNATE_BYTES_32_BITS };
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s 			page 2
+
+
+  30:Src/Myquadspi.c **** 
+  31:Src/Myquadspi.c **** // void QSPI_SetnLine(uint8_t lineNum){
+  32:Src/Myquadspi.c **** //   if(lineNum != lineNum&0x04){nLine = 0;return;}
+  33:Src/Myquadspi.c **** //   nLine = lineNum;
+  34:Src/Myquadspi.c **** // }
+  35:Src/Myquadspi.c **** void QSPI_SetInit(uint8_t AddrLengthinByte){
+  30              		.loc 1 35 44 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  36:Src/Myquadspi.c ****   sCommand.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
+  35              		.loc 1 36 3 view .LVU1
+  36              		.loc 1 36 30 is_stmt 0 view .LVU2
+  37 0000 054B     		ldr	r3, .L2
+  38 0002 0022     		movs	r2, #0
+  39 0004 1A62     		str	r2, [r3, #32]
+  37:Src/Myquadspi.c ****   sCommand.DdrMode           = QSPI_DDR_MODE_DISABLE;
+  40              		.loc 1 37 3 is_stmt 1 view .LVU3
+  41              		.loc 1 37 30 is_stmt 0 view .LVU4
+  42 0006 DA62     		str	r2, [r3, #44]
+  38:Src/Myquadspi.c ****   sCommand.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
+  43              		.loc 1 38 3 is_stmt 1 view .LVU5
+  44              		.loc 1 38 30 is_stmt 0 view .LVU6
+  45 0008 5A63     		str	r2, [r3, #52]
+  39:Src/Myquadspi.c ****   sCommand.AddressSize   = lineNum2AddressLen[AddrLengthinByte-1];
+  46              		.loc 1 39 3 is_stmt 1 view .LVU7
+  47              		.loc 1 39 63 is_stmt 0 view .LVU8
+  48 000a 0138     		subs	r0, r0, #1
+  49              	.LVL1:
+  50              		.loc 1 39 46 view .LVU9
+  51 000c 034A     		ldr	r2, .L2+4
+  52 000e 52F82020 		ldr	r2, [r2, r0, lsl #2]
+  53              		.loc 1 39 26 view .LVU10
+  54 0012 DA60     		str	r2, [r3, #12]
+  40:Src/Myquadspi.c **** }
+  55              		.loc 1 40 1 view .LVU11
+  56 0014 7047     		bx	lr
+  57              	.L3:
+  58 0016 00BF     		.align	2
+  59              	.L2:
+  60 0018 00000000 		.word	sCommand
+  61 001c 00000000 		.word	.LANCHOR0
+  62              		.cfi_endproc
+  63              	.LFE133:
+  65              		.section	.text.QSPI_SetInstruct,"ax",%progbits
+  66              		.align	1
+  67              		.global	QSPI_SetInstruct
+  68              		.syntax unified
+  69              		.thumb
+  70              		.thumb_func
+  71              		.fpu fpv4-sp-d16
+  73              	QSPI_SetInstruct:
+  74              	.LVL2:
+  75              	.LFB134:
+  41:Src/Myquadspi.c **** void QSPI_SetInstruct(uint8_t Cmd, uint8_t lineNum){
+  76              		.loc 1 41 52 is_stmt 1 view -0
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s 			page 3
+
+
+  77              		.cfi_startproc
+  78              		@ args = 0, pretend = 0, frame = 0
+  79              		@ frame_needed = 0, uses_anonymous_args = 0
+  80              		@ link register save eliminated.
+  42:Src/Myquadspi.c ****   sCommand.InstructionMode   = lineNum2InstructionMode[lineNum];
+  81              		.loc 1 42 3 view .LVU13
+  82              		.loc 1 42 55 is_stmt 0 view .LVU14
+  83 0000 034B     		ldr	r3, .L5
+  84 0002 53F82120 		ldr	r2, [r3, r1, lsl #2]
+  85              		.loc 1 42 30 view .LVU15
+  86 0006 034B     		ldr	r3, .L5+4
+  87 0008 9A61     		str	r2, [r3, #24]
+  43:Src/Myquadspi.c ****   sCommand.Instruction       = Cmd;
+  88              		.loc 1 43 3 is_stmt 1 view .LVU16
+  89              		.loc 1 43 30 is_stmt 0 view .LVU17
+  90 000a 1860     		str	r0, [r3]
+  44:Src/Myquadspi.c **** }
+  91              		.loc 1 44 1 view .LVU18
+  92 000c 7047     		bx	lr
+  93              	.L6:
+  94 000e 00BF     		.align	2
+  95              	.L5:
+  96 0010 00000000 		.word	.LANCHOR1
+  97 0014 00000000 		.word	sCommand
+  98              		.cfi_endproc
+  99              	.LFE134:
+ 101              		.section	.text.QSPI_SetAddress,"ax",%progbits
+ 102              		.align	1
+ 103              		.global	QSPI_SetAddress
+ 104              		.syntax unified
+ 105              		.thumb
+ 106              		.thumb_func
+ 107              		.fpu fpv4-sp-d16
+ 109              	QSPI_SetAddress:
+ 110              	.LVL3:
+ 111              	.LFB135:
+  45:Src/Myquadspi.c **** void QSPI_SetAddress(uint32_t Addr, uint8_t lineNum){
+ 112              		.loc 1 45 53 is_stmt 1 view -0
+ 113              		.cfi_startproc
+ 114              		@ args = 0, pretend = 0, frame = 0
+ 115              		@ frame_needed = 0, uses_anonymous_args = 0
+ 116              		@ link register save eliminated.
+  46:Src/Myquadspi.c ****   sCommand.AddressMode   = lineNum2AddressMode[lineNum];
+ 117              		.loc 1 46 3 view .LVU20
+ 118              		.loc 1 46 47 is_stmt 0 view .LVU21
+ 119 0000 034B     		ldr	r3, .L8
+ 120 0002 53F82120 		ldr	r2, [r3, r1, lsl #2]
+ 121              		.loc 1 46 26 view .LVU22
+ 122 0006 034B     		ldr	r3, .L8+4
+ 123 0008 DA61     		str	r2, [r3, #28]
+  47:Src/Myquadspi.c ****   sCommand.Address       = Addr;
+ 124              		.loc 1 47 3 is_stmt 1 view .LVU23
+ 125              		.loc 1 47 26 is_stmt 0 view .LVU24
+ 126 000a 5860     		str	r0, [r3, #4]
+  48:Src/Myquadspi.c **** }
+ 127              		.loc 1 48 1 view .LVU25
+ 128 000c 7047     		bx	lr
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s 			page 4
+
+
+ 129              	.L9:
+ 130 000e 00BF     		.align	2
+ 131              	.L8:
+ 132 0010 00000000 		.word	.LANCHOR2
+ 133 0014 00000000 		.word	sCommand
+ 134              		.cfi_endproc
+ 135              	.LFE135:
+ 137              		.section	.text.QSPI_SetAlternate,"ax",%progbits
+ 138              		.align	1
+ 139              		.global	QSPI_SetAlternate
+ 140              		.syntax unified
+ 141              		.thumb
+ 142              		.thumb_func
+ 143              		.fpu fpv4-sp-d16
+ 145              	QSPI_SetAlternate:
+ 146              	.LVL4:
+ 147              	.LFB136:
+  49:Src/Myquadspi.c **** void QSPI_SetAlternate(uint32_t AlternateByte, uint8_t len, uint8_t lineNum){
+ 148              		.loc 1 49 77 is_stmt 1 view -0
+ 149              		.cfi_startproc
+ 150              		@ args = 0, pretend = 0, frame = 0
+ 151              		@ frame_needed = 0, uses_anonymous_args = 0
+ 152              		@ link register save eliminated.
+  50:Src/Myquadspi.c ****   sCommand.AlternateByteMode   = lineNum2AlternateMode[lineNum];
+ 153              		.loc 1 50 3 view .LVU27
+ 154              		.loc 1 50 55 is_stmt 0 view .LVU28
+ 155 0000 054B     		ldr	r3, .L11
+ 156 0002 53F82220 		ldr	r2, [r3, r2, lsl #2]
+ 157              	.LVL5:
+ 158              		.loc 1 50 32 view .LVU29
+ 159 0006 054B     		ldr	r3, .L11+4
+ 160 0008 1A62     		str	r2, [r3, #32]
+  51:Src/Myquadspi.c ****   sCommand.AlternateBytes      = AlternateByte;
+ 161              		.loc 1 51 3 is_stmt 1 view .LVU30
+ 162              		.loc 1 51 32 is_stmt 0 view .LVU31
+ 163 000a 9860     		str	r0, [r3, #8]
+  52:Src/Myquadspi.c ****   sCommand.AlternateBytesSize  = lineNum2AlternateLen[len];
+ 164              		.loc 1 52 3 is_stmt 1 view .LVU32
+ 165              		.loc 1 52 54 is_stmt 0 view .LVU33
+ 166 000c 044A     		ldr	r2, .L11+8
+ 167 000e 52F82120 		ldr	r2, [r2, r1, lsl #2]
+ 168              		.loc 1 52 32 view .LVU34
+ 169 0012 1A61     		str	r2, [r3, #16]
+  53:Src/Myquadspi.c **** }
+ 170              		.loc 1 53 1 view .LVU35
+ 171 0014 7047     		bx	lr
+ 172              	.L12:
+ 173 0016 00BF     		.align	2
+ 174              	.L11:
+ 175 0018 00000000 		.word	.LANCHOR3
+ 176 001c 00000000 		.word	sCommand
+ 177 0020 00000000 		.word	.LANCHOR4
+ 178              		.cfi_endproc
+ 179              	.LFE136:
+ 181              		.section	.text.QSPI_SetDataInfo,"ax",%progbits
+ 182              		.align	1
+ 183              		.global	QSPI_SetDataInfo
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s 			page 5
+
+
+ 184              		.syntax unified
+ 185              		.thumb
+ 186              		.thumb_func
+ 187              		.fpu fpv4-sp-d16
+ 189              	QSPI_SetDataInfo:
+ 190              	.LVL6:
+ 191              	.LFB137:
+  54:Src/Myquadspi.c **** void QSPI_SetDataInfo(uint8_t *Data, uint32_t len, uint32_t dummylen, uint8_t lineNum){
+ 192              		.loc 1 54 87 is_stmt 1 view -0
+ 193              		.cfi_startproc
+ 194              		@ args = 0, pretend = 0, frame = 0
+ 195              		@ frame_needed = 0, uses_anonymous_args = 0
+ 196              		@ link register save eliminated.
+ 197              		.loc 1 54 87 is_stmt 0 view .LVU37
+ 198 0000 10B4     		push	{r4}
+ 199              	.LCFI0:
+ 200              		.cfi_def_cfa_offset 4
+ 201              		.cfi_offset 4, -4
+  55:Src/Myquadspi.c ****   sCommand.DataMode    = lineNum2DataMode[lineNum];
+ 202              		.loc 1 55 3 is_stmt 1 view .LVU38
+ 203              		.loc 1 55 42 is_stmt 0 view .LVU39
+ 204 0002 064C     		ldr	r4, .L15
+ 205 0004 54F82340 		ldr	r4, [r4, r3, lsl #2]
+ 206              		.loc 1 55 24 view .LVU40
+ 207 0008 054B     		ldr	r3, .L15+4
+ 208              	.LVL7:
+ 209              		.loc 1 55 24 view .LVU41
+ 210 000a 5C62     		str	r4, [r3, #36]
+  56:Src/Myquadspi.c ****   sCommand.NbData      = len;
+ 211              		.loc 1 56 3 is_stmt 1 view .LVU42
+ 212              		.loc 1 56 24 is_stmt 0 view .LVU43
+ 213 000c 9962     		str	r1, [r3, #40]
+  57:Src/Myquadspi.c ****   sCommand.DummyCycles = dummylen;
+ 214              		.loc 1 57 3 is_stmt 1 view .LVU44
+ 215              		.loc 1 57 24 is_stmt 0 view .LVU45
+ 216 000e 5A61     		str	r2, [r3, #20]
+  58:Src/Myquadspi.c ****   pData = Data;
+ 217              		.loc 1 58 3 is_stmt 1 view .LVU46
+ 218              		.loc 1 58 9 is_stmt 0 view .LVU47
+ 219 0010 044B     		ldr	r3, .L15+8
+ 220 0012 1860     		str	r0, [r3]
+  59:Src/Myquadspi.c **** }
+ 221              		.loc 1 59 1 view .LVU48
+ 222 0014 5DF8044B 		ldr	r4, [sp], #4
+ 223              	.LCFI1:
+ 224              		.cfi_restore 4
+ 225              		.cfi_def_cfa_offset 0
+ 226 0018 7047     		bx	lr
+ 227              	.L16:
+ 228 001a 00BF     		.align	2
+ 229              	.L15:
+ 230 001c 00000000 		.word	.LANCHOR5
+ 231 0020 00000000 		.word	sCommand
+ 232 0024 00000000 		.word	.LANCHOR6
+ 233              		.cfi_endproc
+ 234              	.LFE137:
+ 236              		.section	.text.QSPI_Cmd,"ax",%progbits
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s 			page 6
+
+
+ 237              		.align	1
+ 238              		.global	QSPI_Cmd
+ 239              		.syntax unified
+ 240              		.thumb
+ 241              		.thumb_func
+ 242              		.fpu fpv4-sp-d16
+ 244              	QSPI_Cmd:
+ 245              	.LFB138:
+  60:Src/Myquadspi.c **** void QSPI_Cmd(){
+ 246              		.loc 1 60 16 is_stmt 1 view -0
+ 247              		.cfi_startproc
+ 248              		@ args = 0, pretend = 0, frame = 0
+ 249              		@ frame_needed = 0, uses_anonymous_args = 0
+ 250 0000 10B5     		push	{r4, lr}
+ 251              	.LCFI2:
+ 252              		.cfi_def_cfa_offset 8
+ 253              		.cfi_offset 4, -8
+ 254              		.cfi_offset 14, -4
+  61:Src/Myquadspi.c ****   HAL_QSPI_Command(&hqspi, &sCommand, 1000);
+ 255              		.loc 1 61 3 view .LVU50
+ 256 0002 064C     		ldr	r4, .L19
+ 257 0004 4FF47A72 		mov	r2, #1000
+ 258 0008 2146     		mov	r1, r4
+ 259 000a 0548     		ldr	r0, .L19+4
+ 260 000c FFF7FEFF 		bl	HAL_QSPI_Command
+ 261              	.LVL8:
+  62:Src/Myquadspi.c ****   sCommand.InstructionMode = QSPI_INSTRUCTION_NONE;
+ 262              		.loc 1 62 3 view .LVU51
+ 263              		.loc 1 62 28 is_stmt 0 view .LVU52
+ 264 0010 0023     		movs	r3, #0
+ 265 0012 A361     		str	r3, [r4, #24]
+  63:Src/Myquadspi.c ****   sCommand.AddressMode = QSPI_ADDRESS_NONE;
+ 266              		.loc 1 63 3 is_stmt 1 view .LVU53
+ 267              		.loc 1 63 24 is_stmt 0 view .LVU54
+ 268 0014 E361     		str	r3, [r4, #28]
+  64:Src/Myquadspi.c ****   sCommand.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
+ 269              		.loc 1 64 3 is_stmt 1 view .LVU55
+ 270              		.loc 1 64 30 is_stmt 0 view .LVU56
+ 271 0016 2362     		str	r3, [r4, #32]
+  65:Src/Myquadspi.c ****   sCommand.DataMode = QSPI_DATA_NONE;
+ 272              		.loc 1 65 3 is_stmt 1 view .LVU57
+ 273              		.loc 1 65 21 is_stmt 0 view .LVU58
+ 274 0018 6362     		str	r3, [r4, #36]
+  66:Src/Myquadspi.c **** }
+ 275              		.loc 1 66 1 view .LVU59
+ 276 001a 10BD     		pop	{r4, pc}
+ 277              	.L20:
+ 278              		.align	2
+ 279              	.L19:
+ 280 001c 00000000 		.word	sCommand
+ 281 0020 00000000 		.word	hqspi
+ 282              		.cfi_endproc
+ 283              	.LFE138:
+ 285              		.section	.text.QSPI_Write,"ax",%progbits
+ 286              		.align	1
+ 287              		.global	QSPI_Write
+ 288              		.syntax unified
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s 			page 7
+
+
+ 289              		.thumb
+ 290              		.thumb_func
+ 291              		.fpu fpv4-sp-d16
+ 293              	QSPI_Write:
+ 294              	.LFB139:
+  67:Src/Myquadspi.c **** void QSPI_Write(){
+ 295              		.loc 1 67 18 is_stmt 1 view -0
+ 296              		.cfi_startproc
+ 297              		@ args = 0, pretend = 0, frame = 0
+ 298              		@ frame_needed = 0, uses_anonymous_args = 0
+ 299 0000 08B5     		push	{r3, lr}
+ 300              	.LCFI3:
+ 301              		.cfi_def_cfa_offset 8
+ 302              		.cfi_offset 3, -8
+ 303              		.cfi_offset 14, -4
+  68:Src/Myquadspi.c ****   QSPI_Cmd();
+ 304              		.loc 1 68 3 view .LVU61
+ 305 0002 FFF7FEFF 		bl	QSPI_Cmd
+ 306              	.LVL9:
+  69:Src/Myquadspi.c ****   HAL_QSPI_Transmit(&hqspi, pData, 1000);
+ 307              		.loc 1 69 3 view .LVU62
+ 308 0006 4FF47A72 		mov	r2, #1000
+ 309 000a 034B     		ldr	r3, .L23
+ 310 000c 1968     		ldr	r1, [r3]
+ 311 000e 0348     		ldr	r0, .L23+4
+ 312 0010 FFF7FEFF 		bl	HAL_QSPI_Transmit
+ 313              	.LVL10:
+  70:Src/Myquadspi.c **** }
+ 314              		.loc 1 70 1 is_stmt 0 view .LVU63
+ 315 0014 08BD     		pop	{r3, pc}
+ 316              	.L24:
+ 317 0016 00BF     		.align	2
+ 318              	.L23:
+ 319 0018 00000000 		.word	.LANCHOR6
+ 320 001c 00000000 		.word	hqspi
+ 321              		.cfi_endproc
+ 322              	.LFE139:
+ 324              		.section	.text.QSPI_Read,"ax",%progbits
+ 325              		.align	1
+ 326              		.global	QSPI_Read
+ 327              		.syntax unified
+ 328              		.thumb
+ 329              		.thumb_func
+ 330              		.fpu fpv4-sp-d16
+ 332              	QSPI_Read:
+ 333              	.LFB140:
+  71:Src/Myquadspi.c **** void QSPI_Read(){
+ 334              		.loc 1 71 17 is_stmt 1 view -0
+ 335              		.cfi_startproc
+ 336              		@ args = 0, pretend = 0, frame = 0
+ 337              		@ frame_needed = 0, uses_anonymous_args = 0
+ 338 0000 08B5     		push	{r3, lr}
+ 339              	.LCFI4:
+ 340              		.cfi_def_cfa_offset 8
+ 341              		.cfi_offset 3, -8
+ 342              		.cfi_offset 14, -4
+  72:Src/Myquadspi.c ****   QSPI_Cmd();
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s 			page 8
+
+
+ 343              		.loc 1 72 3 view .LVU65
+ 344 0002 FFF7FEFF 		bl	QSPI_Cmd
+ 345              	.LVL11:
+  73:Src/Myquadspi.c ****   HAL_QSPI_Receive(&hqspi, pData, 1000);
+ 346              		.loc 1 73 3 view .LVU66
+ 347 0006 4FF47A72 		mov	r2, #1000
+ 348 000a 034B     		ldr	r3, .L27
+ 349 000c 1968     		ldr	r1, [r3]
+ 350 000e 0348     		ldr	r0, .L27+4
+ 351 0010 FFF7FEFF 		bl	HAL_QSPI_Receive
+ 352              	.LVL12:
+  74:Src/Myquadspi.c **** }...
+ 353              		.loc 1 74 1 is_stmt 0 view .LVU67
+ 354 0014 08BD     		pop	{r3, pc}
+ 355              	.L28:
+ 356 0016 00BF     		.align	2
+ 357              	.L27:
+ 358 0018 00000000 		.word	.LANCHOR6
+ 359 001c 00000000 		.word	hqspi
+ 360              		.cfi_endproc
+ 361              	.LFE140:
+ 363              		.global	lineNum2AlternateLen
+ 364              		.global	lineNum2AlternateMode
+ 365              		.global	lineNum2AddressLen
+ 366              		.global	lineNum2DataMode
+ 367              		.global	lineNum2AddressMode
+ 368              		.global	lineNum2InstructionMode
+ 369              		.global	pData
+ 370              		.comm	sCommand,56,4
+ 371              		.section	.bss.pData,"aw",%nobits
+ 372              		.align	2
+ 373              		.set	.LANCHOR6,. + 0
+ 376              	pData:
+ 377 0000 00000000 		.space	4
+ 378              		.section	.data.lineNum2AddressLen,"aw"
+ 379              		.align	2
+ 380              		.set	.LANCHOR0,. + 0
+ 383              	lineNum2AddressLen:
+ 384 0000 00000000 		.word	0
+ 385 0004 00100000 		.word	4096
+ 386 0008 00200000 		.word	8192
+ 387 000c 00300000 		.word	12288
+ 388              		.section	.data.lineNum2AddressMode,"aw"
+ 389              		.align	2
+ 390              		.set	.LANCHOR2,. + 0
+ 393              	lineNum2AddressMode:
+ 394 0000 00000000 		.word	0
+ 395 0004 00040000 		.word	1024
+ 396 0008 00080000 		.word	2048
+ 397 000c FFFFFFFF 		.word	-1
+ 398 0010 000C0000 		.word	3072
+ 399              		.section	.data.lineNum2AlternateLen,"aw"
+ 400              		.align	2
+ 401              		.set	.LANCHOR4,. + 0
+ 404              	lineNum2AlternateLen:
+ 405 0000 00000000 		.word	0
+ 406 0004 00000100 		.word	65536
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s 			page 9
+
+
+ 407 0008 00000200 		.word	131072
+ 408 000c 00000300 		.word	196608
+ 409              		.section	.data.lineNum2AlternateMode,"aw"
+ 410              		.align	2
+ 411              		.set	.LANCHOR3,. + 0
+ 414              	lineNum2AlternateMode:
+ 415 0000 00000000 		.word	0
+ 416 0004 00400000 		.word	16384
+ 417 0008 00800000 		.word	32768
+ 418 000c FFFFFFFF 		.word	-1
+ 419 0010 00C00000 		.word	49152
+ 420              		.section	.data.lineNum2DataMode,"aw"
+ 421              		.align	2
+ 422              		.set	.LANCHOR5,. + 0
+ 425              	lineNum2DataMode:
+ 426 0000 00000000 		.word	0
+ 427 0004 00000001 		.word	16777216
+ 428 0008 00000002 		.word	33554432
+ 429 000c FFFFFFFF 		.word	-1
+ 430 0010 00000003 		.word	50331648
+ 431              		.section	.data.lineNum2InstructionMode,"aw"
+ 432              		.align	2
+ 433              		.set	.LANCHOR1,. + 0
+ 436              	lineNum2InstructionMode:
+ 437 0000 00000000 		.word	0
+ 438 0004 00010000 		.word	256
+ 439 0008 00020000 		.word	512
+ 440 000c FFFFFFFF 		.word	-1
+ 441 0010 00030000 		.word	768
+ 442              		.text
+ 443              	.Letext0:
+ 444              		.file 2 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\inc
+ 445              		.file 3 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\inc
+ 446              		.file 4 "Drivers/CMSIS/Include/core_cm4.h"
+ 447              		.file 5 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/system_stm32l4xx.h"
+ 448              		.file 6 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l412xx.h"
+ 449              		.file 7 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_def.h"
+ 450              		.file 8 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_dma.h"
+ 451              		.file 9 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_flash.h"
+ 452              		.file 10 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_qspi.h"
+ 453              		.file 11 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h"
+ 454              		.file 12 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h"
+ 455              		.file 13 "Inc/quadspi.h"
+ 456              		.file 14 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\lib\\gcc\\arm-non
+ 457              		.file 15 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\in
+ 458              		.file 16 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\in
+ 459              		.file 17 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\in
+ 460              		.file 18 "Inc/usart.h"
+ 461              		.file 19 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\in
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s 			page 10
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 Myquadspi.c
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:18     .text.QSPI_SetInit:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:26     .text.QSPI_SetInit:00000000 QSPI_SetInit
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:60     .text.QSPI_SetInit:00000018 $d
+                            *COM*:00000038 sCommand
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:66     .text.QSPI_SetInstruct:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:73     .text.QSPI_SetInstruct:00000000 QSPI_SetInstruct
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:96     .text.QSPI_SetInstruct:00000010 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:102    .text.QSPI_SetAddress:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:109    .text.QSPI_SetAddress:00000000 QSPI_SetAddress
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:132    .text.QSPI_SetAddress:00000010 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:138    .text.QSPI_SetAlternate:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:145    .text.QSPI_SetAlternate:00000000 QSPI_SetAlternate
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:175    .text.QSPI_SetAlternate:00000018 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:182    .text.QSPI_SetDataInfo:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:189    .text.QSPI_SetDataInfo:00000000 QSPI_SetDataInfo
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:230    .text.QSPI_SetDataInfo:0000001c $d
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:237    .text.QSPI_Cmd:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:244    .text.QSPI_Cmd:00000000 QSPI_Cmd
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:280    .text.QSPI_Cmd:0000001c $d
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:286    .text.QSPI_Write:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:293    .text.QSPI_Write:00000000 QSPI_Write
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:319    .text.QSPI_Write:00000018 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:325    .text.QSPI_Read:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:332    .text.QSPI_Read:00000000 QSPI_Read
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:358    .text.QSPI_Read:00000018 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:404    .data.lineNum2AlternateLen:00000000 lineNum2AlternateLen
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:414    .data.lineNum2AlternateMode:00000000 lineNum2AlternateMode
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:383    .data.lineNum2AddressLen:00000000 lineNum2AddressLen
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:425    .data.lineNum2DataMode:00000000 lineNum2DataMode
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:393    .data.lineNum2AddressMode:00000000 lineNum2AddressMode
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:436    .data.lineNum2InstructionMode:00000000 lineNum2InstructionMode
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:376    .bss.pData:00000000 pData
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:372    .bss.pData:00000000 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:379    .data.lineNum2AddressLen:00000000 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:389    .data.lineNum2AddressMode:00000000 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:400    .data.lineNum2AlternateLen:00000000 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:410    .data.lineNum2AlternateMode:00000000 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:421    .data.lineNum2DataMode:00000000 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\ccc5FxvB.s:432    .data.lineNum2InstructionMode:00000000 $d
+
+UNDEFINED SYMBOLS
+HAL_QSPI_Command
+hqspi
+HAL_QSPI_Transmit
+HAL_QSPI_Receive

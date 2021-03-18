@@ -1,0 +1,291 @@
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cc3RvUHe.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"DEV_Config.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.DEV_Module_Init,"ax",%progbits
+  18              		.align	1
+  19              		.global	DEV_Module_Init
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv4-sp-d16
+  26              	DEV_Module_Init:
+  27              	.LFB133:
+  28              		.file 1 "User/Config/DEV_Config.c"
+   1:User/Config/DEV_Config.c **** /*****************************************************************************
+   2:User/Config/DEV_Config.c **** * | File      	:	DEV_Config.cpp
+   3:User/Config/DEV_Config.c **** * | Author      : Waveshare team
+   4:User/Config/DEV_Config.c **** * | Function    :
+   5:User/Config/DEV_Config.c **** * | Info        :
+   6:User/Config/DEV_Config.c **** *   Image scanning
+   7:User/Config/DEV_Config.c **** *      Please use progressive scanning to generate images or fonts
+   8:User/Config/DEV_Config.c **** *----------------
+   9:User/Config/DEV_Config.c **** * |	This version:   V1.0
+  10:User/Config/DEV_Config.c **** * | Date        :   2018-01-11
+  11:User/Config/DEV_Config.c **** * | Info        :   Basic version
+  12:User/Config/DEV_Config.c **** *
+  13:User/Config/DEV_Config.c **** ******************************************************************************/
+  14:User/Config/DEV_Config.c **** #include "DEV_Config.h"
+  15:User/Config/DEV_Config.c **** #include "stm32l4xx_hal_spi.h"
+  16:User/Config/DEV_Config.c **** #include "usart.h"
+  17:User/Config/DEV_Config.c **** #include "spi.h"
+  18:User/Config/DEV_Config.c **** 
+  19:User/Config/DEV_Config.c **** #include <errno.h>
+  20:User/Config/DEV_Config.c **** #include <stdio.h>
+  21:User/Config/DEV_Config.c **** #include <string.h>
+  22:User/Config/DEV_Config.c **** 
+  23:User/Config/DEV_Config.c **** extern SPI_HandleTypeDef hspi1;
+  24:User/Config/DEV_Config.c **** 
+  25:User/Config/DEV_Config.c **** /******************************************************************************
+  26:User/Config/DEV_Config.c **** function:	Initialize Arduino, Initialize Pins, and SPI
+  27:User/Config/DEV_Config.c **** parameter:
+  28:User/Config/DEV_Config.c **** Info:
+  29:User/Config/DEV_Config.c **** ******************************************************************************/
+  30:User/Config/DEV_Config.c **** UBYTE DEV_Module_Init(void)
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cc3RvUHe.s 			page 2
+
+
+  31:User/Config/DEV_Config.c **** {
+  29              		.loc 1 31 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 08B5     		push	{r3, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 3, -8
+  37              		.cfi_offset 14, -4
+  32:User/Config/DEV_Config.c ****     SD_CS_1;
+  38              		.loc 1 32 5 view .LVU1
+  39 0002 0122     		movs	r2, #1
+  40 0004 2021     		movs	r1, #32
+  41 0006 4FF09040 		mov	r0, #1207959552
+  42 000a FFF7FEFF 		bl	HAL_GPIO_WritePin
+  43              	.LVL0:
+  33:User/Config/DEV_Config.c **** 	
+  34:User/Config/DEV_Config.c ****     return 0;
+  44              		.loc 1 34 5 view .LVU2
+  35:User/Config/DEV_Config.c **** }
+  45              		.loc 1 35 1 is_stmt 0 view .LVU3
+  46 000e 0020     		movs	r0, #0
+  47 0010 08BD     		pop	{r3, pc}
+  48              		.cfi_endproc
+  49              	.LFE133:
+  51              		.section	.text.DEV_SPI_WriteByte,"ax",%progbits
+  52              		.align	1
+  53              		.global	DEV_SPI_WriteByte
+  54              		.syntax unified
+  55              		.thumb
+  56              		.thumb_func
+  57              		.fpu fpv4-sp-d16
+  59              	DEV_SPI_WriteByte:
+  60              	.LVL1:
+  61              	.LFB134:
+  36:User/Config/DEV_Config.c **** 
+  37:User/Config/DEV_Config.c **** /*********************************************
+  38:User/Config/DEV_Config.c **** function:	Hardware interface
+  39:User/Config/DEV_Config.c **** note:
+  40:User/Config/DEV_Config.c **** 	SPI4W_Write_Byte(value) : 
+  41:User/Config/DEV_Config.c **** 		Register hardware SPI
+  42:User/Config/DEV_Config.c **** *********************************************/	
+  43:User/Config/DEV_Config.c **** void DEV_SPI_WriteByte(UBYTE value)
+  44:User/Config/DEV_Config.c **** {
+  62              		.loc 1 44 1 is_stmt 1 view -0
+  63              		.cfi_startproc
+  64              		@ args = 0, pretend = 0, frame = 8
+  65              		@ frame_needed = 0, uses_anonymous_args = 0
+  66              		.loc 1 44 1 is_stmt 0 view .LVU5
+  67 0000 00B5     		push	{lr}
+  68              	.LCFI1:
+  69              		.cfi_def_cfa_offset 4
+  70              		.cfi_offset 14, -4
+  71 0002 83B0     		sub	sp, sp, #12
+  72              	.LCFI2:
+  73              		.cfi_def_cfa_offset 16
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cc3RvUHe.s 			page 3
+
+
+  74 0004 8DF80700 		strb	r0, [sp, #7]
+  45:User/Config/DEV_Config.c ****     HAL_SPI_Transmit(&hspi1, &value, 1, 1000);
+  75              		.loc 1 45 5 is_stmt 1 view .LVU6
+  76 0008 4FF47A73 		mov	r3, #1000
+  77 000c 0122     		movs	r2, #1
+  78 000e 0DF10701 		add	r1, sp, #7
+  79 0012 0348     		ldr	r0, .L5
+  80              	.LVL2:
+  81              		.loc 1 45 5 is_stmt 0 view .LVU7
+  82 0014 FFF7FEFF 		bl	HAL_SPI_Transmit
+  83              	.LVL3:
+  46:User/Config/DEV_Config.c **** }
+  84              		.loc 1 46 1 view .LVU8
+  85 0018 03B0     		add	sp, sp, #12
+  86              	.LCFI3:
+  87              		.cfi_def_cfa_offset 4
+  88              		@ sp needed
+  89 001a 5DF804FB 		ldr	pc, [sp], #4
+  90              	.L6:
+  91 001e 00BF     		.align	2
+  92              	.L5:
+  93 0020 00000000 		.word	hspi1
+  94              		.cfi_endproc
+  95              	.LFE134:
+  97              		.section	.text.DEV_SPI_ReadByte,"ax",%progbits
+  98              		.align	1
+  99              		.global	DEV_SPI_ReadByte
+ 100              		.syntax unified
+ 101              		.thumb
+ 102              		.thumb_func
+ 103              		.fpu fpv4-sp-d16
+ 105              	DEV_SPI_ReadByte:
+ 106              	.LFB135:
+  47:User/Config/DEV_Config.c **** 
+  48:User/Config/DEV_Config.c **** UBYTE DEV_SPI_ReadByte(void)
+  49:User/Config/DEV_Config.c **** {
+ 107              		.loc 1 49 1 is_stmt 1 view -0
+ 108              		.cfi_startproc
+ 109              		@ args = 0, pretend = 0, frame = 8
+ 110              		@ frame_needed = 0, uses_anonymous_args = 0
+ 111 0000 00B5     		push	{lr}
+ 112              	.LCFI4:
+ 113              		.cfi_def_cfa_offset 4
+ 114              		.cfi_offset 14, -4
+ 115 0002 83B0     		sub	sp, sp, #12
+ 116              	.LCFI5:
+ 117              		.cfi_def_cfa_offset 16
+  50:User/Config/DEV_Config.c **** 	UBYTE value;
+ 118              		.loc 1 50 2 view .LVU10
+  51:User/Config/DEV_Config.c **** 	HAL_SPI_Receive(&hspi1, &value, 1, 1000);
+ 119              		.loc 1 51 2 view .LVU11
+ 120 0004 4FF47A73 		mov	r3, #1000
+ 121 0008 0122     		movs	r2, #1
+ 122 000a 0DF10701 		add	r1, sp, #7
+ 123 000e 0448     		ldr	r0, .L9
+ 124 0010 FFF7FEFF 		bl	HAL_SPI_Receive
+ 125              	.LVL4:
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cc3RvUHe.s 			page 4
+
+
+  52:User/Config/DEV_Config.c **** 	return value;
+ 126              		.loc 1 52 2 view .LVU12
+  53:User/Config/DEV_Config.c **** } 
+ 127              		.loc 1 53 1 is_stmt 0 view .LVU13
+ 128 0014 9DF80700 		ldrb	r0, [sp, #7]	@ zero_extendqisi2
+ 129 0018 03B0     		add	sp, sp, #12
+ 130              	.LCFI6:
+ 131              		.cfi_def_cfa_offset 4
+ 132              		@ sp needed
+ 133 001a 5DF804FB 		ldr	pc, [sp], #4
+ 134              	.L10:
+ 135 001e 00BF     		.align	2
+ 136              	.L9:
+ 137 0020 00000000 		.word	hspi1
+ 138              		.cfi_endproc
+ 139              	.LFE135:
+ 141              		.section	.text.DEV_Delay_us,"ax",%progbits
+ 142              		.align	1
+ 143              		.global	DEV_Delay_us
+ 144              		.syntax unified
+ 145              		.thumb
+ 146              		.thumb_func
+ 147              		.fpu fpv4-sp-d16
+ 149              	DEV_Delay_us:
+ 150              	.LVL5:
+ 151              	.LFB136:
+  54:User/Config/DEV_Config.c **** 
+  55:User/Config/DEV_Config.c **** /******************************************************************************
+  56:User/Config/DEV_Config.c **** function:	Analog microsecond delay
+  57:User/Config/DEV_Config.c **** parameter:
+  58:User/Config/DEV_Config.c **** Info:
+  59:User/Config/DEV_Config.c **** ******************************************************************************/
+  60:User/Config/DEV_Config.c **** void DEV_Delay_us(UWORD xus)
+  61:User/Config/DEV_Config.c **** {
+ 152              		.loc 1 61 1 is_stmt 1 view -0
+ 153              		.cfi_startproc
+ 154              		@ args = 0, pretend = 0, frame = 0
+ 155              		@ frame_needed = 0, uses_anonymous_args = 0
+ 156              		@ link register save eliminated.
+  62:User/Config/DEV_Config.c ****     for(int j=xus; j > 0; j--);
+ 157              		.loc 1 62 5 view .LVU15
+ 158              	.LBB2:
+ 159              		.loc 1 62 9 view .LVU16
+ 160              	.L12:
+ 161              		.loc 1 62 20 discriminator 1 view .LVU17
+ 162              		.loc 1 62 5 is_stmt 0 discriminator 1 view .LVU18
+ 163 0000 0028     		cmp	r0, #0
+ 164 0002 01DD     		ble	.L14
+ 165              		.loc 1 62 31 is_stmt 1 discriminator 3 view .LVU19
+ 166              		.loc 1 62 27 discriminator 3 view .LVU20
+ 167              		.loc 1 62 28 is_stmt 0 discriminator 3 view .LVU21
+ 168 0004 0138     		subs	r0, r0, #1
+ 169              	.LVL6:
+ 170              		.loc 1 62 28 discriminator 3 view .LVU22
+ 171 0006 FBE7     		b	.L12
+ 172              	.L14:
+ 173              		.loc 1 62 28 discriminator 3 view .LVU23
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cc3RvUHe.s 			page 5
+
+
+ 174              	.LBE2:
+  63:User/Config/DEV_Config.c **** }
+ 175              		.loc 1 63 1 view .LVU24
+ 176 0008 7047     		bx	lr
+ 177              		.cfi_endproc
+ 178              	.LFE136:
+ 180              		.text
+ 181              	.Letext0:
+ 182              		.file 2 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\inc
+ 183              		.file 3 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\inc
+ 184              		.file 4 "Drivers/CMSIS/Include/core_cm4.h"
+ 185              		.file 5 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/system_stm32l4xx.h"
+ 186              		.file 6 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l412xx.h"
+ 187              		.file 7 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_def.h"
+ 188              		.file 8 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_gpio.h"
+ 189              		.file 9 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_dma.h"
+ 190              		.file 10 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_flash.h"
+ 191              		.file 11 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi.h"
+ 192              		.file 12 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h"
+ 193              		.file 13 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h"
+ 194              		.file 14 "Inc/usart.h"
+ 195              		.file 15 "Inc/spi.h"
+ 196              		.file 16 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\lib\\gcc\\arm-non
+ 197              		.file 17 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\in
+ 198              		.file 18 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\in
+ 199              		.file 19 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\in
+ 200              		.file 20 "c:\\program files (x86)\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\in
+ARM GAS  C:\Users\ADMINI~1\AppData\Local\Temp\cc3RvUHe.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 DEV_Config.c
+C:\Users\ADMINI~1\AppData\Local\Temp\cc3RvUHe.s:18     .text.DEV_Module_Init:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\cc3RvUHe.s:26     .text.DEV_Module_Init:00000000 DEV_Module_Init
+C:\Users\ADMINI~1\AppData\Local\Temp\cc3RvUHe.s:52     .text.DEV_SPI_WriteByte:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\cc3RvUHe.s:59     .text.DEV_SPI_WriteByte:00000000 DEV_SPI_WriteByte
+C:\Users\ADMINI~1\AppData\Local\Temp\cc3RvUHe.s:93     .text.DEV_SPI_WriteByte:00000020 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\cc3RvUHe.s:98     .text.DEV_SPI_ReadByte:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\cc3RvUHe.s:105    .text.DEV_SPI_ReadByte:00000000 DEV_SPI_ReadByte
+C:\Users\ADMINI~1\AppData\Local\Temp\cc3RvUHe.s:137    .text.DEV_SPI_ReadByte:00000020 $d
+C:\Users\ADMINI~1\AppData\Local\Temp\cc3RvUHe.s:142    .text.DEV_Delay_us:00000000 $t
+C:\Users\ADMINI~1\AppData\Local\Temp\cc3RvUHe.s:149    .text.DEV_Delay_us:00000000 DEV_Delay_us
+
+UNDEFINED SYMBOLS
+HAL_GPIO_WritePin
+HAL_SPI_Transmit
+hspi1
+HAL_SPI_Receive
